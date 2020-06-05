@@ -4,4 +4,4 @@
 
 ---
 
-![image](https://github.com/pixx1225/Axing-Tech/blob/master/images/Sample1-1.png)
+![image](https://github.com/pixx1225/Axing-Tech/blob/master/images/Tech.jpg)
