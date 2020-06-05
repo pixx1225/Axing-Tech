@@ -30,13 +30,13 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 4. 实现Callable接口通过FutureTask包装器
 
 ### 线程同步的方式：
-1.同步方法，使用synchronized关键字修饰方法
-2.同步代码块，使用synchronized关键字修饰代码块
-3.使用特殊域变量volatile实现线程同步
-4.使用重入锁实现线程同步，ReentrantLock创建实例，lock()获得锁，unlock()释放锁
-5.使用局部变量实现线程同步，ThreadLocal() : 创建一个线程本地变量
-6.使用阻塞队列实现线程同步，BlockingQueue<E>定义了阻塞队列的常用方法，add(),offer(),put()
-7.使用原子变量实现线程同步,
+1. 同步方法，使用synchronized关键字修饰方法
+2. 同步代码块，使用synchronized关键字修饰代码块
+3. 使用特殊域变量volatile实现线程同步
+4. 使用重入锁实现线程同步，ReentrantLock创建实例，lock()获得锁，unlock()释放锁
+5. 使用局部变量实现线程同步，ThreadLocal() : 创建一个线程本地变量
+6. 使用阻塞队列实现线程同步，BlockingQueue<E>定义了阻塞队列的常用方法，add(),offer(),put()
+7. 使用原子变量实现线程同步,
 ##ThreadLocal 
 ### 基本概念
 
