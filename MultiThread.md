@@ -27,7 +27,7 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 1. 继承Thread类
 2. 实现Runable接口(推荐)
 3. 使用Executor框架创建线程池
-4. 实现Callable接口通过FutureTask包装器
+4. 通过Callable接口并实现call()方法，该call()方法将作为线程执行体，并且有返回值
 
 ### 线程同步的方式：
 1. 同步方法，使用synchronized关键字修饰方法
@@ -37,6 +37,7 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 5. 使用局部变量实现线程同步，ThreadLocal() : 创建一个线程本地变量
 6. 使用阻塞队列实现线程同步，BlockingQueue<E>定义了阻塞队列的常用方法，add(),offer(),put()
 7. 使用原子变量实现线程同步,
+
 ##ThreadLocal 
 ### 基本概念
 
