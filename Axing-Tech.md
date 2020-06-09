@@ -1,10 +1,6 @@
 [TOC]
 
-# 计算机软件安装大全
-
-> 软件安装或破解教程均在链接【link】里（我是大自然的搬运工）
-> 以下软件的安装均有效，如有问题，欢迎讨论，谢谢 :smile:
-> 持续更新中～～～
+# 计算机软件安装
 
 ---
 ### 基本软件
@@ -19,6 +15,7 @@
 6. Mac中视频播放软件 IINA
 7. 推荐桌面共享软件 TeamViewer
 8. Win推荐安装卸载工具 IObitUninstaler
+
 ### Java 开发
 1. Eclipse
 2. JetBrains IntelliJ IDEA
@@ -33,9 +30,11 @@
 </mirror>
 ```
 然后重新启动IDEA，之后就可以体会到飞一般地速度了（相比于之前）！
+
 ### Python开发
 1. JetBrains PyCharm
 2. Anacoda
+
 ### 其他开发
 1. [Visual Studio Code](https://code.visualstudio.com/)
 3. [Navicat](https://www.navicat.com.cn/) Premium 15 Mac版本安装及破解 [link](https://www.52pojie.cn/thread-1101529-1-1.html)
@@ -44,40 +43,16 @@ Postman是一款强大网页调试与发送网页HTTP请求的工具。也有Chr
 5. [Charles官网](https://www.charlesproxy.com) [破解link](https://www.zzzmode.com/mytools/charles/)
 Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
 
-
+---
+# windows DOS 命令
+exit 退出
+cls 清屏 (Mac 是 clear)
+dir 当前目录
+cd C:\Users\Administrator\Desktop
+cd .. 回到上级目录
+cd \ 回到根目录
 
 ---
-
----
-
-# Java
-
-javac HelloWorld.java
-java HelloWorld
-
-
-
-### Spring Dependencies
-
-```xml
-<dependency>
-  <groupId>mysql</groupId>
-  <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.17</version>
-</dependency>  
-<dependency>
-  <groupId>org.projectlombok</groupId>
-  <artifactId>lombok</artifactId>
-  <version>1.18.12</version>
-</dependency>
-```
-
-
-
----
-
----
-
 # Mysql
 
 1. 连接数据库
@@ -215,104 +190,6 @@ limit 2,3 第3名到第5名
 
 ---
 
----
-
-# Mybatis
-
-### JDBC
-
-```java
-public static void main(String[] args){
-  Connection conn = null;
-  PreparedStatement ps = null;
-  ResultSet rs = null;
-  try{
-    //加载数据库驱动
-    Class.forName("com.mysql.jdbc.Driver");
-    //通过驱动管理类获取数据库链接
-    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8","root","passport");
-    //定义sql语句，？表示占位符
-    String  sql = "select * from user where username = ?";
-    //获取预处理statement
-    ps = conn.prepareStatement(sql);
-    //设置参数
-    ps.setString(1,"王五");
-    //向数据库发出sql执行查询，查询出结果集
-    rs = ps.executeQuery();
-    //遍历查询结果集
-    while(rs.next()){
-      System.out.println(rs.getString("id")+" "+rs.getString("username"));
-    }
-  }catch (Exception e){
-    e.printStackTrace();
-  }finally{
-    //释放资源
-    if(rs != null){
-      try{
-        rs.close();
-      }catch(SQLException e){
-        e.printStackTrace();
-      }
-    }
-    if(ps != null){
-      try{
-        ps.close();
-      }catch(SQLException e){
-        e.printStackTrace();
-      }
-    }
-    if(conn != null){
-      try{
-        conn.close();
-      }catch(SQLException e){
-        e.printStackTrace();
-      }
-    }
-  }
-}
-```
-
-### Mybatis配置文件的约束
-
-```xml
-<!--Config的约束-->
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE configuration 
-				PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<!--Mapper的约束-->
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper 
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-```
-
-### Mybatis常用注解说明
-
-```java
-@Select：查询
-@Insert：新增
-@Update：更新
-@Delete：删除
-@Result：结果集封装
-@Results：与Result一起使用，封装多个结果集
-@ResultMap：引用Results定义的封装
-@One：一对一结果集封装
-@Many：一对多结果集封装
-@SelectProvider：动态SQL映射
-@CacheNamespace：注解二级缓存的使用
-```
-
-
-
-# windows DOS 命令
-
-exit 退出
-cls 清屏 (Mac 是 clear)
-dir 当前目录
-cd C:\Users\Administrator\Desktop
-cd .. 回到上级目录
-cd \ 回到根目录
 
 
 
