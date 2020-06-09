@@ -1,6 +1,6 @@
 [TOC]
 
-# CS For All
+# TechSkill
 
 ## 软件总汇
 
@@ -16,13 +16,27 @@
 7. 推荐桌面共享软件 TeamViewer
 8. Win推荐安装卸载工具 IObitUninstaler
 
-## Java 开发
+### Java 开发
 
 1. Eclipse
 2. JetBrains IntelliJ IDEA
+### Python开发
 
-- 解决IDEA中maven添加dependency过慢的问题
-  我们在IDEA的安装目录下找到 /plugins/maven/lib/maven2/conf 或者maven3/conf目录，向其中的setting.xml文件中的<mirrors>标签下添加如下的仓库地址--这里以阿里云为例
+1. JetBrains PyCharm
+2. Anacoda
+
+### 其他开发
+
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Postman](https://www.getpostman.com/)
+
+## 软件破|解
+1. [Navicat](https://www.navicat.com.cn/) Premium 15 Mac版本 [link](https://www.52pojie.cn/thread-1101529-1-1.html)
+4. [Charles官网](https://www.charlesproxy.com)   [破|解link](https://www.zzzmode.com/mytools/charles/)
+   Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
+
+## IDEA中maven添加dependency过慢的问题
+我们在IDEA的安装目录下找到 /plugins/maven/lib/maven2/conf 或者maven3/conf目录，向其中的setting.xml文件中的<mirrors>标签下添加如下的仓库地址--这里以阿里云为例
 
 ```xml
 <mirror>  
@@ -34,20 +48,6 @@
 ```
 
 然后重新启动IDEA，之后就可以体会到飞一般地速度了（相比于之前）！
-
-## Python开发
-
-1. JetBrains PyCharm
-2. Anacoda
-
-## 其他开发
-
-1. [Visual Studio Code](https://code.visualstudio.com/)
-2. [Navicat](https://www.navicat.com.cn/) Premium 15 Mac版本安装及破解 [link](https://www.52pojie.cn/thread-1101529-1-1.html)
-3. [Postman](https://www.getpostman.com/)
-   Postman是一款强大网页调试与发送网页HTTP请求的工具。也有Chrome插件版一样好用。
-4. [Charles官网](https://www.charlesproxy.com) [破解link](https://www.zzzmode.com/mytools/charles/)
-   Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
 
 ## Github 图片不显示的问题
 
