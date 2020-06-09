@@ -1,26 +1,29 @@
 [TOC]
 
-# 计算机软件安装
+# CS For All
 
----
-### 基本软件
+## 软件总汇
+
 1. 推荐安装浏览器 Google Chrome
-    谷歌浏览器插件：Postman-REST Client，Grammarly，Adblock Plus
+   谷歌浏览器插件：Postman-REST Client，Grammarly，Adblock Plus
 2. Win中推荐安装文本编辑器 Notepad++ 或 Sublime
-    Mac中推荐安装文本编辑器 Sublime
+   Mac中推荐安装文本编辑器 Sublime
 3. Win中推荐画图工具 Visio
 4. 推荐安装Markdown编辑器 Typora
 5. Win中解压软件 7-Zip
-    Mac中解压软件 The Unarchiver
+   Mac中解压软件 The Unarchiver
 6. Mac中视频播放软件 IINA
 7. 推荐桌面共享软件 TeamViewer
 8. Win推荐安装卸载工具 IObitUninstaler
 
-### Java 开发
+## Java 开发
+
 1. Eclipse
 2. JetBrains IntelliJ IDEA
+
 - 解决IDEA中maven添加dependency过慢的问题
-我们在IDEA的安装目录下找到 /plugins/maven/lib/maven2/conf 或者maven3/conf目录，向其中的setting.xml文件中的<mirrors>标签下添加如下的仓库地址--这里以阿里云为例
+  我们在IDEA的安装目录下找到 /plugins/maven/lib/maven2/conf 或者maven3/conf目录，向其中的setting.xml文件中的<mirrors>标签下添加如下的仓库地址--这里以阿里云为例
+
 ```xml
 <mirror>  
     <id>nexus-aliyun</id>  
@@ -29,22 +32,45 @@
     <url>http://maven.aliyun.com/nexus/content/groups/public</url>
 </mirror>
 ```
+
 然后重新启动IDEA，之后就可以体会到飞一般地速度了（相比于之前）！
 
-### Python开发
+## Python开发
+
 1. JetBrains PyCharm
 2. Anacoda
 
-### 其他开发
-1. [Visual Studio Code](https://code.visualstudio.com/)
-3. [Navicat](https://www.navicat.com.cn/) Premium 15 Mac版本安装及破解 [link](https://www.52pojie.cn/thread-1101529-1-1.html)
-4. [Postman](https://www.getpostman.com/)
-Postman是一款强大网页调试与发送网页HTTP请求的工具。也有Chrome插件版一样好用。
-5. [Charles官网](https://www.charlesproxy.com) [破解link](https://www.zzzmode.com/mytools/charles/)
-Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
+## 其他开发
 
----
-# windows DOS 命令
+1. [Visual Studio Code](https://code.visualstudio.com/)
+2. [Navicat](https://www.navicat.com.cn/) Premium 15 Mac版本安装及破解 [link](https://www.52pojie.cn/thread-1101529-1-1.html)
+3. [Postman](https://www.getpostman.com/)
+   Postman是一款强大网页调试与发送网页HTTP请求的工具。也有Chrome插件版一样好用。
+4. [Charles官网](https://www.charlesproxy.com) [破解link](https://www.zzzmode.com/mytools/charles/)
+   Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
+
+## Github 图片不显示的问题
+
+打开路径C:\Windows\System32\drivers\etc下的hosts文件
+
+(权限问题，先复制文件到其他路径，修改后再覆盖回来)
+
+再去这个网站：https://www.ipaddress.com/
+根据一下域名解析出 IP 地址，最后把`IP 域名`添加到 `hosts`文件中
+
+```xml
+# Github Start
+199.232.68.133 avatars0.githubusercontent.com
+199.232.68.133 avatars1.githubusercontent.com
+199.232.68.133 avatars2.githubusercontent.com
+199.232.68.133 avatars3.githubusercontent.com
+199.232.68.133 raw.githubusercontent.com
+199.232.68.133 raw.github.com
+# Github End
+```
+
+## windows DOS 命令
+
 exit 退出
 cls 清屏 (Mac 是 clear)
 dir 当前目录
@@ -52,16 +78,15 @@ cd C:\Users\Administrator\Desktop
 cd .. 回到上级目录
 cd \ 回到根目录
 
----
-# Mysql
+## Mysql
 
 1. 连接数据库
-mysql -uusername -ppassword;
+   mysql -uusername -ppassword;
 
 2. 查看库和表
-show databases;
-use test;
-show tables;
+   show databases;
+   use test;
+   show tables;
 
 3. 创建库
 
@@ -70,25 +95,25 @@ show tables;
   create database test1 charset utf8;
 
 4. 删除库
-    drop database test1;
+   drop database test1;
 
 5. 创建表
-    create table stu(
-    sid int,
-    sname varchar(10)
-    )engine myisam charset utf8;
+   create table stu(
+   sid int,
+   sname varchar(10)
+   )engine myisam charset utf8;
 
 6. 重命名表名
-    rename table stu to newstu;
+   rename table stu to newstu;
 
 7. 插入表数据
-    insert into newstu values
-    (1,'zhangsan'),
-    (2,'lisi'),
-    (3,'wangwu');
+   insert into newstu values
+   (1,'zhangsan'),
+   (2,'lisi'),
+   (3,'wangwu');
 
 8. 清空表数据
-    truncate newstu;
+   truncate newstu;
 
 9. delete和truncate不删除表结构，delete可回滚，产生碎片，truncate速度快，释放空间。
 
@@ -161,21 +186,21 @@ year 1901-2155
 ~
 
 18. create table member(
-	id int unsigned auto_increment primary key,
-	username char(20) not null default '',
-	gender char(1) not null default '',
-	weight tinyint unsigned not null default 0,
-	brith date not null default '0000-00-00',
-	salary decimal(8,2) not null default 0.00,
-	lastlogin int unsigned not null default 0
-	)engine myisam charset utf8;
-把频繁使用的信息存放一张表，把其他不常用数据信息存另一张表
+    id int unsigned auto_increment primary key,
+    username char(20) not null default '',
+    gender char(1) not null default '',
+    weight tinyint unsigned not null default 0,
+    brith date not null default '0000-00-00',
+    salary decimal(8,2) not null default 0.00,
+    lastlogin int unsigned not null default 0
+    )engine myisam charset utf8;
+    把频繁使用的信息存放一张表，把其他不常用数据信息存另一张表
 
-20. 查询 select
-like   %匹配任意字符  __匹配任意单个字符
-字符替换 模糊查询
-select goods_id,goods_name, concat('小米',substring(goods_name,4))
-from goods where goods_name like '诺基亚%';
+19. 查询 select
+    like   %匹配任意字符  __匹配任意单个字符
+    字符替换 模糊查询
+    select goods_id,goods_name, concat('小米',substring(goods_name,4))
+    from goods where goods_name like '诺基亚%';
 
 group by
 select sum(goods_number) from goods group by cat_id;
@@ -208,3 +233,6 @@ limit 2,3 第3名到第5名
 
 
 
+
+
+（）

@@ -1,3 +1,5 @@
+[TOC]
+
 # Java
 
 - javac HelloWorld.java
