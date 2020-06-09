@@ -4,5 +4,3 @@
 
 ---
 ![image](https://github.com/pixx1225/Axing-Tech/blob/master/images/aa.png?raw=true)
-
-![image](https://github.com/pixx1225/Axing-Tech/blob/master/images/aa.png)
