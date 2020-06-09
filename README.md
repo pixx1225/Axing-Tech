@@ -1,4 +1,4 @@
-### 记录所见所想，达成非凡梦想 
+### 记录所见所想，成就非凡梦想 
 
 [![Github](https://img.shields.io/badge/Github-Github-red.svg)](https://github.com/pixx1225/Axing-Tech)
 
