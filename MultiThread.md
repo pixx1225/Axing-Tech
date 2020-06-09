@@ -37,12 +37,9 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 5. 使用局部变量实现线程同步，ThreadLocal() : 创建一个线程本地变量
 6. 使用阻塞队列实现线程同步，BlockingQueue<E>定义了阻塞队列的常用方法，add(),offer(),put()
 7. 使用原子变量实现线程同步,
-<<<<<<< Updated upstream
 
-##ThreadLocal 
-=======
 ## ThreadLocal 
->>>>>>> Stashed changes
+
 ### 基本概念
 
 ## 线程池
