@@ -3,19 +3,19 @@
 [![Github](https://img.shields.io/badge/Github-Github-red.svg)](https://github.com/pixx1225/Axing-Tech)
 
 ---
-|操作系统|网络|数据库|Java|算法|面向对象|系统设计|工具|编码实践|后记|
-| :------------------------: | :------------------------------: | :--------------------: | :--------------------: | :----------------------------------: | :--------------------------------------: | :----------------------: | :----------------------: | :----------------------------------: | :------------------: |
-| [:computer:](os/OS.md) | [:globe_with_meridians:](network/Network.md) |  [:floppy_disk:](database/Database.md) | [:coffee:](java/Java.md) |  [:pencil2:](algorithm) | [:couple:](#面向对象) | [:bulb:](#bulb-系统设计) | [:wrench:](#wrench-工具) | [:watermelon:](#watermelon-编码实践) | [:memo:](#memo-后记) |
+|操作系统|网络|数据库|Java|机器学习|编程算法|面向对象|技术技巧|软件工具|推荐书籍|后记杂谈|
+| :------------------------: | :------------------------------: | :--------------------: | :--------------------: | :----------------------------------: | :--------------------------------------: | :----------------------: | :----------------------: | :----------------------------------: | :------------------: | :--------------------------: | :--------------------------: |
+| [:computer:](#computer-操作系统) | [:globe_with_meridians:](#globe_with_meridians-计算机网络) |  [:floppy_disk:](#floppy_disk-数据库) | [:coffee:](#coffee-JAVA) | [:watermelon:](#watermelon-机器学习) | [:pencil2:](#pencil2-编程算法) | [:couple:](#couple-面向对象) | [:bulb:](#bulb-技术技巧) | [:wrench:](#wrench-软件工具) | [:books:](#books-推荐书籍) | [:memo:](#memo-后记杂谈) |
 
 
 
-### 💡 技术技巧
+### :bulb: 技术技巧
 
 - [TechSkill](TechSkill.md)
 
 ---
 
-### 📚 推荐书籍
+### :books: 推荐书籍
 
 - [RecommendedBooks](RecommendedBooks.md)
 
@@ -31,7 +31,13 @@
 
 ---
 
-###  :globe_with_meridians: 计算机网络
+### :computer: 操作系统
+
+- [Linux](os/Linux.md)
+
+---
+
+### :globe_with_meridians: 计算机网络
 
 - [Network](Network.md)
 
@@ -42,14 +48,38 @@
 - [Database](database/Database.md)
 
 ---
+### :pencil2: 编程算法
 
-### :wrench: 工具
+- [Leetcode](algorithm/Leetcode.md)
+- [剑指Offer](algorithm/剑指Offer.md)
+
+---
+
+### :watermelon: 机器学习
+
+- [Database](database/Database.md)
+
+---
+
+### :couple: 面向对象
+
+- [Database](database/Database.md)
+
+---
+
+### :wrench: 软件工具
 
 - [Git](tool/Git.md)
 
+---
+
+### :memo: 后记杂谈
 
 
-📖:art:
+
+
+
+:art: [获取更多信息](www.baidu.com)
 
 <div align=center>
     <img src="https://github.com/pixx1225/Axing-Tech/blob/master/images/Tech.png" width="600" height="200" align="center"/>

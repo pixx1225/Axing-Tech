@@ -106,6 +106,17 @@ Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程
     <artifactId>tomcat-embed-jasper</artifactId>
     <scope>provided</scope>
 </dependency>
+<!-- swagger2 -->
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.9.2</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.9.2</version>
+</dependency>
 <!-- gson -->
 <dependency>
     <groupId>com.google.code.gson</groupId>
