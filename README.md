@@ -39,7 +39,7 @@
 
 ### :globe_with_meridians: 计算机网络
 
-- [Network](Network.md)
+- [Network](network/Network.md)
 
 ---
 
@@ -57,7 +57,7 @@
 
 ### :watermelon: 机器学习
 
-- [Database](database/Database.md)
+- [MachineLearning](machinelearning/MachineLearning.md)
 
 ---
 
