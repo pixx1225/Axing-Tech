@@ -18,6 +18,21 @@
 
 ### Java 开发
 
+**JDK环境变量配置：**
+我的电脑—属性—高级系统配置—环境变量—：
+
+```
+系统变量—新建：
+JAVA_HOME:
+C:\DevApps\Java\jdk1.8.0_251 (即JDK安装目录)
+CLASSPATH:
+.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”
+Path：新建
+%JAVA_HOME%\bin 和 %JAVA_HOME%\jre\bin
+
+最后测试：cmd中运行 java -version 看版本号有没有，如有则安装成功。
+```
+
 1. Eclipse
 2. JetBrains IntelliJ IDEA
 ### Python开发
@@ -31,8 +46,8 @@
 - [Postman](https://www.getpostman.com/)
 
 ## 软件破|解
-1. [Navicat](https://www.navicat.com.cn/) Premium 15 Mac版本 [link](https://www.52pojie.cn/thread-1101529-1-1.html)
-4. [Charles官网](https://www.charlesproxy.com)   [破|解link](https://www.zzzmode.com/mytools/charles/)
+1. [Navicat](https://www.navicat.com.cn/) Premium 15  [Mac版](https://www.52pojie.cn/thread-1101529-1-1.html)  [Windows版](https://www.cnblogs.com/hfxtest/p/12513210.html)
+4. [Charles](https://www.charlesproxy.com)   [Windows版](https://www.zzzmode.com/mytools/charles/)
    Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
 
 ## IDEA中maven添加dependency过慢的问题

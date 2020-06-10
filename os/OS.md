@@ -12,11 +12,23 @@
 
 # 一、常用操作以及概念
 
-## 快捷键
+## 常用命令
 
+```
+cd C:\Users\Administrator\Desktop
+cd ..   回到上级目录
+cd \    回到根目录
+touch test.txt   新建文件
+open -e test.txt 打开文件
+exit    退出
+cls     清屏 (Mac 是 clear)
+dir     当前目录
 - Tab：命令和文件名补全；
 - Ctrl+C：中断正在运行的程序；
 - Ctrl+D：结束键盘输入（End Of File，EOF）
+```
+
+
 
 ## 求助
 
@@ -95,7 +107,6 @@ Linux 发行版是 Linux 内核及各种应用软件的集成版本。
 ## VIM 三个模式
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191209002818626.png"/> </div><br>
-
 
 
 - 一般指令模式（Command mode）：VIM 的默认模式，可以用于移动游标查看内容；
@@ -180,7 +191,6 @@ GPT 没有扩展分区概念，都是主分区，每个 LBA 可以分 4 个分�
 MBR 不支持 2.2 TB 以上的硬盘，GPT 则最多支持到 2<sup>33</sup> TB = 8 ZB。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/GUID_Partition_Table_Scheme.svg.png" width="400"/> </div><br>
-
 ## 开机检测程序
 
 ### 1. BIOS
@@ -218,17 +228,14 @@ BIOS 不可以读取 GPT 分区表，而 UEFI 可以。
 - block bitmap：记录 block 是否被使用的位图。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/BSD_disk.png" width="800"/> </div><br>
-
 ## 文件读取
 
 对于 Ext2 文件系统，当要读取一个文件的内容时，先在 inode 中查找文件内容所在的所有 block，然后把所有 block 的内容读出来。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/12a65cc6-20e0-4706-9fe6-3ba49413d7f6.png" width="500px"> </div><br>
-
 而对于 FAT 文件系统，它没有 inode，每个 block 中存储着下一个 block 的编号。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/5b718e86-7102-4bb6-8ca5-d1dd791530c5.png" width="500px"> </div><br>
-
 ## 磁盘碎片
 
 指一个文件内容所在的 block 过于分散，导致磁盘磁头移动距离过大，从而降低磁盘读写性能。
@@ -265,7 +272,6 @@ inode 具有以下特点：
 inode 中记录了文件内容所在的 block 编号，但是每个 block 非常小，一个大文件随便都需要几十万的 block。而一个 inode 大小有限，无法直接引用这么多 block 编号。因此引入了间接、双间接、三间接引用。间接引用让 inode 记录的引用 block 块记录引用信息。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/inode_with_signatures.jpg" width="600"/> </div><br>
-
 ## 目录
 
 建立一个目录时，会分配一个 inode 与至少一个 block。block 记录的内容是目录下所有文件的 inode 编号以及文件名。
@@ -291,7 +297,6 @@ ext3/ext4 文件系统引入了日志功能，可以利用日志来修复文件�
 - /var (variable)：存放系统或程序运行过程中的数据文件。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/linux-filesystem.png" width=""/> </div><br>
-
 # 五、文件
 
 ## 文件属性
@@ -459,7 +464,6 @@ cp [-adfilprsu] source destination
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/1e46fd03-0cda-4d60-9b1c-0c256edaf6b2.png" width="450px"> </div><br>
 
-
 ```html
 # ln [-sf] source_filename dist_filename
 -s ：默认是实体链接，加 -s 为符号链接
@@ -586,7 +590,6 @@ example: find . -name "shadow*"
 +4、4 和 -4 的指示的时间范围如下：
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/658fc5e7-79c0-4247-9445-d69bf194c539.png" width=""/> </div><br>
-
 **② 与文件拥有者和所属群组有关的选项**  
 
 ```html
@@ -1100,7 +1103,6 @@ dmtsai lines: 5 columns: 9
 <br>
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/2bab4127-3e7d-48cc-914e-436be859fb05.png" width="490px"/> </div><br>
-
 ## SIGCHLD
 
 当一个子进程改变了它的状态时（停止运行，继续运行或者退出），有两件事会发生在父进程中：
@@ -1113,7 +1115,6 @@ dmtsai lines: 5 columns: 9
 在子进程退出时，它的进程描述符不会立即释放，这是为了让父进程得到子进程信息，父进程通过 wait() 和 waitpid() 来获得一个已经退出的子进程的信息。
 
 <div align="center"> <!-- <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/flow.png" width=""/> --> </div><br>
-
 ## wait()
 
 ```c

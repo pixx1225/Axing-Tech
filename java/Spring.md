@@ -78,6 +78,12 @@ Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程
 ## Dependencies
 
 ```xml
+<!-- mybatis -->
+<dependency>
+  <groupId>org.mybatis</groupId>
+  <artifactId>mybatis</artifactId>
+  <version>3.5.4</version>
+</dependency>
 <!-- mysql -->
 <dependency>
   <groupId>mysql</groupId>
@@ -127,6 +133,18 @@ Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-devtools</artifactId>
     <optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
+</dependency>
+<!-- StringUtils -->
+<dependency>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>commons-lang3</artifactId>
+  <version>3.4</version>
+</dependency>
+<!-- CollectionUtils -->
+<dependency>
+  <groupId>commons-collections</groupId>
+  <artifactId>commons-collections</artifactId>
+  <version>3.2</version>
 </dependency>
 ```
 
