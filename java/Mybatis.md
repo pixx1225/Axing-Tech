@@ -1,57 +1,8 @@
+[TOC]
+
 # Mybatis
 
-### JDBC
-
-```java
-public static void main(String[] args){
-  Connection conn = null;
-  PreparedStatement ps = null;
-  ResultSet rs = null;
-  try{
-    //加载数据库驱动
-    Class.forName("com.mysql.jdbc.Driver");
-    //通过驱动管理类获取数据库链接
-    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8","root","passport");
-    //定义sql语句，？表示占位符
-    String  sql = "select * from user where username = ?";
-    //获取预处理statement
-    ps = conn.prepareStatement(sql);
-    //设置参数
-    ps.setString(1,"王五");
-    //向数据库发出sql执行查询，查询出结果集
-    rs = ps.executeQuery();
-    //遍历查询结果集
-    while(rs.next()){
-      System.out.println(rs.getString("id")+" "+rs.getString("username"));
-    }
-  }catch (Exception e){
-    e.printStackTrace();
-  }finally{
-    //释放资源
-    if(rs != null){
-      try{
-        rs.close();
-      }catch(SQLException e){
-        e.printStackTrace();
-      }
-    }
-    if(ps != null){
-      try{
-        ps.close();
-      }catch(SQLException e){
-        e.printStackTrace();
-      }
-    }
-    if(conn != null){
-      try{
-        conn.close();
-      }catch(SQLException e){
-        e.printStackTrace();
-      }
-    }
-  }
-}
-```
+MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射， 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集的繁杂。它可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java对象映射成数据库中的记录。
 
 ### Mybatis配置文件的约束
 
@@ -83,3 +34,9 @@ public static void main(String[] args){
 @SelectProvider：动态SQL映射
 @CacheNamespace：注解二级缓存的使用
 ```
+
+# **Hibernate**
+
+传统的持久层框架都是采用Java JDBC的连接方式进行数据库的访问和操作，需要人为的编写大量的SQL或者代码，同时还需要将获得的数据进行转换或封装后往外传，其实对于大项目而言这是一个非常烦琐的过程。
+
+Hibernate框架是一个半自动化的持久层框架，可以减少大量的SQL、代码编写工作，省掉很大部分的工作量，在这个框架中，当我们需要相关操作时，不用再关注数据库表也不用再去一行行的查询数据库，只需要通过持久化一个类的方式就可以完成增删改查的功能，因为框架的内部已经实现了很多对数据库的操作方法，我们只需要调用即可，做的最多的工作都在持久化类上。
