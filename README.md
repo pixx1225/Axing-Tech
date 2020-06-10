@@ -51,6 +51,6 @@
 
 📖:art:
 
-<img src="https://github.com/pixx1225/Axing-Tech/blob/master/images/Tech.png" width = "900" height = "200" div align=center/>
+<img src="https://github.com/pixx1225/Axing-Tech/blob/master/images/Tech.png" width="600" height="200" align="center"/>
 
 ---------------------------------------------------我也是有底线的-----------------------------------------------🔫
