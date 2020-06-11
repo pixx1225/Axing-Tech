@@ -1,4 +1,7 @@
+[TOC]
+
 # git
+
 ## git基本命令
 git status
 git log
@@ -36,10 +39,21 @@ git checkout branch1
 git cherry-pick xxx
 
 ## 保留本地的修改同时又把远程的合并过来
-- 保存本地修改
-git stash  
-git pull origin master  
-git stash pop  
-- 不保留本地修改
-git reset --hard 
-git pull origin master
+**保存本地修改方法**
+
+- git stash	保存本地修改
+
+​       git stash list	查看保存信息
+
+- git pull      拉去分支
+
+- git stash apply 0
+
+  或者git stash pop
+
+**git  stash clear** 是清除所有stash
+
+**不保留本地修改**
+
+- git reset --hard 
+- git pull
