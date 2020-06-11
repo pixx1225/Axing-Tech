@@ -3,9 +3,9 @@
 [![Github](https://img.shields.io/badge/Github-Github-red.svg)](https://github.com/pixx1225/Axing-Tech)
 
 ---
-|操作系统|网络|数据库|Java|机器学习|编程算法|面向对象|技术技巧|软件工具|推荐书籍|后记杂谈|
-| :------------------------: | :------------------------------: | :--------------------: | :----------------------------------: | :--------------------------------------: | :----------------------: | :----------------------: | :----------------------------------: | :------------------: | :--------------------------: | :--------------------------: |
-| [:computer:](#computer-操作系统) | [:globe_with_meridians:](#globe_with_meridians-计算机网络) |  [:floppy_disk:](#floppy_disk-数据库) | [:coffee:](#coffee-JAVA) | [:watermelon:](#watermelon-机器学习) | [:pencil2:](#pencil2-编程算法) | [:couple:](#couple-面向对象) | [:bulb:](#bulb-技术技巧) | [:wrench:](#wrench-软件工具) | [:books:](#books-推荐书籍) | [:memo:](#memo-后记杂谈) |
+|操作系统|网络|数据库|分布式|Java|机器学习|编程算法|面向对象|技术技巧|软件工具|推荐书籍|后记杂谈|
+| :------------------------: | :------------------------------: | :--------------------: | :----------------------------------: | :--------------------------------------: | :----------------------: | :----------------------: | :----------------------------------: | :------------------: | :--------------------------: | :--------------------------: | :--------------------------: |
+| [:computer:](#computer-操作系统) | [:globe_with_meridians:](#globe_with_meridians-计算机网络) |  [:floppy_disk:](#floppy_disk-数据库) | [:outbox_tray:](#outbox_tray-分布式) | [:coffee:](#coffee-JAVA) | [:watermelon:](#watermelon-机器学习) | [:pencil2:](#pencil2-编程算法) | [:couple:](#couple-面向对象) | [:bulb:](#bulb-技术技巧) | [:wrench:](#wrench-软件工具) | [:books:](#books-推荐书籍) | [:memo:](#memo-后记杂谈) |
 
 
 
@@ -49,6 +49,15 @@
 
 - [Database](database/Database.md)
 
+---
+### :outbox_tray: 分布式
+- [Hadoop](distributed/Hadoop.md)
+- [Kafka](distributed/Kafka.md)
+- [Nginx](distributed/Nginx.md)
+- [Redis](distributed/Redis.md)
+- [Zookeeper](distributed/Zookeeper.md)
+- [RocketMQ](distributed/RocketMQ.md)
+- [ElasticSearch](distributed/ElasticSearch.md)
 ---
 ### :pencil2: 编程算法
 
