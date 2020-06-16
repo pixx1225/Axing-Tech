@@ -1,11 +1,11 @@
 [TOC]
 
-# git
+# Git
 
 ## git基本命令
-git status
-git log
-git init
+git status  查看仓库当前的状态
+git log  查看日志
+git init  初始化
 git remote add url
 查看分支：git branch
 创建分支：git checkout -b pixingxing
@@ -57,3 +57,36 @@ git cherry-pick xxx
 
 - git reset --hard 
 - git pull
+
+## Fork项目工作流程
+
+1. Fork项目到自己的GitLab
+
+2. git clone [url]
+
+   / 查看远程地址 git reomte -v
+
+   / 修改远程地址 git remote set-url origin [url]
+
+3. git remote add [远程主机名ntp1-u-deal] [中心库url]
+
+   / 查看远程地址 git reomte -v   出现四条url
+
+   ```shell
+   ntp1-u-deal    http://gitlab.***/ntp1-u-deal.git(fetch)
+   ntp1-u-deal    http://gitlab.***/ntp1-u-deal.git(push)
+   origin    http://gitlab.yourname/ntp1-u-deal.git(fetch)
+   origin    http://gitlab.yourname/ntp1-u-deal.git(push)
+   ```
+
+4. git fetch  [远程主机名ntp1-u-deal]  [分支名master1.10.0]   
+
+5. git merge  ntp1-u-deal/master1.10.0
+
+6. git add .
+
+   git commit -m "..."
+
+   git push origin master1.10.0
+
+7. 进入自己Fork的项目，点击Merge Request，点击新增MR，提交
