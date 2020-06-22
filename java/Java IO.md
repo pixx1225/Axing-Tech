@@ -1,6 +1,56 @@
 [TOC]
 
-# 文件输入输出
+# Java I/O
+
+## I/O概览
+
+Java的I/O大概可以分成以下几类：
+
+1. 文件操作：FileInputStream, FileOutputStream, FileReader, FileWriter
+
+2. 数组操作：
+
+   	- 字节数组：ByteArrayInputStream, ByteArrayOutputStream
+   	- 字符数组：CharArrayReader, CharArrayWriter
+
+3. 管道操作：PipedInputStream, PipedOutputStream, PipedReader, PipedWriter
+
+4. 缓冲操作：BufferedInputStream, BufferedOutputStream, BufferedReader, BufferedWriter
+
+5. 基本数据类型：DataInputStream, DataOutputStream
+
+6. 对象序列化操作：ObjectInputStream, ObjectOutputStream
+
+7. 转换控制：InputSreamReader, OutputStreamWriter
+
+8. 打印操作：PrintStream, PrintWriter
+
+    
+
+**从数据传输方式，可以将 IO 类分为**
+
+- 字节流
+- 字符流
+
+字节流读取单个字节，字符流读取单个字符。字节流用来处理二进制文件（图片、MP3、视频文件、Office文件），字符流用来处理文本文件。简而言之，字节是个计算机看的，字符才是给人看的。
+
+![JavaIO分类](https://github.com/pixx1225/Axing-Tech/blob/master/images/JavaIO分类.png)
+
+
+
+### 字节流写文件
+
+```java
+public static void writeByteToFile() throws IOException{
+    String string = new String( "hello word!");
+    File file = new File( "d:/test.txt");
+    OutputStream os = new FileOutputStream(file);
+    os.write(string.getBytes);
+    os.close();
+}
+```
+
+
 
 ### ZipOutputStream
 

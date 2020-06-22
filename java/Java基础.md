@@ -1,6 +1,6 @@
 [TOC]
 
-# Java
+# Java基础
 
 - javac HelloWorld.java
 - java HelloWorld

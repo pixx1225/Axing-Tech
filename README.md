@@ -23,8 +23,9 @@
 
 ### :coffee: JAVA
 
-- [Java](java/Java.md)
-- [JVM](java/JVM.md)
+- [Java基础](java/Java基础.md)
+- [Java虚拟机](java/Java虚拟机.md)
+- [Java I/O](java/Java IO.md)
 - [MultiThread多线程](java/MultiThread.md)
 - [Spring/SpringBoot](java/Spring.md)
 - [Mybatis](java/Mybatis.md)
