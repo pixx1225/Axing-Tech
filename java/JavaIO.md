@@ -71,8 +71,6 @@ public static void keyInAndPrintConsole() throws IOException {
 }
 ```
 
-
-
 ### 字节流读写文件，InputStream，OutputStream
 
 ```java
@@ -184,9 +182,84 @@ if(fileFolder.isDirectory()){
 
 ## RandomAccessFile
 
-> 1. 随机文件操作
+> 1. 随机文件操作，既可以读文件，也可以写文件
 > 2. 一个独立的类，直接继承至Object.
-> 3. 功能丰富，可以从文件的任意位置进行存取（输入输出）操作。
+> 3. 功能丰富，可以从文件的任意位置进行读写（输入输出）操作。
+
+```java
+ public static void randomAccessFileReadAndWrite() throws IOException {
+     RandomAccessFile raf =null;
+     try {
+         raf = new RandomAccessFile("D:/File.txt", "rw");
+         // 通过seek方法来移动指针
+         raf.seek(10);
+         // 获取当前指针
+         long pointerBegin = raf.getFilePointer();
+         // 从当前指针开始读10个字节
+         byte[] contents = new byte[10];
+         raf.read(contents);
+         long pointerEnd = raf.getFilePointer();
+         System.out.println("读取文件内容，从" + "pointerBegin:" + pointerBegin + "到pointerEnd:" + pointerEnd + "读取内容：\n" + new String(contents));
+         raf.seek(20);
+         long begin = raf.getFilePointer();
+         raf.write(contents);
+         long end = raf.getFilePointer();
+         System.out.println("把内容写入文件，从" + "pointerBegin:" + begin + "到pointerEnd:" + end);
+     } catch (Exception e) {
+         e.printStackTrace();
+     }finally{
+         raf.close();
+     }
+ }
+```
+
+## 文件拷贝
+
+1. File.copy()
+
+```java
+File sourceFile = new File("D:/aa.txt");
+File targetFile = new File("D:/New Folder/aa.txt");
+Path sourcePath = sourceFile.toPath();
+Path targetPath = targetFile.toPath();
+Files.copy(sourcePath, targetPath);
+Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+//ATOMIC_MOVE 原子性的复制
+//COPY_ATTRIBUTES 将源文件的文件属性信息复制到目标文件中
+//REPLACE_EXISTING 替换已存在的文件
+```
+
+2. 利用 java.io 类库，直接为源文件构建一个 FileInputStream 读取，然后再为目标文件构建一个 FileOutputStream，完成写入工作。
+
+```java
+public void copyFileByStream(File source, File dest) throws IOException {
+    try (InputStream is = new FileInputStream(source);
+         OutputStream os = new FileOutputStream(dest);){
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = is.read(buffer)) > 0) {
+            os.write(buffer, 0, length);
+        }
+    }
+ }
+```
+
+3. 利用 java.nio 类库提供的 transferTo 或 transferFrom 方法实现。
+
+```java
+public void copyFileByChannel(File source, File dest) throws IOException {
+    try (FileChannel sourceChannel = new FileInputStream(source).getChannel();
+         FileChannel targetChannel = new FileOutputStream(dest).getChannel();){
+        for (long count = sourceChannel.size(); count > 0;) {
+            long transferred = sourceChannel.transferTo(
+                    sourceChannel.position(), count, targetChannel);           				sourceChannel.position(sourceChannel.position() + transferred);
+            count -= transferred;
+        }
+    }
+ }
+```
+
+对于 Copy 的效率，这个其实与操作系统和配置等情况相关，总体上来说，**NIO transferTo/From 的方式可能更快**，因为它更能利用现代操作系统底层机制，避免不必要拷贝和上下文切换。
 
 
 

@@ -26,7 +26,8 @@
 - [Java基础](java/Java基础.md)
 - [Java虚拟机](java/Java虚拟机.md)
 - [Java I/O](java/JavaIO.md)
-- [MultiThread多线程](java/MultiThread.md)
+- [多线程](java/MultiThread.md)
+- [设计模式](java/DesignPattern.md)
 - [Spring/SpringBoot](java/Spring.md)
 - [Mybatis](java/Mybatis.md)
 
@@ -89,9 +90,7 @@
 
 ### :memo: 后记杂谈
 
-
-
-
+[关于](postscripts/About.md)
 
 :art: [获取更多信息](www.baidu.com)
 
@@ -101,4 +100,4 @@
 
 
 
---------------------------------------我也是有底线的---------------------------------------🔫
+--------------------------------------------我也是有底线的-------------------------------------------🔫

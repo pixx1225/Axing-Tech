@@ -125,7 +125,7 @@ public class Singleton {
 
 ### 单例模式的应用实例
 
-If: 国家给每个程序员只分配唯一一个的老婆，你的老婆有且仅有一个人。
+【例】If: 国家给每个程序员只分配唯一一个的老婆，你的老婆有且仅有一个人。
 
 ```java
 public class SingletonLazy{
@@ -174,9 +174,336 @@ class President{
 
 ### 原型模式的定义与特点：
 
+用一个已经创建的实例作为原型，通过复制该原型对象来创建一个和原型相同或相似的新对象。原型实例指定了要创建的对象的种类。用这种方式创建对象非常高效，根本无须知道对象创建的细节。
+
+**适用场景：**
+
+- 对象之间相同或相似，即只是个别的几个属性不同的时候。
+- 对象的创建过程比较麻烦，但复制比较简单的时候。
+
+### 原型模式的结构
+
+![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
+
+### 原型模式的实现
+
+原型模式的克隆分为浅克隆和深克隆（实现 Serializable 读取二进制流），Java 中的 Object 类提供了浅克隆的 clone() 方法，具体原型类只要实现 Cloneable 接口就可实现对象的浅克隆，这里的 Cloneable 接口就是抽象原型类。其代码如下：
+
+```java
+//具体原型类
+class PrototypeClass implements Cloneable{
+	@Override
+    public PrototypeClass clone() throws CloneNotSupportedException{
+        return (PrototypeClass)super.clone();
+    }
+}
+//原型模式的测试类
+public class PrototypeTest{
+    public static void main(String[] args) throws CloneNotSupportedException{
+        PrototypeClass obj1 = new PrototypeClass();
+        PrototypeClass obj2 = (PrototypeClass)obj1.clone();
+        System.out.println("obj1==obj2?" + (obj1 == obj2));
+    }
+}
+
+输出：
+	obj1==obj2?false
+```
+
+### 原型模式的应用实例
+
+【例】用原型模式模拟“孙悟空”复制自己
+
+将孙悟空SunWuKong类定义成面板 JPanel 的子类，里面包含了标签，用于保存孙悟空的图像。另外，重写了 Cloneable 接口的 clone() 方法，用于复制新的孙悟空。访问类可以通过调用孙悟空的 clone() 方法复制多个孙悟空，并在框架窗体 JFrame 中显示。[孙悟空图像](https://github.com/pixx1225/Axing-Tech/blob/master/images/Wukong.jpg)
+
+```java
+import java.awt.*;
+import javax.swing.*;
+
+class SunWukong extends JPanel implements Cloneable {
+
+    public SunWukong() {
+        JLabel l1 = new JLabel(new ImageIcon("src/Wukong.jpg"));
+        this.add(l1);
+    }
+
+    public Object clone() {
+        SunWukong sw = null;
+        try {
+            sw = (SunWukong) super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("拷贝悟空失败!");
+        }
+        return sw;
+    }
+}
+
+public class Prototype {
+    public static void main(String[] args) {
+        JFrame jf = new JFrame("原型模式测试");
+        jf.setLayout(new GridLayout(1, 2));
+        Container contentPane = jf.getContentPane();
+
+        SunWukong obj1 = new SunWukong();
+        contentPane.add(obj1);
+        SunWukong obj2 = (SunWukong) obj1.clone();
+        contentPane.add(obj2);
+        
+        jf.pack();
+        jf.setVisible(true);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+```
+
+## 3工厂模式
+
+### 工厂模式的定义与特点：
+
+工厂方法（FactoryMethod）模式的定义：定义一个创建产品对象的工厂接口，将产品对象的实际创建工作推迟到具体子工厂类当中。这满足创建型模式中所要求的“创建与使用相分离”的特点。
+
+**优点：**
+
+- 用户只需要知道具体工厂的名称就可得到所要的产品，无须知道产品的具体创建过程；
+- 在系统增加新的产品时只需要添加具体产品类和对应的具体工厂类，无须对原工厂进行任何修改，满足开闭原则；
+
+**缺点：**
+
+- 每增加一个产品就要增加一个具体产品类和一个对应的具体工厂类，这增加了系统的复杂度。
+
+**适用场景：**
+
+- 客户只知道创建产品的工厂名，而不知道具体的产品名。如 华为手机工厂、小米手机工厂等。
+- 创建对象的任务由多个具体子工厂中的某一个完成，而抽象工厂只提供创建产品的接口。
+- 客户不关心创建产品的细节，只关心产品的品牌。
+
+### 工厂模式的结构
+
+1. 抽象工厂（AbstractFactory）：提供了创建产品的接口，调用者通过它访问具体工厂的工厂方法 newProduct() 来创建产品。
+2. 具体工厂（ConcreteFactory）：主要是实现抽象工厂中的抽象方法，完成具体产品的创建。
+3. 抽象产品（Product）：定义了产品的规范，描述了产品的主要特性和功能。
+4. 具体产品（ConcreteProduct）：实现了抽象产品角色所定义的接口，由具体工厂来创建，它同具体工厂之间一一对应。
+
+![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Factory.gif)
+
+### 工厂模式的实现
+
+简单工厂模式：一个抽象的接口，多个抽象接口的实现类，一个工厂类，用来实例化抽象的接口
+
+```java
+// 抽象产品类
+interface Car {
+    public void run();
+    public void stop();
+}
+// 具体产品实现类
+class Benz implements Car {
+    public void run() {
+        System.out.println("Benz开始启动了。。。。。");
+    }
+    public void stop() {
+        System.out.println("Benz停车了。。。。。");
+    }
+}
+
+class Ford implements Car {
+    public void run() {
+        System.out.println("Ford开始启动了。。。");
+    }
+    public void stop() {
+        System.out.println("Ford停车了。。。。");
+    }
+}
+
+// 工厂类
+class Factory {
+    public static Car getCarInstance(String type) {
+        Car c = null;
+        if ("Benz".equals(type)) {
+            c = new Benz();
+        }
+        if ("Ford".equals(type)) {
+            c = new Ford();
+        }
+        return c;
+    }
+}
+
+public class FactoryClass {
+    public static void main(String[] args) {
+        Car c = Factory.getCarInstance("Benz");
+        if (c != null) {
+            c.run();
+            c.stop();
+        } else {
+            System.out.println("造不了这种汽车。。。");
+        }
+    }
+}
+```
+
+工厂方法模式：有四个角色，抽象工厂模式，具体工厂模式，抽象产品模式，具体产品模式。
+
+不再是由一个工厂类去实例化具体的产品，而是由抽象工厂的子类去实例化产品
+
+```java
+//抽象产品：提供了产品的接口
+interface Product {
+    public void produce();
+}
+
+//具体产品1：实现抽象产品中的抽象方法
+class ConcreteProduct1 implements Product {
+    public void produce() {
+        System.out.println("生产具体产品1...");
+    }
+}
+//具体产品2：实现抽象产品中的抽象方法
+class ConcreteProduct2 implements Product {
+    public void produce() {
+        System.out.println("生产具体产品2...");
+    }
+}
+
+//抽象工厂：提供了厂品的生成方法
+interface AbstractFactory {
+    public Product newProduct();
+}
+
+//具体工厂1：实现了厂品的生成方法
+class ConcreteFactory1 implements AbstractFactory {
+    public Product newProduct() {
+        System.out.println("具体工厂1生成-->具体产品1...");
+        return new ConcreteProduct1();
+    }
+}
+//具体工厂2：实现了厂品的生成方法
+class ConcreteFactory2 implements AbstractFactory {
+    public Product newProduct() {
+        System.out.println("具体工厂2生成-->具体产品2...");
+        return new ConcreteProduct2();
+    }
+}
+
+// 测试类
+public class FactoryMethod {
+    public static void main(String[] args) {
+        AbstractFactory af = new ConcreteFactory1();
+        Product prod = af.newProduct();
+        prod.produce();
+    }
+}
+输出：
+    具体工厂1生成-->具体产品1...
+	生产具体产品1...
+```
 
 
 
+### 工厂模式的应用实例
+
+【例】有很多种类的畜牧场，如养猴场用于养猴，养牛场用于养牛。对养猴场和养牛场等具体工厂类，只要定义一个生成动物的方法 newAnimal() 即可。由于要显示猴类和牛类等具体产品类的图像，所以它们的构造函数中用到了 JPanel、JLabd 和 ImageIcon 等组件，并定义一个 show() 方法来显示它们。
+
+```java
+import java.awt.*;
+import javax.swing.*;
+
+public class PCFactory {
+    public static void main(String[] args) {
+        AnimalFarm af = new MonkeyFarm();
+        Animal a = af.newAnimal();
+        a.show();
+    }
+}
+
+//抽象产品：动物类
+interface Animal {
+    public void show();
+}
+
+//具体产品：马类
+class Monkey implements Animal {
+    JScrollPane sp;
+    JFrame jf = new JFrame("工厂方法模式测试");
+
+    public Monkey() {
+        Container contentPane = jf.getContentPane();
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 1));
+        p1.setBorder(BorderFactory.createTitledBorder("动物：猴"));
+        sp = new JScrollPane(p1);
+        contentPane.add(sp, BorderLayout.CENTER);
+        JLabel l1 = new JLabel(new ImageIcon("src/Wukong.jpg"));
+        p1.add(l1);
+        jf.pack();
+        jf.setVisible(false);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void show() {
+        jf.setVisible(true);
+    }
+}
+
+//具体产品：牛类
+class Cattle implements Animal {
+    JScrollPane sp;
+    JFrame jf = new JFrame("工厂方法模式测试");
+
+    public Cattle() {
+        Container contentPane = jf.getContentPane();
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 1));
+        p1.setBorder(BorderFactory.createTitledBorder("动物：牛"));
+        sp = new JScrollPane(p1);
+        contentPane.add(sp, BorderLayout.CENTER);
+        JLabel l1 = new JLabel(new ImageIcon("src/A_Cattle.jpg"));
+        p1.add(l1);
+        jf.pack();
+        jf.setVisible(false);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //用户点击窗口关闭
+    }
+
+    public void show() {
+        jf.setVisible(true);
+    }
+}
+
+//抽象工厂：畜牧场
+interface AnimalFarm {
+    public Animal newAnimal();
+}
+
+//具体工厂：养猴场
+class MonkeyFarm implements AnimalFarm {
+    public Animal newAnimal() {
+        System.out.println("新猴出生！");
+        return new Monkey();
+    }
+}
+
+//具体工厂：养牛场
+class CattleFarm implements AnimalFarm {
+    public Animal newAnimal() {
+        System.out.println("新牛出生！");
+        return new Cattle();
+    }
+}
+```
+
+
+
+## 13原型模式
+
+### 原型模式的定义与特点：
+
+### 原型模式的结构
+
+![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
+
+### 原型模式的实现
+
+### 原型模式的应用实例
 
 
 
