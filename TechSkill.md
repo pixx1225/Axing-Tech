@@ -26,15 +26,30 @@
 JAVA_HOME:
 C:\DevApps\Java\jdk1.8.0_251 (即JDK安装目录)
 CLASSPATH:
-.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”
-Path：新建
+.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar
+Path：
 %JAVA_HOME%\bin 和 %JAVA_HOME%\jre\bin
 
 最后测试：cmd中运行 java -version 看版本号有没有，如有则安装成功。
 ```
 
-1. Eclipse
-2. JetBrains IntelliJ IDEA
+**Eclipse**
+
+**JetBrains IntelliJ IDEA**
+
+类、方法上的注释
+
+settings--Editor--Live Templates
+
+```
+**
+* @Description //TODO
+* @Param $param$
+* @Return $return$
+* @Author pixingxing  $date$
+*/
+```
+
 ### Python开发
 
 1. JetBrains PyCharm

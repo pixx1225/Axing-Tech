@@ -421,7 +421,7 @@ interface Animal {
     public void show();
 }
 
-//具体产品：马类
+//具体产品：猴类
 class Monkey implements Animal {
     JScrollPane sp;
     JFrame jf = new JFrame("工厂方法模式测试");
@@ -461,7 +461,7 @@ class Cattle implements Animal {
         p1.add(l1);
         jf.pack();
         jf.setVisible(false);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //用户点击窗口关闭
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
     }
 
     public void show() {
@@ -491,6 +491,240 @@ class CattleFarm implements AnimalFarm {
 }
 ```
 
+## 4抽象工厂模式
+
+### 抽象工厂模式的定义与特点
+
+前面介绍的工厂方法模式中考虑的是一类产品的生产，如畜牧场只养动物、电视机厂只生产电视机、计算机软件学院只培养计算机软件专业的学生等。工厂方法模式只考虑生产同等级的产品，但是在现实生活中许多工厂是综合型的工厂，能生产多等级（种类） 的产品，如农场里既养动物又种植物，电器厂既生产电视机又生产洗衣机或空调，大学既有软件专业又有生物专业等。
+
+**定义：**是一种为访问类提供一个创建一组相关或相互依赖对象的接口，且访问类无须指定所要产品的具体类就能得到同族的不同等级的产品的模式结构。
+
+抽象工厂模式是工厂方法模式的升级版本，工厂方法模式只生产一个等级的产品，而抽象工厂模式可生产多个等级的产品。
+
+使用抽象工厂模式一般要满足以下条件。
+
+- 系统中有多个产品族，每个具体工厂创建同一族但属于不同等级结构的产品。
+- 系统一次只可能消费其中某一族产品，即同族的产品一起使用。
+
+**优点：**
+
+- 可以在类的内部对产品族中相关联的多等级产品共同管理，而不必专门引入多个新的类来进行管理。
+- 当增加一个新的产品族时不需要修改原代码，满足开闭原则。
+
+
+**缺点：**当产品族中需要增加一个新的产品时，所有的工厂类都需要进行修改。
+
+### 抽象工厂模式的结构
+
+抽象工厂模式同工厂方法模式一样，也是由抽象工厂、具体工厂、抽象产品和具体产品等 4 个要素构成，但抽象工厂中方法个数不同，抽象产品的个数也不同。
+
+![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/AbstractFactory.gif)
+
+### 抽象工厂模式的实现
+
+1. 抽象工厂：提供了产品的生成方法。
+
+```java
+interface AbstractFactory
+{
+    public Product1 newProduct1();
+    public Product2 newProduct2();
+}
+```
+
+2. 具体工厂：实现了产品的生成方法。
+
+```java
+class ConcreteFactory1 implements AbstractFactory
+{
+    public Product1 newProduct1()
+    {
+        System.out.println("具体工厂 1 生成-->具体产品 11...");
+        return new ConcreteProduct11();
+    }
+    public Product2 newProduct2()
+    {
+        System.out.println("具体工厂 1 生成-->具体产品 21...");
+        return new ConcreteProduct21();
+    }
+}
+class ConcreteFactory2 implements AbstractFactory
+{
+    public Product1 newProduct1()
+    {
+        System.out.println("具体工厂 2 生成-->具体产品 12...");
+        return new ConcreteProduct12();
+    }
+    public Product2 newProduct2()
+    {
+        System.out.println("具体工厂 2 生成-->具体产品 22...");
+        return new ConcreteProduct22();
+    }
+}
+```
+
+### 抽象工厂模式的应用实例
+
+【例】用抽象工厂模式设计农场类。
+
+农场中除了有畜牧场养动物，还可以培养植物，如养马、养牛、种菜、种水果等。本例用抽象工厂模式来设计两个农场，一个是韶关农场用于养牛和种菜，一个是上饶农场用于养马和种水果，可以在以上两个农场中定义一个生成动物的方法 newAnimal() 和一个培养植物的方法 newPlant()。显示 [牛](https://github.com/pixx1225/Axing-Tech/blob/master/images/A_Cattle.jpg)，[蔬菜](https://github.com/pixx1225/Axing-Tech/blob/master/images/P_Vegetables.jpg) 的图片。
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class AbstractFactoryClass {
+    public static void main(String[] args) {
+        Farm f = new SGfarm();
+        Animal a = f.newAnimal();
+        Plant p = f.newPlant();
+        a.show();
+        p.show();
+    }
+}
+
+//抽象产品：动物类
+interface Animal {
+    public void show();
+}
+
+//具体产品：马类
+class Horse implements Animal {
+    JScrollPane sp;
+    JFrame jf = new JFrame("抽象工厂模式测试");
+
+    public Horse() {
+        Container contentPane = jf.getContentPane();
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 1));
+        p1.setBorder(BorderFactory.createTitledBorder("动物：马"));
+        sp = new JScrollPane(p1);
+        contentPane.add(sp, BorderLayout.CENTER);
+        JLabel l1 = new JLabel(new ImageIcon("src/A_Horse.jpg"));
+        p1.add(l1);
+        jf.pack();
+        jf.setVisible(false);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//用户点击窗口关闭
+    }
+
+    public void show() {
+        jf.setVisible(true);
+    }
+}
+
+//具体产品：牛类
+class Cattle implements Animal {
+    JScrollPane sp;
+    JFrame jf = new JFrame("抽象工厂模式测试");
+
+    public Cattle() {
+        Container contentPane = jf.getContentPane();
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 1));
+        p1.setBorder(BorderFactory.createTitledBorder("动物：牛"));
+        sp = new JScrollPane(p1);
+        contentPane.add(sp, BorderLayout.CENTER);
+        JLabel l1 = new JLabel(new ImageIcon("src/A_Cattle.jpg"));
+        p1.add(l1);
+        jf.pack();
+        jf.setVisible(false);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//用户点击窗口关闭
+    }
+
+    public void show() {
+        jf.setVisible(true);
+    }
+}
+
+//抽象产品：植物类
+interface Plant {
+    public void show();
+}
+
+//具体产品：水果类
+class Fruitage implements Plant {
+    JScrollPane sp;
+    JFrame jf = new JFrame("抽象工厂模式测试");
+
+    public Fruitage() {
+        Container contentPane = jf.getContentPane();
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 1));
+        p1.setBorder(BorderFactory.createTitledBorder("植物：水果"));
+        sp = new JScrollPane(p1);
+        contentPane.add(sp, BorderLayout.CENTER);
+        JLabel l1 = new JLabel(new ImageIcon("src/P_Fruitage.jpg"));
+        p1.add(l1);
+        jf.pack();
+        jf.setVisible(false);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//用户点击窗口关闭
+    }
+
+    public void show() {
+        jf.setVisible(true);
+    }
+}
+
+//具体产品：蔬菜类
+class Vegetables implements Plant {
+    JScrollPane sp;
+    JFrame jf = new JFrame("抽象工厂模式测试");
+
+    public Vegetables() {
+        Container contentPane = jf.getContentPane();
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 1));
+        p1.setBorder(BorderFactory.createTitledBorder("植物：蔬菜"));
+        sp = new JScrollPane(p1);
+        contentPane.add(sp, BorderLayout.CENTER);
+        JLabel l1 = new JLabel(new ImageIcon("src/P_Vegetables.jpg"));
+        p1.add(l1);
+        jf.pack();
+        jf.setVisible(false);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//用户点击窗口关闭
+    }
+
+    public void show() {
+        jf.setVisible(true);
+    }
+}
+
+//抽象工厂：农场类
+interface Farm {
+    public Animal newAnimal();
+
+    public Plant newPlant();
+}
+
+//具体工厂：韶关农场类
+class SGfarm implements Farm {
+    public Animal newAnimal() {
+        System.out.println("新牛出生！");
+        return new Cattle();
+    }
+
+    public Plant newPlant() {
+        System.out.println("蔬菜长成！");
+        return new Vegetables();
+    }
+}
+
+//具体工厂：上饶农场类
+class SRfarm implements Farm {
+    public Animal newAnimal() {
+        System.out.println("新马出生！");
+        return new Horse();
+    }
+
+    public Plant newPlant() {
+        System.out.println("水果长成！");
+        return new Fruitage();
+    }
+}
+```
+
+
+
 
 
 ## 13原型模式
@@ -508,3 +742,5 @@ class CattleFarm implements AnimalFarm {
 
 
 http://c.biancheng.net/view/1338.html
+
+https://www.runoob.com/design-pattern/design-pattern-tutorial.html
