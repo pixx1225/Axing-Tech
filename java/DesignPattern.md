@@ -18,7 +18,7 @@
 
 | 创建型模式                                                   | 结构型模式                                                   | 行为型模式                                                   |
 | ------------------------------------------------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| 单例模式<br>原型模式<br>工厂模式<br>抽象工厂模式<br>建造者模式 | 适配器模式<br>桥接模式<br>过滤器模式<br>组合模式<br>装饰器模式<br>外观模式<br>享元模式<br>代理模式 | 责任链模式<br>命令模式<br>解释器模式<br>迭代器模式 <br>中介者模式 <br>备忘录模式 <br>观察者模式 <br>状态模式<br>空对象模式 <br>策略模式 <br>模板模式 <br>访问者模式 |
+| 单例模式<br>原型模式<br>工厂模式<br>抽象工厂模式<br>建造者模式 | 代理模式<br>适配器模式<br>装饰器模式<br>桥接模式<br>过滤器模式<br>组合模式<br>外观模式<br>享元模式 | 责任链模式<br>命令模式<br>解释器模式<br>迭代器模式 <br>中介者模式 <br>备忘录模式 <br>观察者模式 <br>状态模式<br>空对象模式 <br>策略模式 <br>模板模式 <br>访问者模式 |
 
 ## 设计模式的六大原则
 
@@ -60,7 +60,7 @@
 
 ### 单例模式的结构
 
-![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Singleton.gif)
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Singleton.gif)
 
 ### 单例模式的实现
 
@@ -183,7 +183,7 @@ class President{
 
 ### 原型模式的结构
 
-![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
 
 ### 原型模式的实现
 
@@ -260,7 +260,9 @@ public class Prototype {
 
 ### 工厂模式的定义与特点：
 
-工厂方法（FactoryMethod）模式的定义：定义一个创建产品对象的工厂接口，将产品对象的实际创建工作推迟到具体子工厂类当中。这满足创建型模式中所要求的“创建与使用相分离”的特点。
+**定义：**
+
+定义一个创建产品对象的工厂接口，将产品对象的实际创建工作推迟到具体子工厂类当中。这满足创建型模式中所要求的“创建与使用相分离”的特点。
 
 **优点：**
 
@@ -284,7 +286,7 @@ public class Prototype {
 3. 抽象产品（Product）：定义了产品的规范，描述了产品的主要特性和功能。
 4. 具体产品（ConcreteProduct）：实现了抽象产品角色所定义的接口，由具体工厂来创建，它同具体工厂之间一一对应。
 
-![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Factory.gif)
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Factory.gif)
 
 ### 工厂模式的实现
 
@@ -497,7 +499,9 @@ class CattleFarm implements AnimalFarm {
 
 前面介绍的工厂方法模式中考虑的是一类产品的生产，如畜牧场只养动物、电视机厂只生产电视机、计算机软件学院只培养计算机软件专业的学生等。工厂方法模式只考虑生产同等级的产品，但是在现实生活中许多工厂是综合型的工厂，能生产多等级（种类） 的产品，如农场里既养动物又种植物，电器厂既生产电视机又生产洗衣机或空调，大学既有软件专业又有生物专业等。
 
-**定义：** 是一种为访问类提供一个创建一组相关或相互依赖对象的接口，且访问类无须指定所要产品的具体类就能得到同族的不同等级的产品的模式结构。
+**定义：** 
+
+是一种为访问类提供一个创建一组相关或相互依赖对象的接口，且访问类无须指定所要产品的具体类就能得到同族的不同等级的产品的模式结构。
 
 抽象工厂模式是工厂方法模式的升级版本，工厂方法模式只生产一个等级的产品，而抽象工厂模式可生产多个等级的产品。
 
@@ -511,13 +515,15 @@ class CattleFarm implements AnimalFarm {
 - 可以在类的内部对产品族中相关联的多等级产品共同管理，而不必专门引入多个新的类来进行管理。
 - 当增加一个新的产品族时不需要修改原代码，满足开闭原则。
 
-**缺点：** 当产品族中需要增加一个新的产品时，所有的工厂类都需要进行修改。
+**缺点：** 
+
+- 当产品族中需要增加一个新的产品时，所有的工厂类都需要进行修改。
 
 ### 抽象工厂模式的结构
 
 抽象工厂模式同工厂方法模式一样，也是由抽象工厂、具体工厂、抽象产品和具体产品等 4 个要素构成，但抽象工厂中方法个数不同，抽象产品的个数也不同。
 
-![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/AbstractFactory.gif)
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/AbstractFactory.gif)
 
 ### 抽象工厂模式的实现
 
@@ -722,7 +728,313 @@ class SRfarm implements Farm {
 }
 ```
 
+## 5建造者模式
 
+### 建造者模式的定义与特点：
+
+在软件开发过程中有时需要创建一个复杂的对象，这个复杂对象通常由多个子部件按一定的步骤组合而成。例如，计算机是由 OPU、主板、内存、硬盘、显卡、机箱、显示器、键盘、鼠标等部件组装而成的。生活中这样的例子很多，如游戏中的不同角色，其性别、个性、能力、脸型、体型、服装、发型等特性都有所差异；还有汽车中的方向盘、发动机、车架、轮胎等部件也多种多样；每封电子邮件的发件人、收件人、主题、内容、附件等内容也各不相同。以上所有这些产品都是由多个部件构成的，各个部件可以灵活选择，但其创建步骤都大同小异。
+
+**定义：** 
+
+指将一个复杂对象的构造与它的表示分离，使同样的构建过程可以创建不同的表示，它是将一个复杂的对象分解为多个简单的对象，然后一步一步构建而成。它将变与不变相分离，即产品的组成部分是不变的，但每一部分是可以灵活选择的。
+
+**优点：**
+
+1. 各个具体的建造者相互独立，有利于系统的扩展。
+2. 客户端不必知道产品内部组成的细节，便于控制细节风险。
+
+**缺点：**
+
+1. 产品的组成部分必须相同，这限制了其使用范围。
+
+2. 如果产品的内部变化复杂，该模式会增加很多的建造者类。
+
+
+建造者模式和工厂模式的关注点不同：建造者模式注重零部件的组装过程，而工厂方法模式更注重零部件的创建过程，但两者可以结合使用。
+
+### 建造者模式的结构
+
+建造者（Builder）模式由产品、抽象建造者、具体建造者、指挥者等 4 个要素构成
+
+1. 产品角色（Product）：它是包含多个组成部件的复杂对象，由具体建造者来创建其各个滅部件。
+2. 抽象建造者（Builder）：它是一个包含创建产品各个子部件的抽象方法的接口，通常还包含一个返回复杂产品的方法 getResult()。
+3. 具体建造者(Concrete Builder）：实现 Builder 接口，完成复杂产品的各个部件的具体创建方法。
+4. 指挥者（Director）：它调用建造者对象中的部件构造与装配方法完成复杂对象的创建，在指挥者中不涉及具体产品的信息。
+
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Builder.gif)
+
+### 建造者模式的实现
+
+1. 产品角色：包含多个组成部件的复杂对象。
+
+```java
+class Product{
+    private String partA;
+    private String partB;
+    private String partC;
+    public void setPartA(String partA){
+        this.partA=partA;
+    }
+    public void setPartB(String partB){
+        this.partB=partB;
+    }
+    public void setPartC(String partC){
+        this.partC=partC;
+    }
+    public void show(){
+        //显示产品的特性
+    }
+}
+```
+
+2. 抽象建造者：包含创建产品各个子部件的抽象方法。
+
+```java
+abstract class Builder{
+    //创建产品对象
+    protected Product product=new Product();
+    public abstract void buildPartA();
+    public abstract void buildPartB();
+    public abstract void buildPartC();
+    //返回产品对象
+    public Product getResult(){
+        return product;
+    }
+}
+```
+
+3. 具体建造者：实现了抽象建造者接口。
+
+```java
+public class ConcreteBuilder extends Builder{
+    public void buildPartA(){
+        product.setPartA("建造 PartA");
+    }
+    public void buildPartB(){
+        product.setPartA("建造 PartB");
+    }
+    public void buildPartC(){
+        product.setPartA("建造 PartC");
+    }
+}
+```
+
+4. 指挥者：调用建造者中的方法完成复杂对象的创建。
+
+```java
+class Director{
+    private Builder builder;
+    public Director(Builder builder){
+        this.builder=builder;
+    }
+    //产品构建与组装方法
+    public Product construct(){
+        builder.buildPartA();
+        builder.buildPartB();
+        builder.buildPartC();
+        return builder.getResult();
+    }
+}
+```
+
+5. 客户类
+
+```java
+public class Client{
+    public static void main(String[] args){
+        Builder builder=new ConcreteBuilder();
+        Director director=new Director(builder);
+        Product product=director.construct();
+        product.show();
+    }
+}
+```
+
+### 建造者模式的应用实例
+
+```java
+//产品：客厅
+class Parlour {
+    private String wall;    //墙
+    private String TV;      //电视
+    private String sofa;    //沙发
+
+    public void setWall(String wall) {
+        this.wall = wall;
+    }
+
+    public void setTV(String TV) {
+        this.TV = TV;
+    }
+
+    public void setSofa(String sofa) {
+        this.sofa = sofa;
+    }
+
+    public void show() {
+        String parlour = wall + "，" + TV + "，" + sofa;
+        System.out.println("客厅装修有：" + parlour);
+    }
+}
+
+//抽象建造者：装修工人
+abstract class Decorator {
+    //创建产品对象
+    protected Parlour product = new Parlour();
+
+    public abstract void buildWall();
+
+    public abstract void buildTV();
+
+    public abstract void buildSofa();
+
+    //返回产品对象
+    public Parlour getResult() {
+        return product;
+    }
+}
+
+//具体建造者：具体装修工人1
+class ConcreteDecorator1 extends Decorator {
+    public void buildWall() {
+        product.setWall("山水画墙");
+    }
+
+    public void buildTV() {
+        product.setTV("小米电视");
+    }
+
+    public void buildSofa() {
+        product.setSofa("织布沙发");
+    }
+}
+
+//具体建造者：具体装修工人2
+class ConcreteDecorator2 extends Decorator {
+    public void buildWall() {
+        product.setWall("动漫画墙");
+    }
+
+    public void buildTV() {
+        product.setTV("海信电视");
+    }
+
+    public void buildSofa() {
+        product.setSofa("皮制沙发");
+    }
+}
+
+//指挥者：项目经理
+class ProjectManager {
+    private Decorator builder;
+
+    public ProjectManager(Decorator builder) {
+        this.builder = builder;
+    }
+
+    //产品构建与组装方法
+    public Parlour decorate() {
+        builder.buildWall();
+        builder.buildTV();
+        builder.buildSofa();
+        return builder.getResult();
+    }
+}
+
+public class BuilderClass {
+    public static void main(String[] args) {
+        Decorator d = new ConcreteDecorator1();
+        ProjectManager m = new ProjectManager(d);
+        Parlour p = m.decorate();
+        p.show();
+    }
+}
+
+输出：
+    客厅装修有：山水画墙，小米电视，织布沙发
+```
+
+## 6代理模式
+
+### 代理模式的定义与特点：
+
+在有些情况下，一个客户不能或者不想直接访问另一个对象，这时需要找一个中介帮忙完成某项任务，这个中介就是代理对象。例如，租房需要找个中介。在软件设计中，例如，要访问的远程对象比较大（如视频或大图像等），其下载要花很多时间。还有因为安全原因需要屏蔽客户端直接访问真实对象，如某单位的内部数据库等。
+
+**定义：**
+
+由于某些原因需要给某对象提供一个代理以控制对该对象的访问。这时，访问对象不适合或者不能直接引用目标对象，代理对象作为访问对象和目标对象之间的中介。
+
+**优点：**
+
+- 代理模式在客户端与目标对象之间起到一个中介作用和保护目标对象的作用；
+- 代理对象可以扩展目标对象的功能；
+- 代理模式能将客户端与目标对象分离，在一定程度上降低了系统的耦合度；
+
+**缺点：**
+
+- 在客户端和目标对象之间增加一个代理对象，会造成请求处理速度变慢；
+
+- 增加了系统的复杂度；
+
+### 代理模式的结构
+
+1. 抽象主题（Subject）类：通过接口或抽象类声明真实主题和代理对象实现的业务方法。
+2. 真实主题（Real Subject）类：实现了抽象主题中的具体业务，是代理对象所代表的真实对象，是最终要引用的对象。
+3. 代理（Proxy）类：提供了与真实主题相同的接口，其内部含有对真实主题的引用，它可以访问、控制或扩展真实主题的功能。
+
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Proxy.gif)
+
+### 代理模式的实现
+
+```java
+//抽象主题
+interface Subject {
+    void Request();
+}
+
+//真实主题
+class RealSubject implements Subject {
+    public void Request() {
+        System.out.println("访问真实主题方法...");
+    }
+}
+
+//代理
+class Proxy implements Subject {
+    private RealSubject realSubject;
+
+    public void Request() {
+        if (realSubject == null) {
+            realSubject = new RealSubject();
+        }
+        preRequest();
+        realSubject.Request();
+        postRequest();
+    }
+
+    public void preRequest() {
+        System.out.println("访问真实主题之前的预处理。");
+    }
+
+    public void postRequest() {
+        System.out.println("访问真实主题之后的后续处理。");
+    }
+}
+
+public class ProxyClass {
+    public static void main(String[] args) {
+        Proxy proxy = new Proxy();
+        proxy.Request();
+    }
+}
+
+输出：
+    访问真实主题之前的预处理。
+    访问真实主题方法...
+    访问真实主题之后的后续处理。
+```
+
+### 代理模式的应用实例
 
 
 
@@ -732,7 +1044,7 @@ class SRfarm implements Farm {
 
 ### 原型模式的结构
 
-![运行时数据区](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
 
 ### 原型模式的实现
 

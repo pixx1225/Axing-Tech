@@ -25,8 +25,8 @@
 
 - [Java基础](java/Java基础.md)
 - [Java虚拟机](java/Java虚拟机.md)
+- [java多线程](java/MultiThread.md)
 - [Java I/O](java/JavaIO.md)
-- [多线程](java/MultiThread.md)
 - [设计模式](java/DesignPattern.md)
 - [Spring/SpringBoot](java/Spring.md)
 - [Mybatis](java/Mybatis.md)

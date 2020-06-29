@@ -51,23 +51,66 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 
 # 线程安全
 
+## 原子性、可见性、有序性
+
+**java内存模型（JMM）**
+
+- Java虚拟机规范试图定义一种Java内存模型（JMM）,来屏蔽掉各种硬件和操作系统的内存访问差异，让Java程序在各种平台上都能达到一致的内存访问效果。
+- 简单来说，由于CPU执行指令的速度是很快的，但是内存访问的速度就慢了很多，相差的不是一个数量级，所以搞处理器的那群大佬们又在CPU里加了好几层高速缓存。
+- 在Java内存模型里，对上述的优化又进行了一波抽象。JMM规定所有变量都是存在主存中的，类似于上面提到的普通内存，每个线程又包含自己的工作内存，方便理解就可以看成CPU上的寄存器或者高速缓存。所以线程的操作都是以工作内存为主，它们只能访问自己的工作内存，且工作前后都要把值在同步回主内存。
+
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/内存模型流程图.png)
+
+在线程执行时，首先会从主存中read变量值，再load到工作内存中的副本中，然后再传给处理器执行，执行完毕后再给工作内存中的副本赋值，随后工作内存再把值传回给主存，主存中的值才更新。【例】 i = i + 1;
+
+假设i初值为0，当只有一个线程执行它时，结果肯定得到1，当两个线程执行时，会得到结果2吗？这倒不一定了。可能存在这种情况：
+
+```java
+线程1： load i from 主存  // i = 0
+       i + 1            // i = 1
+线程1： load i from 主存  // 因为线程1还没有将i写回主存，所以i还是=0
+       i + 1            // i = 1
+线程1： save i to 主存
+线程2： save i to 主存
+```
+
+如果两个线程按照上面的执行流程，那么i最后的值还是1。如果最后的写回生效的慢，你再读取i的值，都可能是0，这就是缓存不一致问题。
+
 ## Synchronize
 
 - 同步普通方法，锁的是当前对象。
 - 同步静态方法，锁的是当前 `Class` 对象。
 - 同步块，锁的是 `{}` 中的对象。
 
-**实现原理：** 
+### 实现原理：
+
 `JVM` 是通过进入、退出对象监视器( `Monitor` )来实现对方法、同步块的同步的。其本质就是对一个对象监视器( `Monitor` )进行获取，而这个获取过程具有排他性从而达到了同一时刻只能一个线程访问的目的。
 
-![image](https://github.com/pixx1225/Axing-Tech/blob/master/images/Monitor流程图.jpeg)
+![Monitor流程图](https://github.com/pixx1225/Axing-Tech/blob/master/images/Monitor流程图.jpeg)
 
 ## Volatile
 
- **具有了以下两点特性：** 
+###  特性：
 
 - 1 . 保证了不同线程对该变量操作的**内存可见性**;
 - 2 . 禁止指令**重排序**
+
+如果一个变量声明成是volatile的，那么当读变量时，总是能读到它的最新值，这里最新值是指不管其它哪个线程对该变量做了写操作，都会立刻被更新到主存里，我们也能从主存里读到这个刚写入的值。也就是说volatile关键字可以保证可见性以及有序性。**不保证原子性**
+
+- 当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量刷新到主内存
+- 当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效，线程接下来将从主内存中读取共享变量。
+
+### 实现机制：
+
+如果把加入volatile关键字的代码和未加入volatile关键字的代码都生成汇编代码，会发现加入volatile关键字的代码会多出一个lock前缀指令。
+
+ **lock前缀指令实际相当于一个内存屏障，内存屏障提供了以下功能：** 
+
+- 1   重排序时不能把后面的指令重排序到内存屏障之前的位置
+- 2 . 使得本CPU的Cache写入内存
+- 3 . 写入动作也会引起别的CPU或者别的内核无效化其Cache，相当于让新写入的值对别的线程可见。
+
+
 
 CAS (compare and swap) 比较并交换，就是将内存值与预期值进行比较，如果相等才将新值替换到内存中，并返回true表示操作成功；如果不相等，则直接返回false表示操作失败。
 
@@ -96,3 +139,19 @@ CAS (compare and swap) 比较并交换，就是将内存值与预期值进行比
 2. Executors.newFixedThreadPool(int n)：创建一个可重用固定个数的线程池，以共享的无界队列方式来运行这些线程。
 3.  Executors.newScheduledThreadPool(int n)：创建一个定长线程池，支持定时及周期性任务执行
 4.  Executors.newSingleThreadExecutor()：创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
+
+## ConcurrentHashMap
+
+由于 `HashMap` 是一个线程不安全的容器，主要体现在容量大于`总量*负载因子`发生扩容时会出现环形链表从而导致死循环。因此需要支持线程安全的并发容器 `ConcurrentHashMap` 。和 `HashMap` 一样，ConcurrentHashMap仍然是数组加链表组成。由 `Segment` 数组、`HashEntry` 数组组成，
+
+`ConcurrentHashMap` 采用了分段锁技术，其中 `Segment` 继承于 `ReentrantLock`。不会像 `HashTable` 那样不管是 `put` 还是 `get` 操作都需要做同步处理，理论上 ConcurrentHashMap 支持 `CurrencyLevel` (Segment 数组数量)的线程并发。每当一个线程占用锁访问一个 `Segment` 时，不会影响到其他的 `Segment`。
+
+**get方法**  整个过程都不需要加锁，只需要将 `Key` 通过 `Hash` 之后定位到具体的 `Segment` ，再通过一次 `Hash` 定位到具体的元素上。由于 `HashEntry` 中的 `value` 属性是用 `volatile` 关键词修饰的，保证了内存可见性，所以每次获取时都是最新值。
+
+**put 方法**  首先也是通过 Key 的 Hash 定位到具体的 Segment，在 put 之前会进行一次扩容校验。这里比 HashMap 要好的一点是：HashMap 是插入元素之后再看是否需要扩容，有可能扩容之后后续就没有插入就浪费了本次扩容(扩容非常消耗性能)。而 ConcurrentHashMap 不一样，它是先将数据插入之前检查是否需要扩容，之后再做插入。 HashEntry 中的 value 是用 `volatile` 关键词修饰的，但是并不能保证并发的原子性，所以 put 操作时仍然需要加锁处理。
+
+**size方法**  每个 `Segment` 都有一个 `volatile` 修饰的全局变量 `count` ,求整个 `ConcurrentHashMap` 的 `size` 时很明显就是将所有的 `count` 累加即可。但是 `volatile` 修饰的变量却不能保证多线程的原子性，所有直接累加很容易出现并发问题。
+
+但如果每次调用 `size` 方法将其余的修改操作加锁效率也很低。所以做法是先尝试两次将 `count` 累加，如果容器的 `count` 发生了变化再加锁来统计 `size`。
+
+至于 `ConcurrentHashMap` 是如何知道在统计时大小发生了变化呢，每个 `Segment` 都有一个 `modCount` 变量，每当进行一次 `put remove` 等操作，`modCount` 将会 +1。只要 `modCount` 发生了变化就认为容器的大小也在发生变化。
