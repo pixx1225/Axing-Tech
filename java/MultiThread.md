@@ -155,3 +155,43 @@ CAS (compare and swap) 比较并交换，就是将内存值与预期值进行比
 但如果每次调用 `size` 方法将其余的修改操作加锁效率也很低。所以做法是先尝试两次将 `count` 累加，如果容器的 `count` 发生了变化再加锁来统计 `size`。
 
 至于 `ConcurrentHashMap` 是如何知道在统计时大小发生了变化呢，每个 `Segment` 都有一个 `modCount` 变量，每当进行一次 `put remove` 等操作，`modCount` 将会 +1。只要 `modCount` 发生了变化就认为容器的大小也在发生变化。
+
+## AQS
+
+AbstractQueuedSynchronizer,简称AQS。AQS是一个用来构建锁和同步器的框架。ReentrangLock、Semaphore用到这个共同的基类
+
+**AQS的基本实现原理**
+
+AQS使用一个int成员变量来表示同步状态，通过内置的FIFO队列来完成获取资源线程的排队工作。
+
+```
+  private volatile int state;//共享变量，使用volatile修饰保证线程可见性
+```
+
+状态信息通过procted类型的getState，setState，compareAndSetState进行操作
+
+
+
+
+
+
+
+
+
+## CAS
+
+- CAS（Compare and Swap），即比较并替换，实现并发算法时常用到的一种技术，Doug lea大神在java同步器中大量使用了CAS技术，鬼斧神工的实现了多线程执行的安全性。
+- CAS的思想很简单：三个参数，一个当前内存值V、旧的预期值A、即将更新的值B，当且仅当预期值A和内存值V相同时，将内存值修改为B并返回true，否则什么都不做，并返回false。
+
+
+
+
+
+
+
+
+
+
+
+
+

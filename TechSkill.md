@@ -57,6 +57,7 @@ settings--Editor--Live Templates
 
 ### 其他开发
 
+- [Windows批处理](tools/Win批处理.md)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Postman](https://www.getpostman.com/)
 
