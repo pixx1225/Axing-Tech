@@ -2,6 +2,36 @@
 
 批处理文件(Batch File，简称BAT文件)是一种在DOS下最常用的可执行文件。它具有灵活的操纵性，可适应各种复杂的计算机操作。所谓的批处理，就是按规定的顺序自动执行若干个指定的DOS命令或程序。即是把原来一个一个执行的命令汇总起来，成批的执行，而程序文件可以移植到其它电脑中运行，因此可以大大节省命令反复输入的繁琐。同时批处理文件还有一些编程的特点，可以通过扩展参数来灵活的控制程序的执行，所以在日常工作中非常实用。
 
+```bat
+@echo off
+title Git-push2github
+color 0a
+setlocal EnableDelayedExpansion
+set date=%DATE:~3,13%
+
+for /f "tokens=1-3 delims=/" %%a in ("%date%") do (
+	set format_date=%%a
+	if not "%%b"=="" (
+    	set format_date=!format_date!%%b
+ 	)
+	if not "%%c"=="" (
+	    set format_date=!format_date!%%c
+	)
+)
+C:
+cd \Users\Pi_Xi\Documents\MyFiles\Axing-Tech
+git add .
+echo git add结束，按任意键继续...
+pause>nul
+git commit -m "Axing!format_date!"
+echo git commit结束，按任意键继续...
+pause>nul
+git push
+pause
+```
+
+
+
 - **@echo off**
 
 批处理文件的第一行，不会将文件里面的内容打印出来，如果没有这句话，会先去将文件里面的内容打印在屏幕上。
