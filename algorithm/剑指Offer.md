@@ -68,3 +68,57 @@ public static int binarySortRecursion(int[] array, int key, int low, int high) {
 }
 ```
 
+## 题二：替换空格
+
+请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+
+```java
+public static String replaceSpace(StringBuffer str) {
+  return str.toString().replaceAll(" ", "%20");
+}
+```
+
+## 题三：从尾到头打印链表
+
+输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
+
+方法一：倒序问题用栈Stack，后进先出
+
+```java
+ public static ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+   ArrayList<Integer> arrayList = new ArrayList<>();
+   Stack<Integer> stack = new Stack<>();
+   while (listNode != null) {
+     stack.add(listNode.val);
+     listNode = listNode.next;
+   }
+
+   while (!stack.empty()) {
+     arrayList.add(stack.pop());
+   }
+   return arrayList;
+ }
+//class ListNode {
+//    int val;
+//    ListNode next = null;
+//
+//    ListNode(int val) {
+//        this.val = val;
+//    }
+//}
+```
+
+方法二：利用递归
+
+```java
+ArrayList<Integer> arrayList=new ArrayList<Integer>();
+public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+  if(listNode!=null){
+    this.printListFromTailToHead(listNode.next);
+    arrayList.add(listNode.val);
+  }
+  return arrayList;
+}
+```
+
+## 题四：重建二叉树
