@@ -1036,6 +1036,22 @@ public class ProxyClass {
 
 ### 代理模式的应用实例
 
+见以上代码
+
+## 7适配器模式
+
+### 适配器模式的定义与特点：
+
+
+
+### 适配器模式的结构
+
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
+
+### 适配器模式的实现
+
+### 适配器模式的应用实例
+
 
 
 ## 13原型模式

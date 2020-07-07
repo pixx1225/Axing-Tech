@@ -81,20 +81,74 @@
 
 底层是用hash数组和单链表
 
-键值对（key-value)    ：不同步，不是线程安全，允许键值都为null，映射无序，快速失败   初始容量（capacity）：默认16    加载因子（loadfactor)：默认0.75
+键值对（key-value)    ：不同步，不是线程安全，允许键值都为null，映射无序，快速失败   初始容量（capacity）：默认16    加载因子（loadfactor)：默认0.75，阀值就是12
 
 扩容极限（threshold) ：元素个数大于capacity*loadfactor， 扩容2n，
 
-进行rehash是非常耗资源的   jdk1.8 链表长度大于8时转换为**红黑树**
+进行rehash是非常耗资源的(O(N))，jdk1.8 链表长度大于8时转换为**红黑树**(O(logN)）
+
+**HashMap遍历**
+
+```java
+Iterator<Map.Entry<String, Integer>> entryIterator = map.entrySet().iterator();
+while (entryIterator.hasNext()) {
+    Map.Entry<String, Integer> entryNext = entryIterator.next();
+    System.out.println("key=" + entryNext.getKey() + " value=" + entryNext.getValue());
+}
+```
+
+
+
+**HashMap为什么不是线程安全：**
+
+HashMap 底层是一个 Entry 数组，当发生 hash 冲突的时候，HashMap 是采用链表的方式来解决的，在对应的数组位置存放链表的头结点。对链表而言，新加入的节点会从头结点加入。
+
+1. HashMap 在put插入的时候
+
+　　现在假如 A 线程和 B 线程同时进行插入操作，然后计算出了相同的哈希值对应了相同的数组位置，因为此时该位置还没数据，然后对同一个数组位置，两个线程会同时得到现在的头结点，然后 A 写入新的头结点之后，B 也写入新的头结点，那B的写入操作就会覆盖 A 的写入操作造成 A 的写入操作丢失。
+
+2. HashMap 在扩容的时候
+
+　　HashMap 有个扩容的操作，这个操作会新生成一个新的容量的数组，然后对原数组的所有键值对重新进行计算和写入新的数组，之后指向新生成的数组。当多个线程同时进来，检测到总数量超过门限值的时候就会同时调用 resize 操作，各自生成新的数组并 rehash 后赋给该 map 底层的数组，结果最终只有最后一个线程生成的新数组被赋给该 map 底层，其他线程的均会丢失。
+
+3. HashMap 在删除数据的时候
+
+　　删除这一块可能会出现两种线程安全问题，第一种是一个线程判断得到了指定的数组位置i并进入了循环，此时，另一个线程也在同样的位置已经删掉了i位置的那个数据了，然后第一个线程那边就没了。但是删除的话，没了倒问题不大。再看另一种情况，当多个线程同时操作同一个数组位置的时候，也都会先取得现在状态下该位置存储的头结点，然后各自去进行计算操作，之后再把结果写会到该数组位置去，其实写回的时候可能其他的线程已经就把这个位置给修改过了，就会覆盖其他线程的修改。
+
+**哪些方法使HashMap线程安全：**
+
+- 重新改写了HashMap
+- Hashtable（synchronized所有线程竞争同一把锁，效率低）
+- ConcurrentHashMap（使用锁分段技术，Java8中使用CAS算法）
+- Synchronized Map（返回一个新的Map, synchronized同步关键字来保证对Map的操作是安全)
+
+
 
 ### ConcurrentHashMap 
 
 线程安全，支持16个线程并发操作，
 
-- 分段锁（Segment）的设计，把一个大的Map拆分成N个小的HashTable
-- Segment继承ReentrantLock,每个Segment都有一把锁，保证线程安全。
+JDK1.7，分段锁技术，
 
-非阻塞，效率高。
+- 分段锁`Segment`的设计，把一个大的Map拆分成N个小的HashTable
+- Segment继承`ReentrantLock`,每个Segment都有一把锁，保证线程安全。
+
+理论上 ConcurrentHashMap 支持 CurrencyLevel (Segment 数组数量)的线程并发。每当一个线程占用锁访问一个 Segment 时，不会影响到其他的 Segment。非阻塞，效率高。
+
+JDK1.8，`CAS`+`synchronized`来保证并发安全。存放数据的 HashEntry 改为 Node， next 都用了 volatile 修饰，保证了可见性。
+
+put操作
+
+```
+根据 key 计算出 hashcode 。
+判断是否需要进行初始化。
+f 即为当前 key 定位出的 Node，如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功。
+如果当前位置的 hashcode == MOVED == -1,则需要进行扩容。
+如果都不满足，则利用 synchronized 锁写入数据。
+如果数量大于 TREEIFY_THRESHOLD 则要转换为红黑树。
+```
+
+
 
 ### HashTable
 

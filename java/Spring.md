@@ -50,6 +50,26 @@ singleton，prototype，request，session，global session
 
 适配器模式 :Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配Controller。
 
+# SpringMVC
+
+- M- Model 模型（完成业务逻辑：有javaBean构成，service+dao+entity）
+- V - View  视图（做界面的展示  jsp，html……）
+- C - Controller 控制器（接收请求—>调用模型—>根据结果派发页面）
+
+## SpringMVC流程
+
+1. 用户发送请求至前端控制器DispatcherServlet。
+1. DispatcherServlet收到请求调用HandlerMapping处理器映射器。
+1. 处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet。
+1. DispatcherServlet调用HandlerAdapter处理器适配器。
+1. HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
+1. Controller执行完成返回ModelAndView。
+1. HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
+1. DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
+1. ViewReslover解析后返回具体View。
+1. DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
+1. DispatcherServlet响应用户。
+
 # SpringBoot
 
 Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程序所需的XML配置，为更快，更高效的开发生态系统铺平了道路。

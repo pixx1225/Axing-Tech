@@ -93,6 +93,8 @@
 
 [关于](postscripts/About.md)
 
+[金融](postscripts/Finance.md)
+
 :art: [获取更多信息](www.baidu.com)
 
 <div align=center>
