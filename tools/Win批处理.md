@@ -8,7 +8,6 @@ title Git-push2github
 color 0a
 setlocal EnableDelayedExpansion
 set date=%DATE:~3,13%
-
 for /f "tokens=1-3 delims=/" %%a in ("%date%") do (
 	set format_date=%%a
 	if not "%%b"=="" (
@@ -20,14 +19,17 @@ for /f "tokens=1-3 delims=/" %%a in ("%date%") do (
 )
 C:
 cd \Users\Pi_Xi\Documents\MyFiles\Axing-Tech
+echo git开始，按任意键add...
+pause>nul
 git add .
-echo git add结束，按任意键继续...
+echo git add结束，按任意键commit...
 pause>nul
 git commit -m "Axing!format_date!"
-echo git commit结束，按任意键继续...
+echo git commit结束，按任意键push...
 pause>nul
 git push
-pause
+echo git push结束，按任意键退出...
+pause>nul
 ```
 
 
