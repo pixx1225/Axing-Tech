@@ -104,15 +104,17 @@
 
 
 
+---
+
 ### :star: 写在最后
 
-​		开源Axing-Tech项目的想法来自个人的学习经历，技术分享不仅提升自己也帮助其他小伙伴，何乐而不为呢。技术的学习是有限的，人的能力是无限的。本站的技术知识也只是沧海一粟，关键看大家的学习能力。通过本站，希望大家都有所收获，这也是一种价值体现。
+&emsp;&emsp;开源Axing-Tech项目的想法来自个人的学习经历，技术分享不仅提升自己也帮助其他小伙伴，何乐而不为呢。技术的学习是有限的，人的能力是无限的。本站的技术知识也只是沧海一粟，关键看大家的学习能力。通过本站，希望大家都有所收获，这也是一种价值体现。
 
-​		所有文章使用[Markdown](tools/Markdown.md)格式，[Typora](https://www.typora.io/)软件编写，表情符号素材来自：[EMOJI CHEAT SHEET](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+&emsp;&emsp;所有文章使用[Markdown](tools/Markdown.md)格式，[Typora](https://www.typora.io/)软件编写，表情符号素材来自：[EMOJI CHEAT SHEET](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
 
-[![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Github-Axing--Tech-red.svg)]()Logo图标是使用[Shields.IO](https://shields.io/) 生成。
+[![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Github-Axing--Tech-red.svg)]() 的Logo图标是使用[Shields.IO](https://shields.io/) 生成。
 
-​		也希望和鼓励大家自己也来写写，欢迎分享。如果你需要转载本仓库的一些文章到自己的博客的话，记得注明原文地址，谢谢。
+&emsp;&emsp;也希望和鼓励大家自己也来写写，欢迎分享。如果你需要转载本仓库的一些文章到自己的博客的话，记得注明原文地址，谢谢。
 
 后续还会不断更新:rocket:
 
