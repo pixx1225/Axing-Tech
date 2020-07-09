@@ -10,10 +10,14 @@
 - 《Thinking In Java》
 - 《Effective Java》
 - 《Head First Java》
+- [《深入浅出Java多线程》](https://redspider.gitbook.io/concurrent/)
 - 《Java多线程编程核心技术》
 - 《Java并发编程的艺术》
 - 《Java并发编程实践》
 - 《实战Java高并发程序设计》
+- 《Java性能权威指南》
+-  [阿里巴巴 Java 开发手册](https://github.com/alibaba/p3c)
+-  [Google Java 编程风格指南](http://www.hawstein.com/posts/google-java-style.html)
 
 ### 数据库：
 - 《高性能MySQL》
@@ -21,6 +25,8 @@
 
 ### 进阶：
 - 《重构改善既有代码的设计》
+- 《代码整洁之道》
+- 《人月神话》
 - 《深入剖析Tomcat》
 
 ### 网络方面：
