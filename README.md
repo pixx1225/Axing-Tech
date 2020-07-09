@@ -1,6 +1,6 @@
 ### 记录所见所想，成就非凡梦想 
 
-[![Github](https://img.shields.io/badge/Github-Axing--Tech-red)](https://github.com/pixx1225/Axing-Tech)
+[![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Github-Axing--Tech-red.svg)](https://github.com/pixx1225/Axing-Tech)
 
 ---
 |操作系统|网络|数据库|分布式|Java|系统设计|编程算法|机器学习|技术技巧|软件工具|推荐书籍|后记杂谈|
@@ -107,7 +107,7 @@
 
 所有文章使用[Markdown](tools/Markdown.md)格式，[Typora](https://www.typora.io/)软件编写，表情符号素材来自：[EMOJI CHEAT SHEET](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
 
-[![Github](https://img.shields.io/badge/Github-Axing--Tech-red)]()Logo图标是使用[Shields.IO](https://shields.io/) 生成。
+[![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Github-Axing--Tech-red.svg)]()Logo图标是使用[Shields.IO](https://shields.io/) 生成。
 
 也希望和鼓励大家自己也来写写。如果你需要转载本仓库的一些文章到自己的博客的话，记得注明原文地址，谢谢。
 
