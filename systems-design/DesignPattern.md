@@ -1066,8 +1066,8 @@ public class ProxyClass {
 
 ### 原型模式的应用实例
 
+## 参考：
 
+[设计模式全解](http://c.biancheng.net/view/1317.html)
 
-http://c.biancheng.net/view/1338.html
-
-https://www.runoob.com/design-pattern/design-pattern-tutorial.html
+[菜鸟教程-设计模式](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)

@@ -2,7 +2,9 @@
 
 # TechSkill
 
-## 软件总汇
+> 工欲善其事，必先利其器
+
+## 软件工具总汇
 
 1. 推荐安装浏览器 Google Chrome
    谷歌浏览器插件：Postman-REST Client，Grammarly，Adblock Plus
@@ -15,6 +17,18 @@
 6. Mac中视频播放软件 IINA
 7. 推荐桌面共享软件 TeamViewer
 8. Win推荐安装卸载工具 IObitUninstaler
+
+Java开发：**JetBrains IntelliJ IDEA，Eclipse**
+
+Python开发：**JetBrains PyCharm，Anacoda**
+
+数据库：**Navicat**
+
+终端工具：
+
+1. **XShell**（Xmanager)
+2. **MobaXterm**
+3. **Putty**
 
 ### Java 开发
 
@@ -61,12 +75,55 @@ settings--Editor--Live Templates
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Postman](https://www.getpostman.com/)
 
-## 软件破|解
+### 软件破|解
 1. [Navicat](https://www.navicat.com.cn/) Premium 15  [Mac版](https://www.52pojie.cn/thread-1101529-1-1.html)  [Windows版](https://www.cnblogs.com/hfxtest/p/12513210.html)
 4. [Charles](https://www.charlesproxy.com)   [Windows版](https://www.zzzmode.com/mytools/charles/)
    Charles是一款Http代理服务器和Http监视器，当移动端在无线网连接中按要求设置好代理服务器，使所有对网络的请求都经过Charles客户端来转发时，Charles可以监控这个客户端各个程序所有连接互联网的Http通信。
 
-## IDEA中maven添加dependency过慢的问题
+
+
+## 技术技巧总汇
+
+> 以下纯属个人见解，不代表正确与否，但也值得部分参考
+>
+> 做事很重要，但有时做人更重要。
+
+### 强迫症变习惯
+
+首先，作为一个计算机人，需要一个严谨、清晰的办事态度是非常重要的。具体体现在很多方面，从小的说起
+
+​		文件目录管理：我们的电脑上存放很多不同的文件以及安装目录，如何管理好它们是有一定意义的。比如
+
+- D:\DevApps\	目录下存放各个软件的安装路径
+- D:\DevFiles\     目录下存放我们开发时用到的文件
+- D:\MyFiles\      目录下存放我们自己的文件
+- D:\Project\       目录下存放项目文件，把Eclipse和IDEA项目放这里
+
+再比如浏览器的书签管理，微信好友标签管理等等。
+
+有人会说这是强迫症，但这也是一种良好的习惯不是吗。
+
+
+
+### 细心且耐心
+
+当你写前端代码时，你会发现，需要慢慢调样式格式之类的问题，不但需要细心，还需要很大的耐心。
+
+### 总结问题
+
+遇到问题不可怕，可怕的是遇到相同的问题还是无法解决，这就是高中老师口中的太不应该了。
+
+每当我们花了很多时间很多精力解决了问题时，记得再花点时间总结和回想一下，那会使你受益无穷。一个简单的场景：
+
+*你要知道，你遇到的问题，别人也可能遇到*。你千辛万苦解决了这个问题，一个漂亮美女也遇到了这个问题现场问你怎么解决的，你说你知道这个问题，结果你忘记了怎么解决的。这样可能使你`大意失荆州`啊！错失了走向人生巅峰的机会。:joy:
+
+**学会总结问题，思考问题。**很多问题就像是软件开发中的代码重用，我们只需要抽象出来重构一系列问题，下次遇到相同的问题，只需要调用我们笔记上或者脑海里的问题答案就好了。
+
+
+
+## 开发问题总汇
+
+### IDEA中maven添加dependency过慢的问题
 我们在IDEA的安装目录下找到 /plugins/maven/lib/maven2/conf 或者maven3/conf目录，向其中的setting.xml文件中的<mirrors>标签下添加如下的仓库地址--这里以阿里云为例
 
 ```xml
@@ -80,7 +137,7 @@ settings--Editor--Live Templates
 
 然后重新启动IDEA，之后就可以体会到飞一般地速度了（相比于之前）！
 
-## Github 图片不显示的问题
+### Github 图片不显示的问题
 
 打开路径C:\Windows\System32\drivers\etc下的hosts文件
 
@@ -100,7 +157,7 @@ settings--Editor--Live Templates
 # Github End
 ```
 
-## CMD中文乱码
+### CMD中文乱码
 
 有可能是因为 cmd 终端编码是gbk，而服务器编码格式为utf8，所以需要修改cmd终端编码格式为utf8
 

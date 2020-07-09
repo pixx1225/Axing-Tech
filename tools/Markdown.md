@@ -88,3 +88,17 @@ $$
 | col 2 is      | centered        |   $12 |
 | zebra stripes | are neat        |    $1 |
 ```
+
+## Markdown内容收缩展开
+
+```java
+<details>
+    <summary>展开</summary>
+    展开的内容
+</details>
+```
+
+<details>
+<summary>展开</summary>
+    这里写展开的内容。这样使得文章直观效果更好
+</details>
