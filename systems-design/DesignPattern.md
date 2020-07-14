@@ -1042,29 +1042,244 @@ public class ProxyClass {
 
 ### 适配器模式的定义与特点：
 
+**定义：**
 
+将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类能一起工作。适配器模式分为类结构型模式和对象结构型模式两种，前者类之间的耦合度比后者高，且要求程序员了解现有组件库中的相关组件的内部结构，所以应用相对较少些。
+
+**优点：**
+
+- 客户端通过适配器可以透明地调用目标接口。
+- 复用了现存的类，程序员不需要修改原有代码而重用现有的适配者类。
+- 将目标类和适配者类解耦，解决了目标类和适配者类接口不一致的问题。
+
+**缺点：**对类适配器来说，更换适配器的实现过程比较复杂。
 
 ### 适配器模式的结构
 
-![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
+类适配器模式可采用多重继承方式实现，如 C++可定义一个适配器类来同时继承当前系统的业务接口和现有组件库中已经存在的组件接口；Java不支持多继承，但可以定义一个适配器类来实现当前系统的业务接口，同时又继承现有组件库中已经存在的组件。
+
+对象适配器模式可釆用将现有组件库中已经实现的组件引入适配器类中，该类同时实现当前系统的业务接口。现在来介绍它们的基本结构。
+
+#### 1. 模式的结构
+
+适配器模式（Adapter）包含以下主要角色。
+
+1. 目标（Target）接口：当前系统业务所期待的接口，它可以是抽象类或接口。
+2. 适配者（Adaptee）类：它是被访问和适配的现存组件库中的组件接口。
+3. 适配器（Adapter）类：它是一个转换器，通过继承或引用适配者的对象，把适配者接口转换成目标接口，让客户按目标接口的格式访问适配者。
+
+![类适配器模式](https://github.com/pixx1225/Axing-Tech/blob/master/images/ClassAdapter.gif)
+
+![对象适配器模式](https://github.com/pixx1225/Axing-Tech/blob/master/images/ObjectAdapter.gif)
 
 ### 适配器模式的实现
+
+1. 类适配器模式
+
+```java
+package adapter;
+//目标接口
+interface Target
+{
+    public void request();
+}
+//适配者接口
+class Adaptee
+{
+    public void specificRequest()
+    {       
+        System.out.println("适配者中的业务代码被调用！");
+    }
+}
+//类适配器类
+class ClassAdapter extends Adaptee implements Target
+{
+    public void request()
+    {
+        specificRequest();
+    }
+}
+//客户端代码
+public class ClassAdapterTest
+{
+    public static void main(String[] args)
+    {
+        System.out.println("类适配器模式测试：");
+        Target target = new ClassAdapter();
+        target.request();
+    }
+}
+
+输出：
+    类适配器模式测试：
+	适配者中的业务代码被调用！
+```
+
+2. 对象适配器模式
+
+```java
+package adapter;
+//对象适配器类
+class ObjectAdapter implements Target
+{
+    private Adaptee adaptee;
+    public ObjectAdapter(Adaptee adaptee)
+    {
+        this.adaptee=adaptee;
+    }
+    public void request()
+    {
+        adaptee.specificRequest();
+    }
+}
+//客户端代码
+public class ObjectAdapterTest
+{
+    public static void main(String[] args)
+    {
+        System.out.println("对象适配器模式测试：");
+        Adaptee adaptee = new Adaptee();
+        Target target = new ObjectAdapter(adaptee);
+        target.request();
+    }
+}
+
+输出：
+    对象适配器模式测试：
+	适配者中的业务代码被调用！
+```
 
 ### 适配器模式的应用实例
 
 
 
-## 13原型模式
+## 8装饰模式
 
-### 原型模式的定义与特点：
+### 装饰模式的定义与特点：
 
-### 原型模式的结构
+通常情况下，扩展一个类的功能会使用继承方式来实现。但继承具有静态特征，耦合度高，并且随着扩展功能的增多，子类会很膨胀。如果使用组合关系来创建一个包装对象（即装饰对象）来包裹真实对象，并在保持真实对象的类结构不变的前提下，为其提供额外的功能，这就是装饰模式的目标。
+
+**定义：**指在不改变现有对象结构的情况下，动态地给该对象增加一些职责（即增加其额外功能）的模式，它属于对象结构型模式。
+
+**优点：**
+
+- 采用装饰模式扩展对象的功能比采用继承方式更加灵活。
+- 可以设计出多个不同的具体装饰类，创造出多个不同行为的组合。
+
+**缺点：**装饰模式增加了许多子类，如果过度使用会使程序变得很复杂。
+
+### 装饰模式的结构
+
+装饰模式主要包含以下角色。
+
+1. 抽象构件（Component）角色：定义一个抽象接口以规范准备接收附加责任的对象。
+2. 具体构件（Concrete  Component）角色：实现抽象构件，通过装饰角色为其添加一些职责。
+3. 抽象装饰（Decorator）角色：继承抽象构件，并包含具体构件的实例，可以通过其子类扩展具体构件的功能。
+4. 具体装饰（ConcreteDecorator）角色：实现抽象装饰的相关方法，并给具体构件对象添加附加的责任。
+
+![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Decorator.gif)
+
+### 装饰模式的实现
+
+```java
+package decorator;
+public class DecoratorPattern
+{
+    public static void main(String[] args)
+    {
+        Component p=new ConcreteComponent();
+        p.operation();
+        System.out.println("---------------------------------");
+        Component d=new ConcreteDecorator(p);
+        d.operation();
+    }
+}
+//抽象构件角色
+interface  Component
+{
+    public void operation();
+}
+//具体构件角色
+class ConcreteComponent implements Component
+{
+    public ConcreteComponent()
+    {
+        System.out.println("创建具体构件角色");       
+    }   
+    public void operation()
+    {
+        System.out.println("调用具体构件角色的方法operation()");           
+    }
+}
+//抽象装饰角色
+class Decorator implements Component
+{
+    private Component component;   
+    public Decorator(Component component)
+    {
+        this.component=component;
+    }   
+    public void operation()
+    {
+        component.operation();
+    }
+}
+//具体装饰角色
+class ConcreteDecorator extends Decorator
+{
+    public ConcreteDecorator(Component component)
+    {
+        super(component);
+    }   
+    public void operation()
+    {
+        super.operation();
+        addedFunction();
+    }
+    public void addedFunction()
+    {
+        System.out.println("为具体构件角色增加额外的功能addedFunction()");           
+    }
+}
+
+输出：
+    创建具体构件角色
+	调用具体构件角色的方法operation()
+	---------------------------------
+	调用具体构件角色的方法operation()
+	为具体构件角色增加额外的功能addedFunction()
+```
+
+
+
+### 装饰模式的应用实例
+
+- 当需要给一个现有类添加附加职责，而又不能采用生成子类的方法进行扩充时。例如，该类被隐藏或者该类是终极类或者采用继承方式会产生大量的子类。
+- 当需要通过对现有的一组基本功能进行排列组合而产生非常多的功能时，采用继承关系很难实现，而采用装饰模式却很好实现。
+- 当对象的功能要求可以动态地添加，也可以再动态地撤销时。<br>
+
+装饰模式在 Java语言中的最著名的应用莫过于 Java I/O 标准库的设计了。例如，InputStream 的子类 FilterInputStream，OutputStream 的子类 FilterOutputStream，Reader 的子类 BufferedReader 以及 FilterReader，还有 Writer 的子类 BufferedWriter、FilterWriter 以及 PrintWriter 等，它们都是抽象装饰类。
+
+下面代码是为 FileReader 增加缓冲区而采用的装饰类 BufferedReader 的例子：
+
+```java
+BufferedReader in=new BufferedReader(new FileReader("filename.txtn));
+String s=in.readLine();
+```
+
+
+
+## 13其他模式
+
+### 其他模式的定义与特点：
+
+### 其他模式的结构
 
 ![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Prototype.gif)
 
-### 原型模式的实现
+### 其他模式的实现
 
-### 原型模式的应用实例
+### 其他模式的应用实例
 
 ## 参考：
 

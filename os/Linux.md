@@ -72,6 +72,12 @@ Linux命令大全：http://man.linuxde.net/
 
 ## 基本命令
 
+### 快捷键
+
+- Tab：命令和文件名补全；
+- Ctrl+C：中断正在运行的程序；
+- Ctrl+D：结束键盘输入（End Of File，EOF）
+
 ### 目录切换命令
 
 - **`cd usr`：** 切换到该目录下usr目录
@@ -167,24 +173,28 @@ Linux的chmod命令，对一个目录及其子目录所有文件添加权限
 chmod 777 -R ./html
 ```
 
-### Tomcat相关命令
+umask  022  表示默认创建新文件权限为755，也就是 rxwr-xr-x(所有者全部du权限，属zhi组读写，其它人读写) 。
+umask  0027  表示默认创建新文件权限为750，也就是rxwr-x---(所有者全部权限，属组读写，其它人无)。
 
-```
-查看tomact日志
-  tail -f catalina.out 
-查看Tomcat是否以关闭
-  ps -ef|grep java
-杀死Tomcat进程
-  kill -9 8080
-Tomcat关闭命令
-  ./shutdown.sh
-启动Tomcat
-  ./startup.sh
-linux中怎么清理catalina.out
-  echo "">catalina.out
-```
+### 求助
 
+**1. --help**  指令的基本用法与选项介绍。
 
+**2. man**  man 是 manual 的缩写，将指令的具体信息显示出来。
+
+当执行 `man date` 时，有 DATE(1) 出现，其中的数字代表指令的类型，常用的数字及其类型如下：
+
+| 代号 | 类型                                            |
+| :--: | ----------------------------------------------- |
+|  1   | 用户在 shell 环境中可以操作的指令或者可执行文件 |
+|  5   | 配置文件                                        |
+|  8   | 系统管理员可以使用的管理指令                    |
+
+**3. info**  info 与 man 类似，但是 info 将文档分成一个个页面，每个页面可以跳转。
+
+**4. doc**  /usr/share/doc 存放着软件的一整套说明文件。
+
+## 服务器相关命令
 
 ### 服务器内存使用情况
 
@@ -206,6 +216,27 @@ procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu-----
 r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
 0  0      0 1376320  17452 101980    0    0     1     1    4    5  0  0 100  0  0
 ```
+
+
+
+### Tomcat相关命令
+
+```
+查看tomact日志
+  tail -f catalina.out 
+查看Tomcat是否以关闭
+  ps -ef|grep java
+杀死Tomcat进程
+  kill -9 8080
+关闭Tomcat命令
+  ./shutdown.sh
+启动Tomcat命令
+  ./startup.sh
+linux中怎么清理catalina.out
+  echo "">catalina.out
+```
+
+
 
 
 ### Linux grep 命令
@@ -259,51 +290,96 @@ $ top -H -p 21564
 $ pstack 24714
 ```
 
-# 一、常用操作以及概念
+### 进程管理
 
-## 快捷键
+- ps 查看某个时间点的进程信息。
 
-- Tab：命令和文件名补全；
-- Ctrl+C：中断正在运行的程序；
-- Ctrl+D：结束键盘输入（End Of File，EOF）
+示例：查看自己的进程
 
-## 求助
+```sh
+# ps -l
+```
 
-### 1. --help
+示例：查看系统所有进程
 
-指令的基本用法与选项介绍。
+```sh
+# ps aux
+```
 
-### 2. man
+示例：查看特定的进程
 
-man 是 manual 的缩写，将指令的具体信息显示出来。
+```sh
+# ps aux | grep threadx
+```
 
-当执行 `man date` 时，有 DATE(1) 出现，其中的数字代表指令的类型，常用的数字及其类型如下：
+- pstree 查看进程树。
 
-| 代号 | 类型                                            |
-| :--: | ----------------------------------------------- |
-|  1   | 用户在 shell 环境中可以操作的指令或者可执行文件 |
-|  5   | 配置文件                                        |
-|  8   | 系统管理员可以使用的管理指令                    |
+示例：查看所有进程树
 
-### 3. info
+```sh
+# pstree -A
+```
 
-info 与 man 类似，但是 info 将文档分成一个个页面，每个页面可以跳转。
+- top 实时显示进程信息。
 
-### 4. doc
+示例：两秒钟刷新一次
 
-/usr/share/doc 存放着软件的一整套说明文件。
+```sh
+# top -d 2
+```
 
-## 关机
+- netstat 查看占用端口的进程
 
-### 1. who
+示例：查看特定端口的进程
 
-在关机前需要先使用 who 命令查看有没有其它用户在线。
+```sh
+# netstat -anp | grep port
+```
 
-### 2. sync
+**进程状态**
 
-为了加快对磁盘文件的读写速度，位于内存中的文件数据不会立即同步到磁盘，因此关机之前需要先进行 sync 同步操作。
+| 状态 | 说明                                                         |
+| :--: | ------------------------------------------------------------ |
+|  R   | running or runnable (on run queue)<br>正在执行或者可执行，此时进程位于执行队列中。 |
+|  D   | uninterruptible sleep (usually I/O)<br>不可中断阻塞，通常为 IO 阻塞。 |
+|  S   | interruptible sleep (waiting for an event to complete) <br> 可中断阻塞，此时进程正在等待某个事件完成。 |
+|  Z   | zombie (terminated but not reaped by its parent)<br>僵死，进程已经终止但是尚未被其父进程获取信息。 |
+|  T   | stopped (either by a job control signal or because it is being traced) <br> 结束，进程既可以被作业控制信号结束，也可能是正在被追踪。 |
 
-### 3. shutdown
+**SIGCHLD**
+
+<details>
+    <summary>展开</summary>
+    当一个子进程改变了它的状态时（停止运行，继续运行或者退出），有两件事会发生在父进程中：1得到 SIGCHLD 信号；2wait pid() 或者 wait() 调用会返回。
+<br>    其中子进程发送的 SIGCHLD 信号包含了子进程的信息，比如进程 ID、进程状态、进程使用 CPU 的时间等。在子进程退出时，它的进程描述符不会立即释放，这是为了让父进程得到子进程信息，父进程通过 wait() 和 waitpid() 来获得一个已经退出的子进程的信息。<br>
+    wait()--pid_t wait(int *status)<br>
+    pid_t waitpid(pid_t pid, int *status, int options)
+
+**孤儿进程**
+
+<details>
+    <summary>展开</summary>
+    一个父进程退出，而它的一个或多个子进程还在运行，那么这些子进程将成为孤儿进程。<br>孤儿进程将被 init 进程（进程号为 1）所收养，并由 init 进程对它们完成状态收集工作。<br>由于孤儿进程会被 init 进程收养，所以孤儿进程不会对系统造成危害。
+</details>
+
+**僵尸进程**
+
+<details>
+    <summary>展开</summary>
+    一个子进程的进程描述符在子进程退出时不会释放，只有当父进程通过 wait() 或 waitpid() 获取了子进程信息后才会释放。如果子进程退出，而父进程并没有调用 wait() 或 waitpid()，那么子进程的进程描述符仍然保存在系统中，这种进程称之为僵尸进程。<br>僵尸进程通过 ps 命令显示出来的状态为 Z（zombie）。<br>系统所能使用的进程号是有限的，如果产生大量僵尸进程，将因为没有可用的进程号而导致系统不能产生新的进程。<br>要消灭系统中大量的僵尸进程，只需要将其父进程杀死，此时僵尸进程就会变成孤儿进程，从而被 init 进程所收养，这样 init 进程就会释放所有的僵尸进程所占有的资源，从而结束僵尸进程。
+</details>
+
+
+
+
+
+### 关机
+
+**1. who**  在关机前需要先使用 who 命令查看有没有其它用户在线。
+
+**2. sync**  为了加快对磁盘文件的读写速度，位于内存中的文件数据不会立即同步到磁盘，因此关机之前需要先进行 sync 同步操作。
+
+**3. shutdown**
 
 ```html
 # shutdown [-krhc] 时间 [信息]
@@ -313,35 +389,26 @@ info 与 man 类似，但是 info 将文档分成一个个页面，每个页面�
 -c ： 取消已经在进行的 shutdown
 ```
 
-## PATH
-
-可以在环境变量 PATH 中声明可执行文件的路径，路径之间用 : 分隔。
-
-```html
-/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/dmtsai/.local/bin:/home/dmtsai/bin
-```
-
-## sudo
+### sudo
 
 sudo 允许一般用户使用 root 可执行的命令，不过只有在 /etc/sudoers 配置文件中添加的用户才能使用该指令。
 
-## 包管理工具
+### source
+
+source命令也称为“点命令”，也就是一个点符号（.），source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录，即可在linux修改完java环境变量之后立即生效，不用重启。用法：`source filename` 或 `. filename`
+
+例如，假如在登录后对 .bash_profile 中的 EDITER 和 TERM 变量做了修改，则能够用source命令重新执行 .bash_profile 中的命令而不用注销并重新登录。比如您在一个脚本里`export $KKK=111` ,假如您用./a.sh执行该脚本，执行完毕后，您运行 `echo $KKK`，发现没有值，假如您用source来执行 ，然后再echo，就会发现KKK=111。因为调用./a.sh来执行shell是在一个子shell里运行的，所以执行后，结构并没有反应到父shell里，但是source不同他就是在本shell中执行的，所以能够看到结果。
+
+### 包管理工具
 
 RPM 和 DPKG 为最常见的两类软件包管理工具：
 
 - RPM 全称为 Redhat Package Manager，最早由 Red Hat 公司制定实施，随后被 GNU 开源操作系统接受并成为许多 Linux 系统的既定软件标准。YUM 基于 RPM，具有依赖管理和软件升级功能。
 - 与 RPM 竞争的是基于 Debian 操作系统的 DEB 软件包管理工具 DPKG，全称为 Debian Package，功能方面与 RPM 相似。
 
-## 发行版
 
-Linux 发行版是 Linux 内核及各种应用软件的集成版本。
 
-| 基于的包管理工具 | 商业发行版 |   社区发行版    |
-| :--------------: | :--------: | :-------------: |
-|       RPM        |  Red Hat   | Fedora / CentOS |
-|       DPKG       |   Ubuntu   |     Debian      |
-
-## VIM 三个模式
+### VIM 三个模式
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191209002818626.png"/> </div><br>
 
@@ -364,27 +431,27 @@ Linux 发行版是 Linux 内核及各种应用软件的集成版本。
 
 
 
-# 二、磁盘
+## 磁盘
 
-## 磁盘接口
+### 磁盘接口
 
-### 1. IDE
+**1. IDE** 
 
 IDE（ATA）全称 Advanced Technology Attachment，接口速度最大为 133MB/s，因为并口线的抗干扰性太差，且排线占用空间较大，不利电脑内部散热，已逐渐被 SATA 所取代。
 
-### 2. SATA
+**2. SATA**
 
 SATA 全称 Serial ATA，也就是使用串口的 ATA 接口，抗干扰性强，且对数据线的长度要求比 ATA 低很多，支持热插拔等功能。SATA-II 的接口速度为 300MB/s，而 SATA-III 标准可达到 600MB/s 的传输速度。SATA 的数据线也比 ATA 的细得多，有利于机箱内的空气流通，整理线材也比较方便。
 
-### 3. SCSI
+**3. SCSI**
 
 SCSI 全称是 Small Computer System Interface（小型机系统接口），SCSI 硬盘广为工作站以及个人电脑以及服务器所使用，因此会使用较为先进的技术，如碟片转速 15000rpm 的高转速，且传输时 CPU 占用率较低，但是单价也比相同容量的 ATA 及 SATA 硬盘更加昂贵。
 
-### 4. SAS
+**4. SAS**
 
 SAS（Serial Attached SCSI）是新一代的 SCSI 技术，和 SATA 硬盘相同，都是采取序列式技术以获得更高的传输速度，可达到 6Gb/s。此外也通过缩小连接线改善系统内部空间等。
 
-## 磁盘的文件名
+### 磁盘的文件名
 
 Linux 中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接口类型进行命名，常见磁盘的文件名如下：
 
@@ -393,13 +460,13 @@ Linux 中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘�
 
 其中文件名后面的序号的确定与系统检测到磁盘的顺序有关，而与磁盘所插入的插槽位置无关。
 
-# 三、分区
+## 分区
 
-## 分区表
+**分区表**
 
 磁盘分区表主要有两种格式，一种是限制较多的 MBR 分区表，一种是较新且限制较少的 GPT 分区表。
 
-### 1. MBR
+**1. MBR**
 
 MBR 中，第一个扇区最重要，里面有主要开机记录（Master boot record, MBR）及分区表（partition table），其中主要开机记录占 446 bytes，分区表占 64 bytes。
 
@@ -407,7 +474,7 @@ MBR 中，第一个扇区最重要，里面有主要开机记录（Master boot r
 
 Linux 也把分区当成文件，分区文件的命名方式为：磁盘文件名 + 编号，例如 /dev/sda1。注意，逻辑分区的编号从 5 开始。
 
-### 2. GPT
+**2. GPT**
 
 扇区是磁盘的最小存储单位，旧磁盘的扇区大小通常为 512 bytes，而最新的磁盘支持 4 k。GPT 为了兼容所有磁盘，在定义扇区上使用逻辑区块地址（Logical Block Address, LBA），LBA 默认大小为 512 bytes。
 
@@ -419,9 +486,9 @@ MBR 不支持 2.2 TB 以上的硬盘，GPT 则最多支持到 2<sup>33</sup> TB 
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/GUID_Partition_Table_Scheme.svg.png" width="400"/> </div><br>
 
-## 开机检测程序
+**开机检测程序**
 
-### 1. BIOS
+**1. BIOS**
 
 BIOS（Basic Input/Output System，基本输入输出系统），它是一个固件（嵌入在硬件中的软件），BIOS 程序存放在断电后内容不会丢失的只读内存中。
 
@@ -433,17 +500,17 @@ BIOS 是开机的时候计算机执行的第一个程序，这个程序知道可
 
 安装多重引导，最好先安装 Windows 再安装 Linux。因为安装 Windows 时会覆盖掉主要开机记录（MBR），而 Linux 可以选择将开机管理程序安装在主要开机记录（MBR）或者其它分区的启动扇区，并且可以设置开机管理程序的选单。
 
-### 2. UEFI
+**2. UEFI**
 
 BIOS 不可以读取 GPT 分区表，而 UEFI 可以。
 
-# 四、文件系统
+### 文件系统
 
-## 分区与文件系统
+**分区与文件系统**
 
 对分区进行格式化是为了在分区上建立文件系统。一个分区通常只能格式化为一个文件系统，但是磁盘阵列等技术可以将一个分区格式化为多个文件系统。
 
-## 组成
+**组成**
 
 最主要的几个组成部分如下：
 
@@ -457,7 +524,7 @@ BIOS 不可以读取 GPT 分区表，而 UEFI 可以。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/BSD_disk.png" width="800"/> </div><br>
 
-## 文件读取
+**文件读取**
 
 对于 Ext2 文件系统，当要读取一个文件的内容时，先在 inode 中查找文件内容所在的所有 block，然后把所有 block 的内容读出来。
 
@@ -467,11 +534,11 @@ BIOS 不可以读取 GPT 分区表，而 UEFI 可以。
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/5b718e86-7102-4bb6-8ca5-d1dd791530c5.png" width="500px"> </div><br>
 
-## 磁盘碎片
+**磁盘碎片**
 
 指一个文件内容所在的 block 过于分散，导致磁盘磁头移动距离过大，从而降低磁盘读写性能。
 
-## block
+**block**
 
 在 Ext2 文件系统中所支持的 block 大小有 1K，2K 及 4K 三种，不同的大小限制了单个文件和文件系统的最大大小。
 
@@ -482,7 +549,7 @@ BIOS 不可以读取 GPT 分区表，而 UEFI 可以。
 
 一个 block 只能被一个文件所使用，未使用的部分直接浪费了。因此如果需要存储大量的小文件，那么最好选用比较小的 block。
 
-## inode
+**inode**
 
 inode 具体包含以下信息：
 
@@ -504,19 +571,19 @@ inode 中记录了文件内容所在的 block 编号，但是每个 block 非常
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/inode_with_signatures.jpg" width="600"/> </div><br>
 
-## 目录
+**目录**
 
 建立一个目录时，会分配一个 inode 与至少一个 block。block 记录的内容是目录下所有文件的 inode 编号以及文件名。
 
 可以看到文件的 inode 本身不记录文件名，文件名记录在目录中，因此新增文件、删除文件、更改文件名这些操作与目录的写权限有关。
 
-## 日志
+**日志**
 
 如果突然断电，那么文件系统会发生错误，例如断电前只修改了 block bitmap，而还没有将数据真正写入 block 中。
 
 ext3/ext4 文件系统引入了日志功能，可以利用日志来修复文件系统。
 
-## 挂载
+**挂载**
 
 挂载利用目录作为文件系统的进入点，也就是说，进入目录之后就可以读取文件系统的数据。
 
@@ -530,35 +597,7 @@ ext3/ext4 文件系统引入了日志功能，可以利用日志来修复文件�
 
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/linux-filesystem.png" width=""/> </div><br>
 
-# 五、文件
 
-## 文件属性
-
-用户分为三种：文件拥有者、群组以及其它人，对不同的用户有不同的文件权限。
-
-使用 ls 查看一个文件时，会显示一个文件的信息，例如 `drwxr-xr-x 3 root root 17 May 6 00:14 .config`，对这个信息的解释如下：
-
-- drwxr-xr-x：文件类型以及权限，第 1 位为文件类型字段，后 9 位为文件权限字段
-- 3：链接数
-- root：文件拥有者
-- root：所属群组
-- 17：文件大小
-- May 6 00:14：文件最后被修改的时间
-- .config：文件名
-
-常见的文件类型及其含义有：
-
-- d：目录
-- -：文件
-- l：链接文件
-
-9 位的文件权限字段中，每 3 个为一组，共 3 组，每一组分别代表对文件拥有者、所属群组以及其它人的文件权限。一组权限中的 3 位分别为 r、w、x 权限，表示可读、可写、可执行。
-
-文件时间有以下三种：
-
-- modification time (mtime)：文件的内容更新就会更新；
-- status time (ctime)：文件的状态（权限、属性）更新就会更新；
-- access time (atime)：读取文件时就会更新。
 
 ## 文件与目录的基本操作
 
@@ -763,7 +802,7 @@ example: find . -name "shadow*"
 -perm /mode ：搜索权限包含任一 mode 的文件
 ```
 
-# 六、压缩与打包
+# 压缩与打包
 
 ## 压缩文件名
 
@@ -783,7 +822,7 @@ Linux 底下有很多压缩文件名，常见的如下：
 
 ## 压缩指令
 
-### 1. gzip
+**1. gzip**
 
 gzip 是 Linux 使用最广的压缩指令，可以解开 compress、zip 与 gzip 所压缩的文件。
 
@@ -802,7 +841,7 @@ $ gzip [-cdtv#] filename
 -# ： # 为数字的意思，代表压缩等级，数字越大压缩比越高，默认为 6
 ```
 
-### 2. bzip2
+**2. bzip2**
 
 提供比 gzip 更高的压缩比。
 
@@ -813,7 +852,7 @@ $ bzip2 [-cdkzv#] filename
 -k ：保留源文件
 ```
 
-### 3. xz
+**3. xz**
 
 提供比 bzip2 更佳的压缩比。
 
@@ -850,7 +889,7 @@ $ tar [-z|-j|-J] [xv] [-f 已有的 tar 文件] [-C 目录]    ==解压缩
 |  查 看   | tar -jtv -f filename.tar.bz2                          |
 |  解压缩  | tar -jxv -f filename.tar.bz2 -C 要解压缩的目录        |
 
-# 七、Bash
+# Bash
 
 可以通过 Shell 请求内核提供服务，Bash 正是 Shell 的一种。
 
@@ -930,7 +969,7 @@ $ echo ${array[1]}
 $ find /home -name .bashrc > list 2>&1
 ```
 
-# 八、管道指令
+# 管道指令
 
 管道是将一个命令的标准输出作为另一个命令的标准输入，在数据需要经过多个步骤的处理之后才能得到我们想要的内容时就可以使用管道。
 
@@ -1088,7 +1127,7 @@ $ split [-bl] file PREFIX
 - PREFIX ：分区文件的前导名称
 ```
 
-# 九、正则表达式
+# 正则表达式
 
 ## grep
 
@@ -1186,126 +1225,3 @@ dmtsai lines: 4 columns: 10
 dmtsai lines: 5 columns: 9
 ```
 
-# 十、进程管理
-
-## 查看进程
-
-### 1. ps
-
-查看某个时间点的进程信息。
-
-示例：查看自己的进程
-
-```sh
-# ps -l
-```
-
-示例：查看系统所有进程
-
-```sh
-# ps aux
-```
-
-示例：查看特定的进程
-
-```sh
-# ps aux | grep threadx
-```
-
-### 2. pstree
-
-查看进程树。
-
-示例：查看所有进程树
-
-```sh
-# pstree -A
-```
-
-### 3. top
-
-实时显示进程信息。
-
-示例：两秒钟刷新一次
-
-```sh
-# top -d 2
-```
-
-### 4. netstat
-
-查看占用端口的进程
-
-示例：查看特定端口的进程
-
-```sh
-# netstat -anp | grep port
-```
-
-## 进程状态
-
-| 状态 | 说明                                                         |
-| :--: | ------------------------------------------------------------ |
-|  R   | running or runnable (on run queue)<br>正在执行或者可执行，此时进程位于执行队列中。 |
-|  D   | uninterruptible sleep (usually I/O)<br>不可中断阻塞，通常为 IO 阻塞。 |
-|  S   | interruptible sleep (waiting for an event to complete) <br> 可中断阻塞，此时进程正在等待某个事件完成。 |
-|  Z   | zombie (terminated but not reaped by its parent)<br>僵死，进程已经终止但是尚未被其父进程获取信息。 |
-|  T   | stopped (either by a job control signal or because it is being traced) <br> 结束，进程既可以被作业控制信号结束，也可能是正在被追踪。 |
-<br>
-
-<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/2bab4127-3e7d-48cc-914e-436be859fb05.png" width="490px"/> </div><br>
-
-## SIGCHLD
-
-当一个子进程改变了它的状态时（停止运行，继续运行或者退出），有两件事会发生在父进程中：
-
-- 得到 SIGCHLD 信号；
-- waitpid() 或者 wait() 调用会返回。
-
-其中子进程发送的 SIGCHLD 信号包含了子进程的信息，比如进程 ID、进程状态、进程使用 CPU 的时间等。
-
-在子进程退出时，它的进程描述符不会立即释放，这是为了让父进程得到子进程信息，父进程通过 wait() 和 waitpid() 来获得一个已经退出的子进程的信息。
-
-<div align="center"> <!-- <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/flow.png" width=""/> --> </div><br>
-
-## wait()
-
-```c
-pid_t wait(int *status)
-```
-
-父进程调用 wait() 会一直阻塞，直到收到一个子进程退出的 SIGCHLD 信号，之后 wait() 函数会销毁子进程并返回。
-
-如果成功，返回被收集的子进程的进程 ID；如果调用进程没有子进程，调用就会失败，此时返回 -1，同时 errno 被置为 ECHILD。
-
-参数 status 用来保存被收集的子进程退出时的一些状态，如果对这个子进程是如何死掉的毫不在意，只想把这个子进程消灭掉，可以设置这个参数为 NULL。
-
-## waitpid()
-
-```c
-pid_t waitpid(pid_t pid, int *status, int options)
-```
-
-作用和 wait() 完全相同，但是多了两个可由用户控制的参数 pid 和 options。
-
-pid 参数指示一个子进程的 ID，表示只关心这个子进程退出的 SIGCHLD 信号。如果 pid=-1 时，那么和 wait() 作用相同，都是关心所有子进程退出的 SIGCHLD 信号。
-
-options 参数主要有 WNOHANG 和 WUNTRACED 两个选项，WNOHANG 可以使 waitpid() 调用变成非阻塞的，也就是说它会立即返回，父进程可以继续执行其它任务。
-
-## 孤儿进程
-
-一个父进程退出，而它的一个或多个子进程还在运行，那么这些子进程将成为孤儿进程。
-
-孤儿进程将被 init 进程（进程号为 1）所收养，并由 init 进程对它们完成状态收集工作。
-
-由于孤儿进程会被 init 进程收养，所以孤儿进程不会对系统造成危害。
-
-## 僵尸进程
-
-一个子进程的进程描述符在子进程退出时不会释放，只有当父进程通过 wait() 或 waitpid() 获取了子进程信息后才会释放。如果子进程退出，而父进程并没有调用 wait() 或 waitpid()，那么子进程的进程描述符仍然保存在系统中，这种进程称之为僵尸进程。
-
-僵尸进程通过 ps 命令显示出来的状态为 Z（zombie）。
-
-系统所能使用的进程号是有限的，如果产生大量僵尸进程，将因为没有可用的进程号而导致系统不能产生新的进程。
-
-要消灭系统中大量的僵尸进程，只需要将其父进程杀死，此时僵尸进程就会变成孤儿进程，从而被 init 进程所收养，这样 init 进程就会释放所有的僵尸进程所占有的资源，从而结束僵尸进程。

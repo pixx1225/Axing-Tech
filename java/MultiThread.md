@@ -3,6 +3,9 @@
 # 多线程
 
 ## 基本概念
+
+> 参考[深入浅出Java多线程](https://redspider.gitbook.io/concurrent/)
+
 ### 进程和线程的区别：
 - 进程是系统进行资源分配和调度的基本单位
 - 线程是程序执行的最小单位
@@ -31,6 +34,52 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 2. 实现Runable接口(推荐)
 3. 使用Executor框架创建线程池
 4. 通过Callable接口并实现call()方法，该call()方法将作为线程执行体，并且有返回值
+
+```java
+public class Demo {
+    //继承Thread类
+    public static class MyThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("MyThread");
+        }
+    }
+
+    public static void main(String[] args) {
+        Thread myThread = new MyThread();
+        myThread.start();
+    }
+}
+public class Demo {
+    //实现Runable接口
+    public static class MyThread implements Runnable {
+        @Override
+        public void run() {
+            System.out.println("MyThread");
+        }
+    }
+
+    public static void main(String[] args) {
+        new MyThread().start();
+        // Java 8 函数式编程，可以省略MyThread类
+        new Thread(() -> {
+            System.out.println("Java 8 匿名内部类");
+        }).start();
+    }
+}
+```
+
+### Thread类的几个常用方法
+
+- currentThread()：静态方法，返回对当前正在执行的线程对象的引用；
+
+- start()：开始执行线程的方法，java虚拟机会调用线程内的run()方法；
+
+- yield()：yield在英语里有放弃的意思，同样，这里的yield()指的是当前线程愿意让出对当前处理器的占用。这里需要注意的是，就算当前线程调用了yield()方法，程序在调度的时候，也还有可能继续运行这个线程的；
+
+- sleep()：静态方法，使当前线程睡眠一段时间；
+
+- join()：使当前线程等待另一个线程执行完毕之后再继续执行，内部调用的是Object类的wait方法实现的；
 
 ### 线程同步的方式：
 1. 同步方法，使用synchronized关键字修饰方法
