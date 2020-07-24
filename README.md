@@ -92,6 +92,7 @@
 
 - [Git](tools/Git.md)
 - [Markdown](tools/Markdown.md)
+- [Shell](tools/Shell.md)
 - [Windows批处理](tools/Win批处理.md)
 
 ---
