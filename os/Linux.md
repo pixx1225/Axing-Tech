@@ -557,6 +557,16 @@ su用于用户之间的切换。但是切换前的用户依然保持登录状态
 
 sudo是为所有想使用root权限的普通用户设计的。可以让普通用户具有临时使用root权限的权利。只需输入自己账户的密码即可。
 
+## awk 命令
+
+AWK 是一种处理文本文件的语言，是一个强大的文本分析工具。
+
+```
+awk '{[pattern] action}' {filenames}   # 行匹配语句 awk '' 只能用单引号
+
+awk '{print $2}' log.txt	#打印log文件的第二列
+```
+
 ## crontab 命令
 
 Linux crontab是用来定期执行程序的命令。当安装完成操作系统之后，默认便会启动此任务调度命令。
@@ -586,7 +596,7 @@ crontab -e
 10 1 * * 6,0 service httpd restart
 ```
 
-## ln -s
+## ln 命令
 
 **ln命令**用来为文件创建连接，连接类型分为硬连接和软连接两种，默认的连接类型是硬连接。如果要创建软连接必须使用"-s"选项。
 
@@ -596,9 +606,14 @@ ln -s /home/Axing/webapps/root/classes/linux/x64/  /app
 
 这样创建了软连接之后，可以直接在 /app下查找 /home/Axing/webapps/root/classes/linux/x64/ 下的所以文件和文件夹
 
+## diff 命令
 
+diff命令用于比较文件的差异。diff以逐行的方式，比较文本文件的异同处。如果指定要比较目录，则diff会比较目录中相同文件名的文件，但不会比较其中子目录。
 
-
+```
+diff file1.txt file2.txt -y	#以并列的方式显示文件的异同之处。
+|表示不同, <表示后面文件少了一行内容，>表示多了一行。
+```
 
 
 
