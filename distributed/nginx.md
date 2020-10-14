@@ -1,4 +1,9 @@
+# Nginx
+
+Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。
+
 ### 利用nginx实现负载均衡
+
 安装了两个tomcat，端口分别是42000和42001。第二个tomcat的首页随便加了些代码区分
 
 ### nginx配置
@@ -32,8 +37,6 @@ location / {
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/0809/135927_f72d1eae_1478371.png "屏幕截图.png")
 
 刷新页面发现页面会发生变化，证明负载配置成功。因为我配的权重第二个是第一个的两倍，所以第二个出现的概率会是第一个的两倍。
-
-
 
 如果关了tomcat1，再多次刷新页面，接下来出现的就会都是tomcat2的页面，但是时而快时而慢。这其中原因是当如果nginx将请求转发到tomcat2时，服务器会马上跳转成功，但是如果是转到tomcat1，因为tomcat1已经关闭了，所以会出现一段等待响应过程的过程，要等它失败后才会转到tomcat2。
 而这个等待响应的时间我们是可以配置的。
@@ -95,7 +98,8 @@ upstream  fengzp.com {
 ```
 ip_hash可以和weight结合使用。
 
-### nginx实现请求的负载均衡 + keepalived实现nginx的高可用
+nginx实现请求的负载均衡 + keepalived实现nginx的高可用
+
 https://www.cnblogs.com/youzhibing/p/7327342.html
 
 
@@ -103,7 +107,6 @@ https://www.cnblogs.com/youzhibing/p/7327342.html
 ### 一个域名配置多项目访问
 
 ```
-
 #user  nobody;
 worker_processes  1;
 
@@ -117,7 +120,6 @@ pid        logs/nginx.pid;
 events {
     worker_connections  1024;
 }
-
 
 http {
     include       mime.types;
@@ -143,10 +145,7 @@ http {
 		server 127.0.0.1:8080 max_fails=2 fail_timeout=10s;
 		server 127.0.0.1:8082 max_fails=2 fail_timeout=10s;
 	}
-	
-	 
-     
-	
+
 	server {
         listen       443;
         server_name  填你的域名;
@@ -240,18 +239,7 @@ http {
               proxy_read_timeout      600;
               proxy_send_timeout      300;
         }
-		
-	
-
     }
-	
-	
-	
-	 
-	
-	 
-
 }
-
 ```
 

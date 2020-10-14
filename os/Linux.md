@@ -477,6 +477,16 @@ route add default gw 172.22.10.1
   echo "">catalina.out
 ```
 
+## Nginx相关命令
+
+```
+/usr/local/webserver/nginx/sbin/nginx #启动命令
+/usr/local/webserver/nginx/sbin/nginx -s reload #重新载入配置文件
+/usr/local/webserver/nginx/sbin/nginx -s reopen #重启 Nginx
+/usr/local/webserver/nginx/sbin/nginx -s stop #停止 Nginx
+/usr/local/webserver/nginx/sbin/nginx -t #检查配置文件正确性
+```
+
 
 
 ## 管道指令
