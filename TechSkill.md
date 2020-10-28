@@ -14,9 +14,10 @@
 4. 推荐安装Markdown编辑器 Typora
 5. Win中解压软件 7-Zip
    Mac中解压软件 The Unarchiver
-6. Mac中视频播放软件 IINA
-7. 推荐桌面共享软件 TeamViewer
-8. Win推荐安装卸载工具 IObitUninstaler
+6. Win中文件对比工具 BeyondCompare
+7. Mac中视频播放软件 IINA
+8. 推荐桌面共享软件 TeamViewer
+9. Win推荐安装卸载工具 IObitUninstaler
 
 Java开发：**JetBrains IntelliJ IDEA，Eclipse**
 
