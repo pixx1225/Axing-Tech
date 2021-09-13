@@ -2,33 +2,39 @@
 title Git-Pusher
 color 0a
 setlocal EnableDelayedExpansion
-set date=%DATE:~3,13%
+set date=%DATE:~0,10%
 
 for /f "tokens=1-3 delims=/" %%a in ("%date%") do (
 	set format_date=%%a
 	if not "%%b"=="" (
-Â Â Â Â 	set format_date=!format_date!%%b
-Â 	)
+		set format_date=!format_date!%%b
+	)
 	if not "%%c"=="" (
-	Â Â Â  set format_date=!format_date!%%c
+		set format_date=!format_date!%%c
 	)
 )
 
-::å¼€å§‹æ“ä½œï¼Œç›®å½•ç¡®å®šæ­£ç¡®
+::ÏîÄ¿Ä¿Â¼
 D:
 cd \MyFiles\Axing-Tech
 
-echo gitå¼€å§‹ï¼ŒæŒ‰ä»»æ„é”®add...
-pause>nul
 
+echo ======== Git Pusher ========
+echo ============================
+echo ============================
+echo ============================
+echo ======== °´ÈÎÒâ¼üadd ========
+pause>nul
 git add .
-echo git addç»“æŸï¼ŒæŒ‰ä»»æ„é”®commit...
-pause>nul
 
+echo ======== °´ÈÎÒâ¼ücommit ========
+pause>nul
 git commit -m "Axing!format_date!"
-echo git commitç»“æŸï¼ŒæŒ‰ä»»æ„é”®push...
-pause>nul
 
+echo ======== °´ÈÎÒâ¼üpush ========
+pause>nul
 git push
-echo git pushç»“æŸï¼ŒæŒ‰ä»»æ„é”®é€€å‡º...
+
+echo ============================
+echo git push½áÊø£¬°´ÈÎÒâ¼üÍË³ö...
 pause>nul
