@@ -68,8 +68,9 @@
 - [Nginx](distributed/Nginx.md)
 - [Redis](distributed/Redis.md)
 - [Zookeeper](distributed/Zookeeper.md)
-- [RocketMQ](distributed/RocketMQ.md)
+- [Docker](distributed/Docker.md)
 - [ElasticSearch](distributed/ElasticSearch.md)
+- 消息队列
 ---
 ### :pencil2: 编程算法
 
