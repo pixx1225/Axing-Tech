@@ -148,9 +148,12 @@ docker inspect 容器id
 #新建容器并启动
 docker run [param] image
 --name		 	容器名称
--it				交互运行运行
--d				后台方式运行
--p				指定容器端口 -p 主机端口：容器端口（常用的映射）
+-it				交互运行
+-d				后台运行
+-p				端口映射 -p 主机端口：容器端口
+-v				卷挂载   -v 主机目录：容器目录
+-e				配置环境
+
 #启动和停止容器
 docker start 容器id
 docker stop 容器id
@@ -183,5 +186,63 @@ docker cp 容器id:容器内路径 主机路径
 ## Docker技术底座
 
 1. namespace  命名空间
-2. cgroups         控制组
-3. unionFS         联合文件系统
+2. cgroups    控制组
+3. unionFS    联合文件系统
+
+### namespace  命名空间
+
+### cgroups         控制组
+
+### unionFS         联合文件系统
+
+
+
+## 容器数据卷
+
+Docker将运用与运行的环境打包形成容器运行， Docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据做为镜像的一部分保存下来， 那么当容器删除后，数据自然也就没有了。 为了能保存数据在Docker中我们使用卷。|
+
+**卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此Docker不会在容器删除时删除其挂载的数据卷。Docker容器卷的工作就是将docker容器数据通过映射进行备份+持久化到本地的主机目录**
+
+- 使用方法
+
+```shell
+docker run -it -v 主机目录:容器目录
+
+同步mysql数据和文件
+docker run -d -p 6603:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql:5.7
+
+```
+
+```shell
+# 卷常用命令
+docker volume create [VOLUME_NAME] 		#创建卷
+docker volume ls						#查看所有的卷
+docker volume inspect [VOLUME_NAME]		#查看指定的卷
+docker volume rm [VOLUME_NAME]			#删除卷
+docker volume prune						#删除无用卷
+```
+
+
+
+- **匿名挂载**：就是在指定数据卷的时候，不指定容器路径对应的主机路径，这样对应映射的主机路径就是默认的路径`/var/lib/docker/volumes/`中自动生成一个**随机命名**的文件夹
+
+- **具名挂载**：就是指定文件夹名称，区别于指定路径挂载，这里的指定文件夹名称是在Docker指定的默认数据卷路径下的。通过`docker volume ls`命令可以查看当前数据卷的目录情况。
+
+```shell
+-v 容器内路径		  #匿名挂载
+-v 卷名:容器内路径		 #具名挂载
+-v /主机路径:容器内路径  #指定路径挂载
+
+#通过-v 容器内路径: ro	rw   改变读写权限
+ro		readonly       #只读
+rw		readwrite      #可读可写
+# ro  只要看到ro就说明这个路径只能通过宿主机来操作，容器内部是无法操作!
+```
+
+
+
+
+
+## DockerFile
+
+## Docker网络
