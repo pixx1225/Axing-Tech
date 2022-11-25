@@ -1,5 +1,7 @@
 [TOC]
 
+# Docker
+
 ## Docker概述
 
 Docker 是一个**开源的应用容器引擎**，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows操作系统的机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。
@@ -181,8 +183,6 @@ docker top 容器id
 docker cp 容器id:容器内路径 主机路径
 ```
 
-
-
 ## Docker技术底座
 
 1. namespace  命名空间
@@ -194,8 +194,6 @@ docker cp 容器id:容器内路径 主机路径
 ### cgroups         控制组
 
 ### unionFS         联合文件系统
-
-
 
 ## 容器数据卷
 
@@ -222,8 +220,6 @@ docker volume rm [VOLUME_NAME]			#删除卷
 docker volume prune						#删除无用卷
 ```
 
-
-
 - **匿名挂载**：就是在指定数据卷的时候，不指定容器路径对应的主机路径，这样对应映射的主机路径就是默认的路径`/var/lib/docker/volumes/`中自动生成一个**随机命名**的文件夹
 
 - **具名挂载**：就是指定文件夹名称，区别于指定路径挂载，这里的指定文件夹名称是在Docker指定的默认数据卷路径下的。通过`docker volume ls`命令可以查看当前数据卷的目录情况。
@@ -239,10 +235,97 @@ rw		readwrite      #可读可写
 # ro  只要看到ro就说明这个路径只能通过宿主机来操作，容器内部是无法操作!
 ```
 
+- 容器间数据同步
 
+使用`--volumes-from`，实现双向拷贝。
 
+```shell
+#创建docker01
+docker run -it --name docker01 axing/centos
+#不关闭该容器退出
+CTRL + Q + P 
+#创建docker02
+docker run -it --name docker02 --volumes-from docker01 axing/centos
+```
 
+容器之间的配置信息的传递，数据卷容器的生命周期一直持续到没有容器使用为止。
+
+但是一旦你持久化到了本地，这个时候，本地的数据是不会删除的。
 
 ## DockerFile
+
+Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。
+
+**构建步骤︰**
+1、编写一个dockerfile 文件
+2、docker build构建成为一个镜像
+3、docker run运行镜像
+4、docker push 发布镜像(DockerHub、阿里云镜像仓库!)
+
+**基础知识∶**
+1、每个保留关键字（指令）都是尽量是大写字母
+2、执行从上到下顺序执行
+3、#表示注释
+4、每一个指令都会创建提交一个新的镜像层，并提交!
+
+```shell
+指令	       说明
+FROM		#指定基础镜像
+MAINTAINER	#镜像是谁写的，姓名+邮箱
+RUN			#运行指定的命令
+CMD			#容器启动时要运行的命令,只有最后一个会生效，可被替代
+EMTRYPOINT	#容器启动时要运行的命令，可以追加命令
+ADD			#将本地文件添加到容器中
+COPY		#复制命令，功能类似ADD，只能是本地文件
+WORKDIR		#镜像的工作目录
+VOLUME		#挂载的目录
+EXPOSE		#暴露端口配置
+ONBUILD		#当构建一个被继承DockerFile，这个时候就会运行ONBUILD的指令，触发指令
+ENV			#设置环境变量
+```
+
+**编写DockerFile文件**
+
+第一步：编写dockerfile文件
+
+/home/axing/Dockerfile
+
+```shell
+FROM centos:8.0                           #基础镜像         
+MAINTAINER AXING<123456@qq.com>        	 #维护者信息
+ 
+ENV MYPATH /usr/local                    #环境变量目录 k-v
+WORKDIR $MYPATH                          #工作目录  用$取k
+ 
+RUN yum -y install vim                   #执行构建命令  安装vim
+RUN yum -y install net-tools             #执行构建命令  安装net-tools
+ 
+EXPOSE 80                                #暴露端口 80
+ 
+CMD echo $MYPATH                         #输出构建信息 mypath
+CMD echo "---end---"                     #输出信息
+CMD /bin/bash                            #进入/bin/bash命令行
+```
+
+第二部：构建镜像文件
+
+```shell
+cd /home/axing
+docer build -f Dockerfile -t mycentos:1.0 .
+```
+
+第三步：启动镜像
+
+```shell
+docker run -it mycentos:1.0
+```
+
+查看一个镜像的构建历史
+
+```shell
+docker history 镜像id
+```
+
+
 
 ## Docker网络
