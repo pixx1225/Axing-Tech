@@ -14,6 +14,12 @@
 - 同类线程共享代码和数据空间，有独立运行栈和程序计数器，切换开销小
 - 进程间不会相互影响；一个线程挂掉会导致整个进程挂掉。
 
+### 进程的三态
+
+- **就绪态**：当进程获取出CPU外所有的资源后，只要再获得CPU就能执行程序，这时的状态叫做就绪态。在一个系统中处于就绪态的进程会有多个，通常把这些排成一个队列，这个就叫就绪队列。
+- **运行态**：当进程已获得CPU操作权限，正在运行，这个时间就是运行态。在单核系统中，同一个时间只能有一个运行态，多核系统中，会有多个运行态。
+- **阻塞态**：正在执行的进程，等待某个事件而无法继续运行时，便被系统剥夺了CPU的操作权限，这时就是阻塞态。引起阻塞的原因有很多，比如：等待I/O操作、被更高的优先级的进程剥夺了CPU权限等。
+
 ### 死锁的四个必要条件：
 1. 互斥条件 2. 请求和保持条件 3. 不剥夺条件 4. 循环等待条件
 
@@ -36,8 +42,11 @@ wait()、notify()和notifyAll()。调用wait()方法可以使调用该方法的�
 4. 通过Callable接口并实现call()方法，该call()方法将作为线程执行体，并且有返回值
 
 ```java
+ //继承Thread类。不建议使用：避免OOP单继承局限性
+1.定义线程类继承 Thread 类
+2.重写 run() 方法
+3.创建线程对象，调用 start() 方法开启线程
 public class Demo {
-    //继承Thread类
     public static class MyThread extends Thread {
         @Override
         public void run() {
@@ -50,8 +59,14 @@ public class Demo {
         myThread.start();
     }
 }
+```
+
+```java
+//实现Runable接口。推荐使用：避免单继承局限性，灵活方便，方便同一个对象被多个线程使用
+1.自定义线程类实现 Runnable 接口
+2.实现 run() 方法,编写线程执行体
+3.创建线程对象,调用 start() 方法启动对象
 public class Demo {
-    //实现Runable接口
     public static class MyThread implements Runnable {
         @Override
         public void run() {
@@ -60,7 +75,9 @@ public class Demo {
     }
 
     public static void main(String[] args) {
-        new MyThread().start();
+        MyThread myThread = new MyThread();
+        new Thread(myThread).start();
+
         // Java 8 函数式编程，可以省略MyThread类
         new Thread(() -> {
             System.out.println("Java 8 匿名内部类");
@@ -68,6 +85,19 @@ public class Demo {
     }
 }
 ```
+
+```java
+//实现Callable接口
+实现Callable接口，需要返回值类型
+重写call方法，需要抛出异常
+创建目标对象
+创建执行服务：ExecutorService ser = Executors.newFixedThreadPool(3); //线程个数
+提交执行：Future result1 = ser.submit(testCallable);
+获取结果：boolean r1 = result1.get()
+关闭服务：ser.shutdownNow();
+```
+
+>  注意：线程开启不一定立即执行，由CPU调度执行
 
 ### Thread类的几个常用方法
 
@@ -131,15 +161,25 @@ public class Demo {
 - 同步静态方法，锁的是当前 `Class` 对象。
 - 同步块，锁的是 `{}` 中的对象。
 
-### 实现原理：
+**实现原理：**
 
 `JVM` 是通过进入、退出对象监视器( `Monitor` )来实现对方法、同步块的同步的。其本质就是对一个对象监视器( `Monitor` )进行获取，而这个获取过程具有排他性从而达到了同一时刻只能一个线程访问的目的。
 
 ![Monitor流程图](https://github.com/pixx1225/Axing-Tech/blob/master/images/Monitor流程图.jpeg)
 
+## synchronized和lock的区别
+
+1. synchronized是关键字，Lock是接口;
+
+2. synchronized在发生异常时会自动释放占有的锁，因此不会出现死锁；而lock发生异常时，不会主动释放占有的锁，必须手动来释放锁，可能引起死锁的发生。
+3. Lock提供了更多的实现方法，而且可响应中断、可定时， 而synchronized 关键字不能响应中断；
+4. synchronized是隐式的加锁，lock是显式的加锁;
+5. synchronized可以作用于方法和代码块上，lock只能作用于代码块;
+6. synchronized底层采用的是Monitor对象监视器，lock采用的AQS;
+
 ## Volatile
 
-###  特性：
+**特性：**
 
 - 1 . 保证了不同线程对该变量操作的**内存可见性**;
 - 2 . 禁止指令**重排序**
@@ -149,7 +189,7 @@ public class Demo {
 - 当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量刷新到主内存
 - 当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效，线程接下来将从主内存中读取共享变量。
 
-### 实现机制：
+**实现机制：**
 
 如果把加入volatile关键字的代码和未加入volatile关键字的代码都生成汇编代码，会发现加入volatile关键字的代码会多出一个lock前缀指令。
 
@@ -169,12 +209,14 @@ CAS (compare and swap) 比较并交换，就是将内存值与预期值进行比
 
 ## 线程池
 
-### 原理：
+**原理：**
+
 1. 线程池判断核心线程池里的线程是否都在执行任务。如果不是，则创建一个新的工作线程来执行任务。如果核心线程池里的线程都在执行任务，则执行第二步。 
 2. 线程池判断工作队列是否已经满。如果工作队列没有满，则将新提交的任务存储在这个工作队列里进行等待。如果工作队列满了，则执行第三步。
 3. 线程池判断线程池的线程是否都处于工作状态。如果没有，则创建一个新的工作线程来执行任务。如果已经满了，则交给饱和策略来处理这个任务。
 
-### 优点：
+**优点：**
+
 1. 降低资源消耗 
 可以重复利用已创建的线程降低线程创建和销毁造成的消耗。 
 2. 提高响应速度 
@@ -183,13 +225,14 @@ CAS (compare and swap) 比较并交换，就是将内存值与预期值进行比
 线程是稀缺资源，如果无限制地创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一分配、调优和监控
 线程分为守护线程和非守护线程（即用户线程）。守护线程最典型的应用就是 GC (垃圾回收器)
 
-### 4种常用线程池：
+**4种常用线程池：**
+
 1. Executors.newCacheThreadPool()可缓存线程池：先查看池中有没有以前建立的线程，如果有，就直接使用。如果没有，就建一个新的线程加入池中，缓存型池子通常用于执行一些生存期很短的异步型任务。
 2. Executors.newFixedThreadPool(int n)：创建一个可重用固定个数的线程池，以共享的无界队列方式来运行这些线程。
 3.  Executors.newScheduledThreadPool(int n)：创建一个定长线程池，支持定时及周期性任务执行
 4.  Executors.newSingleThreadExecutor()：创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
 
-### 线程池的使用
+**线程池的使用**
 
 ```java
     private static final int CORE_POOL_SIZE = 5;
@@ -342,6 +385,16 @@ JDK 提供的这些容器大部分在 `java.util.concurrent` 包中。
 - [ConcurrentHashMap 线程安全的具体实现方式/底层具体实现](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/collection/Java集合框架常见面试题.md#concurrenthashmap线程安全的具体实现方式底层具体实现)
 
 ## CopyOnWriteArrayList
+
+线程安全的ArrayList，其“线程安全”机制 -- 是通过volatile和监视器锁Synchrnoized来实现的。
+
+1. CopyOnWriteArrayList实现了List接口，因此它是一个队列。
+2. CopyOnWriteArrayList包含了成员lock。每一个CopyOnWriteArrayList都和一个监视器锁lock绑定，通过lock，实现了对CopyOnWriteArrayList的互斥访问。
+3. CopyOnWriteArrayList包含了成员array数组，这说明CopyOnWriteArrayList本质上通过数组实现的。
+4. CopyOnWriteArrayList的“动态数组”机制 -- 它内部有个“volatile数组”(array)来保持数据。在“添加/修改/删除”数据时，都会新建一个数组，并将更新后的数据拷贝到新建的数组中，最后再将该数组赋值给“volatile数组”。这就是它叫做CopyOnWriteArrayList的原因！CopyOnWriteArrayList就是通过这种方式实现的动态数组；不过正由于它在“添加/修改/删除”数据时，都会新建数组，所以涉及到修改数据的操作，CopyOnWriteArrayList效率很 低；但是单单只是进行遍历查找的话，效率比较高
+5. CopyOnWriteArrayList是通过“volatile数组”来保存数据的。一个线程读取volatile数组时，总能看到其它线程对该volatile变量最后的写入；就这样，通过volatile提供了“读取到的数据总是最新的”这个机制的 保证。
+6. CopyOnWriteArrayList通过监视器锁Synchrnoized来保护数据。在“添加/修改/删除”数据时，会先“获取监视器锁”，再修改完毕之后，先将数据更新到“volatile数组”中，然后再“释放互斥锁”；这样，就达到了保护数据的目的。
+  
 
 ## ConcurrentLinkedQueue
 
