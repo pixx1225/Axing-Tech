@@ -16,6 +16,12 @@ Spring 是 Java EE 编程领域的一款轻量级的开源框架，Spring核心�
 
 5：方便集成各种主流框架，降低API的使用难度。
 
+## Spring配置方式
+
+1. XML配置文件
+2. 注解配置
+3. Java Config配置
+
 ## IOC 控制反转（Inversion of Control）：
 
 就是把对象的控制管理权交给Spring的IoC容器，由容器控制对象之间的依赖关系，好处在于将对象集中统一管理，并且降低耦合度。我们将由 IoC 容器管理的 Java 对象称为 Spring Bean，它与使用关键字 new 创建的 Java 对象没有任何区别。
@@ -28,7 +34,7 @@ Spring 是 Java EE 编程领域的一款轻量级的开源框架，Spring核心�
 
 (依赖)控制权由应用代码本身转到了外部容器，由容器根据配置文件去创建实例并管理各个实例之间的依赖关系，控制权的转移，就是所谓反转，并且由容器动态的将某种依赖关系注入到组件之中。BeanFactory 是Spring IoC容器的具体实现与核心接口，提供了一个先进的配置机制，使得任何类型的对象的配置成为可能，用来包装和管理各种bean。最直观的表达就是，IOC让对象的创建不用去new了，可以由spring自动生产，这里用的就是java的反射机制，通过反射在运行时动态的去创建、调用对象。spring就是根据配置文件在运行时动态的去创建对象，并调用对象的方法的。
 
-### DI 依赖注入（Denpendency Injection）：
+## DI 依赖注入（Denpendency Injection）：
 
 指Spring创建对象的过程中，将对象依赖属性通过配置进行注入。依赖注入是控制反转的基础，在容器实例化对象的时候主动的将被调用者（或者说它的依赖对象）注入给调用对象。比如对象A需要操作数据库，以前我们总是要在A中自己编写代码来获得一个Connection对象，有了 spring我们就只需要告诉spring，A中需要一个Connection，至于这个Connection怎么构造，何时构造，A不需要知道。在系统运行时，spring会在适当的时候制造一个Connection，然后像打针一样，注射到A当中，这样就完成了对各个对象之间关系的控制。
 
@@ -102,6 +108,22 @@ public class AuditAspect {
     }
 ```
 
+## Spring框架中的设计模式
+
+工厂设计模式 : Spring使用工厂模式通过 BeanFactory、ApplicationContext 创建 bean 对象。
+
+代理设计模式 : Spring AOP 功能的实现。
+
+单例设计模式 : Spring 中的 Bean 默认都是单例的。
+
+模板方法模式 : Spring 中 jdbcTemplate、hibernateTemplate 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。
+
+包装器设计模式 : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。
+
+观察者模式: Spring 事件驱动模型就是观察者模式很经典的一个应用。
+
+适配器模式 :Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配Controller。
+
 ## Bean：
 
 ### Bean生命周期：
@@ -126,21 +148,14 @@ public class AuditAspect {
 - session : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP session 内有效。
 - global-session： 全局 session 作用域
 
-## Spring框架中的设计模式
+### Spring基于xml注入bean的几种方式：
 
-工厂设计模式 : Spring使用工厂模式通过 BeanFactory、ApplicationContext 创建 bean 对象。
+（1）Set方法注入；
+（2）构造器注入：①通过index设置参数的位置；②通过type设置参数类型；
+（3）静态工厂注入；
+（4）实例工厂；
 
-代理设计模式 : Spring AOP 功能的实现。
 
-单例设计模式 : Spring 中的 Bean 默认都是单例的。
-
-模板方法模式 : Spring 中 jdbcTemplate、hibernateTemplate 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。
-
-包装器设计模式 : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。
-
-观察者模式: Spring 事件驱动模型就是观察者模式很经典的一个应用。
-
-适配器模式 :Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配Controller。
 
 # SpringMVC
 
@@ -162,6 +177,15 @@ public class AuditAspect {
 1. DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
 1. DispatcherServlet响应用户。
 
+**组件说明**
+
+DispatcherServlet：作为前端控制器，整个流程控制的中心，控制其它组件执行，统一调度，降低组件
+之间的耦合性，提高每个组件的扩展性。
+HandlerMapping：通过扩展处理器映射器实现不同的映射方式，例如：配置文件方式，实现接口方
+式，注解方式等。
+HandlAdapter：通过扩展处理器适配器，支持更多类型的处理器。
+ViewResolver：通过扩展视图解析器，支持更多类型的视图解析，
+
 # SpringBoot
 
 Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程序所需的XML配置，为更快，更高效的开发生态系统铺平了道路。
@@ -179,13 +203,19 @@ Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程
 
 
 
-## 注解
+## SpringBoot核心注解
 
 核心注解：@SpringBootApplication: 
 
 1. @SpringBootConfiguration
 2. @EnableAutoConfiguration 
 3. @ComponentScan
+
+### 运行Spring Boot有哪几种方式
+
+1. 打包用命令或者放到容器中运行
+2. 用 Maven/Gradle 插件运行
+3. 直接执行 main 方法运行
 
 ## Dependencies
 
@@ -259,4 +289,6 @@ Spring Boot基本上是Spring框架的扩展，它消除了设置Spring应用程
   <version>3.2</version>
 </dependency>
 ```
+
+# SpringCloud
 

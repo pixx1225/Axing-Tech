@@ -85,11 +85,124 @@
 
 - 对象基本上都是在jvm的堆区中创建，在创建对象之前，会触发类加载（加载、连接、初始化），当类初始化完成后，根据类信息在堆区中实例化类对象，初始化非静态变量、非静态代码以及默认构造方法，当对象使用完之后会在合适的时候被jvm垃圾收集器回收。
 
-## 内存模型
+## 内存模型（JMM, Java Memory Model)
 
+JVM内存结构分为：Java堆，方法区，程序计数器，本地方法栈，虚拟机栈
 
+## 如何确定垃圾回收
 
+引用计数：count标记对象引用的次数，会有循环引用的问题
 
+可达性分析：从gc roots对象计算可以到达的对象
 
+## 垃圾回收算法
 
+**标记-清除算法Mark-Sweep：**首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象。标记清除最大的问题就是内存的碎片化严重(可用内存不连续)，后续可能发生大对象不能找到可利用空间的问题。
+
+**复制算法Copying：**将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当一块内存用完了，将复制到另外一块上面，然后在把已使用过的内存空间一次清理掉。效率高，解决了内存碎片化的问题，同时可以压缩内存，但是浪费内存(所有内存分为两部分，只能使用其中一半的内存)。
+
+**标记-整理算法Mark-Compact：**标记过程与“标记-清除”算法一样，但后续步骤不是直接对可回收对象进行清理，而是让索引端移动，然后直接清理掉端边界以外的内存。效率比Cpoy略低，一般用于老年代。
+
+**分代收集算法**：对于不同的代，采用不同的收集算法：
+
+新生代：由于对象存活时间短，数量少，因此可以采用复制算法该算法效率比较快。
+
+老年代：由于对象存活时间长，数量多，可以采用标记-清除算法或是标记-整理算法。
+
+**常见的垃圾收集器**
+
+新生代：Serial，ParNew，Parallel Scavenge
+
+老年代：Serial Old，CMS，Parallel Old
+
+最新：G1收集器
+
+## JVM性能调优
+
+JVM参数
+
+```
+- ： 标准参数，所有JVM都应该支持
+-X： 非标准参数，每个JVM实现都不同
+-XX：不稳定参数，下一个版本可能会取消
+```
+
+```undefined
+堆设置
+-Xms：初始堆大小
+-Xmx：最大堆大小
+-Xss：线程堆大小
+-XX:NewSize=n：设置年轻代大小       
+-XX:SurvivorRatio=n：年轻代中Eden区与两个Survivor区的比值。注意Survivor区有两个。如：3，表示Eden：Survivor=3：2，一个Survivor区占整个年轻代的1/5
+-XX:MaxPermSize=n：设置持久代大小
+
+收集器设置
+-XX:+UseSerialGC：设置串行收集器
+-XX:+UseParallelGC：设置并行收集器
+-XX:+UseConcMarkSweepGC：设置并发收集器
+
+垃圾回收统计信息    
+-XX:+PrintGC
+-XX:+PrintGCDetails
+-Xloggc:filename
+```
+
+```java
+tomcat 的bin目录下，catalina.bat中进行设置
+set JAVA_OPTS=
+   -Xms4g
+   -Xmx4g
+   -Xss512k
+   -XX:+AggressiveOpts  //虚拟机中能用到的优化项都设置上，包括升级后的优化项
+   -XX:+UseBiasedLocking   //优化锁的
+   -XX:PermSize=64M （Java1.8没有了） //永久区的大小
+   -XX:MaxPermSize=300M         //永久区最大大小
+   -XX:+DisableExplicitGC          //关掉显示调用GC  【System.gc();】
+   -XX:+UseConcMarkSweepGC   //使用CMS缩短响应时间，并发收集，低停顿
+   -XX:+UseParNewGC   //并发收集新生代的垃圾
+   -XX:+CMSParallelRemarkEnabled  //在使用UseParNewGC的情况看下，尽量减少mark的时间
+   -XX:+UseCMSCompactAtFullCollection //使用并发收集器时，开启对年老代的压缩，使碎片减少
+   -XX:LargePageSizeInBytes=128m  //内存分页大小对性能的提升
+   -XX:+UseFastAccessorMethods    //get/set方法转成本地代码
+   -Djava.awt.headless=true  //修复linux下的tomcat处理图表时可能产生的一个bug
+```
+
+## JVM调优命令
+
+```java
+jps       #查看当前java进程
+jstat     #查看堆内存各部分的使用情况，以及加载类的数量
+jinfo     #查看Java进程运行的JVM参数，系统属性等
+jmap      #生成运行中的jvm的堆的快照
+jstack    #生成jvm当前时刻的线程快照
+```
+
+## JVM调优工具
+
+### jconsole
+
+JMX的可视化管理工具
+
+### VisualVM
+
+多合一故障管理工具
+
+## 内存泄露
+
+对象已经没有被应用程序使用，但是垃圾回收器没办法移除它们，因为还在被引用着。
+
+Java 内存泄漏的几种情况：
+
+- 静态集合类：如HashMap、LinkedList等等。如果这些容器为静态的，那么它们的生命周期与程序一致，则容器中的对象在程序结束之前将不能被释放，从而造成内存泄漏。
+- 资源未关闭：各种连接，如数据库连接、网络连接和IO连接等，文件读写等，造成的内存泄漏
+- 此外还有诸如 监听器、内存类、单例模式等等场景的使用，都有可能造成内存泄漏
+
+避免内存泄漏的方法
+
+- 好的编码习惯：对可能出现内存泄漏的场景给予“特殊关照”：    
+  - 注意像 HashMap 、ArrayList 的集合对象
+  - 注意 事件监听 和 回调函数
+  - 在确认一个对象无用后，将其所有引用显式的置为null；
+  - 数据库连接，使用 `try…finally` 结构，在 finally 中关闭 Statement 对象和连接。
+- 好的测试工具：在开发中不能完全避免内存泄漏，关键要在发现有内存泄漏的时候能用好的测试工具迅速定位问题的所在。
 

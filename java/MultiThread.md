@@ -87,6 +87,24 @@ public class Demo {
 ```
 
 ```java
+//创建线程池
+ExecutorService threadPool = Executors.newFixedThreadPool(10);
+while(true) {
+    threadPool.execute(new Runnable() { // 提交多个线程任务，并执行 
+        @Override 
+        public void run() {
+            System.out.println(Thread.currentThread().getName() + " is running .."); 
+            try { 
+                Thread.sleep(3000); 
+            } catch (InterruptedException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+    }); 
+}
+```
+
+```java
 //实现Callable接口
 实现Callable接口，需要返回值类型
 重写call方法，需要抛出异常
@@ -99,17 +117,46 @@ public class Demo {
 
 >  注意：线程开启不一定立即执行，由CPU调度执行
 
-### Thread类的几个常用方法
+### 4种常用线程池
 
-- currentThread()：静态方法，返回对当前正在执行的线程对象的引用；
+- newCacheThreadPool()可缓存线程池：先查看池中有没有以前建立的线程，如果有，就直接使用。如果没有，就建一个新的线程加入池中，缓存型池子通常用于执行一些生存期很短的异步型任务。
+- newFixedThreadPool(int n)：创建一个可重用固定个数的线程池，以共享的无界队列方式来运行这些线程。
+- newScheduledThreadPool(int n)：创建一个定长线程池，支持定时及周期性任务执行
+- newSingleThreadExecutor()：创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
 
-- start()：开始执行线程的方法，java虚拟机会调用线程内的run()方法；
+### 线程生命周期
 
-- yield()：yield在英语里有放弃的意思，同样，这里的yield()指的是当前线程愿意让出对当前处理器的占用。这里需要注意的是，就算当前线程调用了yield()方法，程序在调度的时候，也还有可能继续运行这个线程的；
+当线程被创建并启动以后，它既不是一启动就进入了执行状态，也不是一直处于执行状态。在线程的生命周期中，它要经过新建(New)、就绪（Runnable）、运行（Running）、阻塞(Blocked)和死亡(Dead)5种状态。
 
-- sleep()：静态方法，使当前线程睡眠一段时间；
+### 终止线程4种方式
 
-- join()：使当前线程等待另一个线程执行完毕之后再继续执行，内部调用的是Object类的wait方法实现的；
+1. 正常运行结束。
+2. 使用退出标志退出线程，例如最直接的方法就是设一个volatile的boolean类型的标志，并通过设置这个标志为true或false来控制while循环是否退出
+3. Interrupt方法结束线程（1.线程处于阻塞状态：如使用了sleep,同步锁的wait,socket中的receiver,accept等方法时，会使线程处于阻塞状态。当调用线程的interrupt()方法时，会抛出InterruptException异常。阻塞中的那个方法抛出这个异常，通过代码捕获该异常，然后break跳出循环状态，从而让我们有机会结束这个线程的执行。通常很多人认为只要调用interrupt方法线程就会结束，实际上是错的， 一定要先捕获InterruptedException异常之后通过break来跳出循环，才能正常结束run方法。 2. 线程未处于阻塞状态：使用isInterrupted()判断线程的中断标志来退出循环。当使用interrupt()方法时，中断标志就会置true，和使用自定义的标志来控制循环是一样的道理
+4. stop方法终止线程（线程不安全），stop方法是很危险的，就象突然关闭计算机电源，而不是按正常程序关机一样，可能会产生不可预料的结果
+
+## 线程的基本方法
+
+线程相关的基本方法有wait，notify，notifyAll，sleep，join，yield等。
+
+1. wait（等待）调用该方法的线程进入WAITING状态，只有等待另外线程的通知或被中断才会返回，需要注意的是调用wait()方法后，会释放对象的锁。因此，wait方法一般用在同步方法或同步代码块中。
+2. sleep（睡眠）sleep导致当前线程休眠，与wait方法不同的是sleep不会释放当前占有的锁,sleep(long)会导致线程进入TIMED-WATING状态，而wait()方法会导致当前线程进入WATING状态
+3. yield（让步）yield会使当前线程让出CPU执行时间片，与其他线程一起重新竞争CPU时间片。
+4. join（等待其他线程终止）在当前线程中调用一个线程的 join() 方法，则当前线程转为阻塞状态，回到另一个线程结束，当前线程再由阻塞状态变为就绪状态。内部调用的是Object类的wait方法实现
+5. notify（通知）唤醒在此对象监视器上等待的单个线程；notifyAll唤醒监视器上等待的所有线程。
+6. interrupt（中断）给线程一个通知信号，会影响这个线程内部的一个中断标识位。这个线程本身并不会因此而改变状态(如阻塞，终止等)。
+
+### sleep与wait 区别
+
+①**sleep**是Thread类的方法，导致此线程暂停执行指定时间，把执行机会给其他线程，但是监控状态依然保持，到时后会自动恢复。调用sleep不会释放对象锁。
+
+②**wait**是Object类的方法，对此对象调用wait方法导致本线程放弃对象锁，进入等待此对象的等待锁定池，只有针对此对象发出notify方法（或notifyAll）后本线程才进入对象锁定池准备获得对象锁进入运行状态。
+
+### start与run区别
+
+1. start（）方法来启动线程，真正实现了多线程运行。这时无需等待run方法体代码执行完毕，可以直接继续执行下面的代码。 
+2. 通过调用Thread类的start()方法来启动一个线程， 这时此线程是处于就绪状态， 并没有运行。 
+3. 方法run()称为线程体，它包含了要执行的这个线程的内容，线程就进入了运行状态，开始运行run函数当中的代码。 Run方法运行结束， 此线程终止。然后CPU再调度其它线程。
 
 ### 线程同步的方式：
 1. 同步方法，使用synchronized关键字修饰方法
@@ -206,6 +253,10 @@ CAS (compare and swap) 比较并交换，就是将内存值与预期值进行比
 ## ThreadLocal 
 
 提供了线程本地的实例。它与普通变量的区别在于，每个使用该变量的线程都会初始化一个完全独立的实例副本。ThreadLocal 变量通常被private static修饰。当一个线程结束时，它所使用的所有 ThreadLocal 相对的实例副本都可被回收。总的来说，ThreadLocal 适用于每个线程需要自己独立的实例且该实例需要在多个方法中被使用，也即变量在线程间隔离而在方法或类间共享的场景。
+
+## AtomicInteger
+
+是一个提供原子操作的Integer的类，常见的还有AtomicBoolean、AtomicLong、AtomicReference等，他们的实现原理相同。在多线程程序中，诸如++i 或 i++等运算不具有原子性，是不安全的线程操作之一。通常我们会使用synchronized将该操作变成一个原子操作，但JVM为此类操作特意提供了一些同步类，使得使用更方便，且使程序运行效率变得更高。
 
 ## 线程池
 
@@ -394,7 +445,7 @@ JDK 提供的这些容器大部分在 `java.util.concurrent` 包中。
 4. CopyOnWriteArrayList的“动态数组”机制 -- 它内部有个“volatile数组”(array)来保持数据。在“添加/修改/删除”数据时，都会新建一个数组，并将更新后的数据拷贝到新建的数组中，最后再将该数组赋值给“volatile数组”。这就是它叫做CopyOnWriteArrayList的原因！CopyOnWriteArrayList就是通过这种方式实现的动态数组；不过正由于它在“添加/修改/删除”数据时，都会新建数组，所以涉及到修改数据的操作，CopyOnWriteArrayList效率很 低；但是单单只是进行遍历查找的话，效率比较高
 5. CopyOnWriteArrayList是通过“volatile数组”来保存数据的。一个线程读取volatile数组时，总能看到其它线程对该volatile变量最后的写入；就这样，通过volatile提供了“读取到的数据总是最新的”这个机制的 保证。
 6. CopyOnWriteArrayList通过监视器锁Synchrnoized来保护数据。在“添加/修改/删除”数据时，会先“获取监视器锁”，再修改完毕之后，先将数据更新到“volatile数组”中，然后再“释放互斥锁”；这样，就达到了保护数据的目的。
-  
+
 
 ## ConcurrentLinkedQueue
 
@@ -449,6 +500,8 @@ PriorityBlockingQueue 并发控制采用的是 **ReentrantLock**，队列为无�
 **跳表是一种利用空间换时间的算法。**
 
 使用跳表实现 Map 和使用哈希算法实现 Map 的另外一个不同之处是：哈希并不会保存元素的顺序，而跳表内所有的元素都是排序的。因此在对跳表进行遍历时，你会得到一个有序的结果。所以，如果你的应用需要有序性，那么跳表就是你不二的选择。JDK 中实现这一数据结构的类是 ConcurrentSkipListMap。
+
+
 
 # AQS
 
