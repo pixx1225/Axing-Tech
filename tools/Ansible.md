@@ -1,10 +1,12 @@
+[TOC]
+
 # Ansible
 
 ### 定义
 
 &emsp;&emsp;ansible是一种自动化运维工具，基于Python开发，集合了众多运维工具（puppet、chef、func、fabric）的优点，实现了批量系统配置、批量程序部署、批量运行命令等功能。Ansible默认通过 SSH 协议管理机器.
 
-&emsp;&emsp;ansible是基于 paramiko 开发的,并且基于模块化工作，本身没有批量部署的能力。真正具有批量部署的是ansible所运行的模块，ansible只是提供一种框架。ansible不需要在远程主机上安装client/agents，因为它们是基于**ssh**来和远程主机通讯的。
+&emsp;&emsp;ansible是基于 paramiko 开发的,并且基于模块化工作，本身没有批量部署的能力。真正具有批量部署的是ansible所运行的模块，ansible只是提供一种框架。ansible不需要在远程主机上安装client/agents，因为它们是基于**ssh**来和远程主机通讯的。它是开源自动化平台，也是一种自动化语言，也是一个自动化引擎，可运行Ansible Playbook来完成部署和运维。
 
 ### 特点
 
@@ -44,15 +46,59 @@ Ansible 系统由控制主机对被管节点的操作方式可分为两类，即
 7. 执行并返回结果；
 8. 删除临时py文件，`sleep 0`退出；
 
-### Ansible命令
+### 安装Ansible
 
-```ansible
-ansible-doc -l				#获取全部模块的信息 
-ansible web -m ping 		#进行主机连通性测试
-ansible web -m shell -a 'cat /etc/passwd |grep "keer"'
+#安装在控制节点  Linux或UNIX  python 2.7+或python3.5+
+
+yum install ansible
+
+#检查安装 
+
+ansible --version
+
+### 部署Ansible
+
+清单文件的位置
+
+​	/etc/ansible/hosts
+
+配置文件的位置
+
+​	/etc/ansible/ansible.cfg
+
+运行临时命令
+
+​	ansible hosts -m 模块module -a 参数arguments -i 环境inventory
+
+查看模块文档
+
+​	ansible-doc 模块名
+
+### 实施Playbook
+
+playbook.yml
+
+```yaml
+---
+- name: Configure important user consistently
+  hosts: servera
+  tasks:
+    - name: newbie exists with UID 4000
+      user:
+        name: newbie
+        uid: 4000
+        state: present
+    - name: install http
+      yum:
+        name: httpd
+        state: present
 ```
 
+检查语法
 
+​	ansible-playbook --syntax-check playbook.yml
 
+运行剧本
 
+​	ansible-playbook playbook.yml
 
