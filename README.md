@@ -1,8 +1,8 @@
 ### 记录所见所想，成就非凡梦想 
 
-[![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Github-Axing--Tech-red.svg)](https://github.com/pixx1225/Axing-Tech)
+[![](images/Github-Axing--Tech-red.svg)](https://github.com/pixx1225/Axing-Tech)
 
-![](images/Github-Axing--Tech-red.svg)
+
 
 |操作系统|网络|数据库|分布式|中间件|Java|系统设计|编程算法|机器学习|技术技巧|软件工具|推荐书籍|后记杂谈|
 | :------------------------: | :------------------------------: | :--------------------: | :----------------------------------: | :--------------------------------------: | :----------------------: | :----------------------: | :----------------------------------: | :------------------: | :--------------------------: | :--------------------------: | :--------------------------: | :--------------------------: |
@@ -124,7 +124,7 @@
 
 &emsp;&emsp;开源<u>Axing-Tech</u>项目的想法来自个人的学习经历，技术分享不仅提升自己也帮助其他小伙伴，何乐而不为呢。技术的学习是有限的，人的能力是无限的。本站的技术知识也只是沧海一粟，关键看大家的学习能力。通过本站，希望大家都有所收获，这也是一种价值体现。
 
-&emsp;&emsp;所有文章使用[Markdown](tools/Markdown.md)格式，[Typora](https://www.typora.io/)软件编写，表情符号素材来自：[EMOJI CHEAT SHEET](https://www.webpagefx.com/tools/emoji-cheat-sheet/)，![](https://github.com/pixx1225/Axing-Tech/blob/master/images/Github-Axing--Tech-red.svg) 的Logo图标是使用[Shields.IO](https://shields.io/)生成。
+&emsp;&emsp;所有文章使用[Markdown](tools/Markdown.md)格式，[Typora](https://www.typora.io/)软件编写，表情符号素材来自：[EMOJI CHEAT SHEET](https://www.webpagefx.com/tools/emoji-cheat-sheet/)，![](images/Github-Axing--Tech-red.svg) 的Logo图标是使用[Shields.IO](https://shields.io/)生成。
 
 &emsp;&emsp;也希望和鼓励大家自己也来写写，欢迎分享。如果你需要转载本仓库的一些文章到自己的博客的话，记得注明原文地址，谢谢。
 
@@ -135,8 +135,9 @@
 :point_right:[获取更多信息](www.baidu.com)
 
 <div align=center>
-    <img src="https://github.com/pixx1225/Axing-Tech/blob/master/images/Tech.png" width="600" height="200" align="center"/>
+    <img src="images/Tech.png" width="600" height="200" align="center"/>
 </div>
+
 
 
 
