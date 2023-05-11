@@ -103,6 +103,8 @@
 
 - [Git](tools/Git.md)
 - [Markdown](tools/Markdown.md)
+- [RedHat](tools/RedHat.md)
+- [Ansible](tools/Ansible.md)
 - [Shell](tools/Shell.md)
 - [Windows批处理](tools/Win批处理.md)
 
@@ -132,7 +134,7 @@
 
 感谢大家的支持:pray:
 
-:point_right:[获取更多信息](www.baidu.com)
+:point_right:[获取更多信息](more)
 
 <div align=center>
     <img src="images/Tech.png" width="600" height="200" align="center"/>
