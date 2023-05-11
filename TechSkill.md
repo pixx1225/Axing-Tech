@@ -19,17 +19,21 @@
 8. 推荐桌面共享软件 TeamViewer
 9. Win推荐安装卸载工具 IObitUninstaler
 
-Java开发：**JetBrains IntelliJ IDEA，Eclipse**
+Java开发：**JetBrains IntelliJ IDEA，Eclipse，VS Code**
 
 Python开发：**JetBrains PyCharm，Anacoda**
 
 数据库：**Navicat**
 
+虚拟机管理：**VMware Fusion, WMware workstation**
+
 终端工具：
 
 1. **XShell**（Xmanager)
-2. **MobaXterm**
-3. **Putty**
+2. **SecureCRT**
+3. **MobaXterm**
+4. **Putty**
+5. **Termius**（Mac）
 
 工具链：
 
@@ -42,7 +46,7 @@ Python开发：**JetBrains PyCharm，Anacoda**
 - 编排：**Kubernetes**、Core、Apache Mesos、DC/OS
 - 服务注册与发现：**Zookeeper**、etcd、Consul
 - 脚本语言：**shell**、python、ruby、
-- 日志管理：ELK、Logentries
+- 日志管理：**ELK**、Logentries
 - 系统监控：Datadog、Graphite、Icinga、Nagios
 - 性能监控：AppDynamics、New Relic、Splunk
 - 压力测试：JMeter、Blaze Meter、loader.io
@@ -53,6 +57,7 @@ Python开发：**JetBrains PyCharm，Anacoda**
 - Web服务器：**Apache**、**Nginx**、IIS
 - 数据库：MySQL、Oracle、PostgreSQL等关系型数据库；cassandra、mongoDB、**redis**等NoSQL数据库
 - 项目管理（PM）：**Jira**、Asana、Taiga、Trello、Basecamp、Pivotal Tracker
+- 流程图：Xmind、**ProcessOn**、draw.io
 
 ### Java 开发
 
@@ -121,7 +126,7 @@ settings--Editor--Live Templates
 - D:\DevApps\	目录下存放各个软件的安装路径
 - D:\DevFiles\     目录下存放我们开发时用到的文件
 - D:\MyFiles\      目录下存放我们自己的文件
-- D:\Project\       目录下存放项目文件，把Eclipse和IDEA项目放这里
+- D:\Projects\       目录下存放项目文件，把Eclipse和IDEA项目放这里
 
 再比如浏览器的书签管理，微信好友标签管理等等。
 
