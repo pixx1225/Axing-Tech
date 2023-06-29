@@ -2,17 +2,7 @@
 title Git-Pusher
 color 0a
 setlocal EnableDelayedExpansion
-set date=%DATE:~0,10%
-
-for /f "tokens=1-3 delims=/" %%a in ("%date%") do (
-	set format_date=%%a
-	if not "%%b"=="" (
-		set format_date=!format_date!%%b
-	)
-	if not "%%c"=="" (
-		set format_date=!format_date!%%c
-	)
-)
+set format_date=%DATE:~0,4%%DATE:~5,2%%DATE:~8,2%%Time:~0,2%%Time:~3,2%
 
 ::ÏîÄ¿Ä¿Â¼
 D:

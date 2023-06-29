@@ -4,17 +4,17 @@
 
 ### Keepalived简介
 
+**keepalived**观其名可知，保持存活，在网络里面就是保持在线了，也就是所谓的高可用或热备，用来防止单点故障(单点故障是指一旦某一点出现故障就会导致整个系统架构的不可用)的发生，Keepalived通过请求一个vip来达到请求真是IP地址的功能，而VIP能够在一台机器发生故障时候，自动漂移到另外一台机器上，从来达到了高可用HA功能。
+
 **keepalived**是linux下一个轻量级的高可用解决方案，Keepalived 是使用C语言编写的`路由热备软件`，该项目软件起初是专门为`LVS`负载均衡设计的，用来管理并监控LVS集群系统中各个服务节点的状态，后来又加入了可以实现高可用的`VRRP`功能。 因此，Keepalived除了能够管理LVS软件外，还可以作为其他服务（例如：`Nginx`，`Haproxy`，`MySQL`等）的高可用解决方案软件。
 
-Keepalived 主要是通过`VRRP`协议实现高可用功能的。VRRP是Virtual Router Redundancy Protocol（`虚拟路由器冗余协议`）的缩写，VRRP出现的目的就是为了解决静态路由单点故障问题的，它能够保证当个别节点宕机时，整个网络可以不间断地运行。
-
-所以，Keepalived一方面具有配置管理LVS的功能，同时还具有对LVS下面节点进行健康检查的功能，另一方面也可实现系统网络服务的高可用功能。
-
-keepalived 有三个重要的功能，分别是：
+Keepalived 主要是通过`VRRP`协议实现高可用功能的。VRRP是Virtual Router Redundancy Protocol（`虚拟路由器冗余协议`）的缩写，VRRP出现的目的就是为了解决静态路由单点故障问题的，它能够保证当个别节点宕机时，整个网络可以不间断地运行。所以，Keepalived一方面具有配置管理LVS的功能，同时还具有对LVS下面节点进行健康检查的功能，另一方面也可实现系统网络服务的高可用功能。keepalived 有三个重要的功能，分别是：
 
 - 管理LVS负载均衡软件
-- 实现LVS集群节点的健康检查
-- 作为系统网络服务的高可用性
+- 实现LVS集群节点的健康检查（healthcheck）
+- 作为系统网络服务的高可用性（failover）
+
+Keepalived工作在TCP/IP 参考模型的 三层、四层、五层，也就是分别为：网络层，传输层和应用层。keepalived主要有三个模块，分别是core、check和vrrp。
 
 ### 高可用
 
@@ -38,8 +38,6 @@ keepalived 有三个重要的功能，分别是：
 
 （2）在Keepalived服务之间，只有作为主的服务器会一直发送VRRP广播包，告诉备它还活着，此时备不会抢占主，当主不可用时，即备监听不到主发送的广播包时，就会启动相关服务接管资源，保证业务的连续性。接管速度最快可以小于`1`秒。
 
-
-
 **keepalived 启动后会有三个进程**
 
 父进程： 内存管理，子进程管理等等
@@ -56,6 +54,8 @@ keepalived 有三个重要的功能，分别是：
 yum install keepalived -y
 ```
 
+另外，keepalived在Linux下一般是用root用户安装，使用应用用户启停的话需要配置sudo权限。
+
 ### Keepalived启停
 
 ```shell
@@ -69,8 +69,6 @@ sudo /home/app/keepalived/etc/scripts/killkeepalived.sh
 ps -ef | grep keepalived | grep -v grep | awk '{print $2}' | xargs kill -9
 ```
 
-
-
 ### Keepalived配置文件
 
 ```
@@ -80,7 +78,7 @@ backup:192.168.30.157
 vip:192.168.30.250(虚拟出来的)用户访问的地址
 ```
 
-```xml
+```shell
 【主机master】
 ! Configuration File for keepalived
 #全局配置
@@ -126,5 +124,22 @@ vrrp_instance VI_1 {
 #VRRP配置
 vrrp_instance VI_1 {
     state BACKUP                #角色类型MASTER|BACKUP
+	priority 99                 #双BACKUP下优先级可设置不一样
 ```
+
+### keepalived脑裂
+
+脑裂一般是因为某些原因导致两台keepalived高可用服务器在指定时间内，无法检测到对方存活心跳信息，从而导致互相抢占对方的资源和服务所有权，然而此时两台高可用服务器有都还存活。可能导致脑裂的原因：
+
+- 服务器网线松动等网络故障;
+- 服务器硬件故障发生损坏现象而崩溃；
+- 主备都开启了firewalld 防火墙；
+- 配置信息不正确
+- 其他
+
+常用解决方案：
+
+- 同时使用串行电缆和以太网电缆连接，同时使用两条心跳线
+- 做好对脑裂的监控报警
+- 检测到脑裂问题强行关闭一个心跳节点
 
