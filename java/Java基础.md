@@ -8,6 +8,8 @@
 
 ## Java集合
 
+![img](https://upload-images.jianshu.io/upload_images/11222983-dafae9a5a3544ff8.png?imageMogr2/auto-orient/strip|imageView2/2/format/webp)
+
 ### List
 
 List是有序的Collection。Java List一共三个实现类：分别是ArrayList、Vector和LinkedList。

@@ -4,11 +4,11 @@
 
 ## 计算机网络体系结构
 
-![计算机网络体系结构](https://github.com/pixx1225/Axing-Tech/blob/master/images/计算机网络体系结构.jpg)
+![计算机网络体系结构](../images/计算机网络体系结构.jpg)
 
 ## TCP三次握手
 
-![TCP三次握手](https://github.com/pixx1225/Axing-Tech/blob/master/images/TCP三次握手.jpg)
+![TCP三次握手](../images/TCP三次握手.jpg)
 
 ## TCP 协议如何保证可靠传输
 
@@ -150,3 +150,9 @@ HTTP服务器默认端口号为80/tcp HTTPS服务器默认端口号为443/tcp 44
 常用的非对称加密算法有：RSA、DSA、ECC
 
 使用单向散列函数的加密算法：MD5、SHA
+
+
+
+## 参考阅读
+
+《图解HTTP》

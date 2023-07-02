@@ -155,7 +155,44 @@ public class AuditAspect {
 （3）静态工厂注入；
 （4）实例工厂；
 
+## Spring循环依赖
 
+### 1.什么是循环依赖？
+
+循环依赖其实就是循环引用，也就是两个或则两个以上的bean互相持有对方，最终形成闭环。比如A依赖于B，B依赖于C，C又依赖于A。循环依赖是对象的相互依赖。
+![img](https://img-blog.csdnimg.cn/img_convert/2e3caaffaf786aeb0d5cfe06dceb8b50.png)
+
+### 2.怎么解决循环依赖
+
+Spring 使用三级缓存来解决循环依赖的问题，三级缓存分别是：
+
+- 一级缓存`singletonObjects`：**为“Spring 的单例属性”而生**，就是个单例池，用来存放已经初始化完成的单例 Bean；
+- 二级缓存`earlySingletonObjects`：**为“解决 AOP”而生**，存放的是半成品的 AOP 的单例 Bean；
+- 三级缓存`singletonFactories`：**为“打破循环”而生**，存放的是生成半成品单例 Bean 的工厂方法。到三级缓存工厂方法中找到代理对象放到二级缓存中。
+
+### 3.出现循环依赖如何解决
+
+**生成代理对象产生的循环依赖**
+
+这类循环依赖问题解决方法很多，主要有：
+
+1. 使用`@Lazy`注解，延迟加载
+2. 使用`@DependsOn`注解，指定加载先后关系
+3. 修改文件名称，改变循环依赖类的加载顺序
+
+**使用@DependsOn产生的循环依赖**
+
+这类循环依赖问题要找到`@DependsOn`注解循环依赖的地方，迫使它不循环依赖就可以解决问题。
+
+**多例循环依赖**
+
+这类循环依赖问题可以通过把bean改成单例的解决。
+
+**构造器循环依赖**
+
+这类循环依赖问题可以通过使用`@Lazy`注解解决。
+
+参考文章：[源码深度解析，Spring 如何解决循环依赖？](https://mp.weixin.qq.com/s?__biz=MzU0OTE4MzYzMw==&mid=2247545567&idx=2&sn=8478f342befd6d2d84e3e11c635c4952&chksm=fbb1bb21ccc63237a4890e75a3b43a50b69ef88900fac7e784916fdff134cc94a058c192b63f&scene=27)
 
 # SpringMVC
 
