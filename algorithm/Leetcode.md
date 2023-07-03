@@ -87,3 +87,77 @@ public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
 
+```java
+//滑动窗口，移动方法把队列的左边的元素移出就行
+public int lengthOfLongestSubstring(String s) {
+    if (s.length() == 0) {
+        return 0;
+    }
+    HashMap<Character, Integer> map = new HashMap<>();
+    int max = 0;
+    int left = 0;
+    for (int i = 0; i < s.length(); i++) {
+        if (map.containsKey(s.charAt(i))) {
+            //将left移到最右边使得窗口最小
+            left = Math.max(left, map.get(s.charAt(i)) + 1);
+        }
+        map.put(s.charAt(i), i);
+        max = Math.max(max, i - left + 1);
+    }
+    return max;
+}
+```
+
+4. 寻找两个正序数组的中位数
+
+给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。算法的时间复杂度应该为 `O(log (m+n))` 。
+
+```java
+//暴力解决，将两个数组合并
+public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    int m = nums1.length;
+    int n = nums2.length;
+    int[] nums = new int[m + n];
+    if (m == 0) {
+        if (n % 2 == 0) {
+            return (nums2[n / 2 - 1] + nums2[n / 2]) / 2.0;
+        } else {
+            return nums2[n / 2];
+        }
+    }
+    if (n == 0) {
+        if (m % 2 == 0) {
+            return (nums1[m / 2 - 1] + nums1[m / 2]) / 2.0;
+        } else {
+            return nums1[m / 2];
+        }
+    }
+    int nums1index = 0;
+    int nums2index = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (nums1index < m && nums2index < n) {
+            if (nums1[nums1index] < nums2[nums2index]) {
+                nums[i] = nums1[nums1index];
+                nums1index++;
+            } else {
+                nums[i] = nums2[nums2index];
+                nums2index++;
+            }
+        } else if (nums1index < m) {
+            nums[i] = nums1[nums1index];
+            nums1index++;
+        } else if (nums2index < n) {
+            nums[i] = nums2[nums2index];
+            nums2index++;
+        }
+    }
+
+    int count = m + n;
+    if (count % 2 == 0) {
+        return (nums[count / 2 - 1] + nums[count / 2]) / 2.0;
+    } else {
+        return nums[count / 2];
+    }
+}
+```
+
