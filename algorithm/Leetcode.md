@@ -1,6 +1,8 @@
-Leetcode题库
+[TOC]
 
-1. 两数之和
+# Leetcode题库
+
+### 1.两数之和
 
 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
 
@@ -19,7 +21,7 @@ public static int[] twoSum(int[] nums, int target) {
 }
 ```
 
-2. 两数相加
+### 2.两数相加
 
 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
 
@@ -83,7 +85,7 @@ public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 }
 ```
 
-3. 无重复字符的最长子串
+### 3.无重复字符的最长子串
 
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
 
@@ -108,7 +110,7 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
-4. 寻找两个正序数组的中位数
+### 4.寻找两个正序数组的中位数
 
 给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。算法的时间复杂度应该为 `O(log (m+n))` 。
 
@@ -157,6 +159,49 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         return (nums[count / 2 - 1] + nums[count / 2]) / 2.0;
     } else {
         return nums[count / 2];
+    }
+}
+```
+
+### 5.最长回文子串
+
+给你一个字符串 `s`，找到 `s` 中最长的回文子串。
+
+如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
+
+```java
+ public String longestPalindrome(String s) {
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+        int maxLen = 1;
+        int begin = 0;
+        char[] charArray = s.toCharArray();
+        boolean[][] dp = new boolean[len][len];
+
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = true;
+        }
+
+        for (int j = 1; j < len; j++) {
+            for (int i = 0; i < j; i++) {
+                if (charArray[j] != charArray[i]) {
+                    dp[i][j] = false;
+                } else {
+                    if (j - i < 3) {
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+                if (dp[i][j] && j - i + 1 > maxLen) {
+                    maxLen = j - i + 1;
+                    begin = i;
+                }
+            }
+        }
+        return s.substring(begin, begin + maxLen);
     }
 }
 ```
