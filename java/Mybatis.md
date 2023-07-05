@@ -2,24 +2,84 @@
 
 # Mybatis
 
-MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射， 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集的繁杂。它可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java对象映射成数据库中的记录。
+## MyBatis简介
 
-### Mybatis配置文件的约束
+MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射， 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集的繁杂。它可以使用简单的 XML 或注解来配置和映射原生类型、接口和Java的POJO映射成数据库中的记录。
+
+## MyBatis使用
+
+如果使用 Maven 来构建项目，则需将下面的依赖代码置于 pom.xml 文件中：
 
 ```xml
-<!--Config的约束-->
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE configuration 
-				PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<!--Mapper的约束-->
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper 
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.6</version>
+</dependency>
 ```
 
-### Mybatis常用注解说明
+## XML映射器
+
+MyBatis 的真正强大在于它的语句映射，这是它的魔力所在。由于它的异常强大，映射器的 XML 文件就显得相对简单。如果拿它跟具有相同功能的 JDBC 代码进行对比，你会立即发现省掉了将近 95% 的代码。MyBatis 致力于减少使用成本，让用户能更专注于 SQL 代码。
+
+```xml
+<select id="selectPerson" parameterType="int" resultType="hashmap">
+  SELECT * FROM PERSON WHERE ID = #{id}
+</select>
+```
+
+Xml 映射文件中，除了常见的 **select|insert|updae|delete** 标签之外，还有很多其他的标签，`<resultMap>`、`<parameterMap>`、`<sql>`、`<include>`、`<selectKey>`，加上动态 sql 的 9 个标签`trim|where|set|foreach|if|choose|when|otherwise|bind`等，其中<sql>为 sql 片段标签，通过`<include>`标签引入 sql 片段，`<selectKey>`为不支持自增的主键生成策略标签。
+
+## 动态SQL
+
+动态 SQL 是 MyBatis 的强大特性之一。在 JDBC 或其它类似的框架中，开发人员通常需要手动拼接 SQL 语句。根据不同的条件拼接 SQL 语句是一件极其痛苦的工作。例如，拼接时要确保添加了必要的空格，还要注意去掉列表最后一个列名的逗号。而动态 SQL 恰好解决了这一问题，可以根据场景动态的构建查询。
+**MyBatis 动态 sql** 可以让我们在 Xml 映射文件内，以标签的形式编写动态 sql，完成逻辑判断和动态拼接 sql 的功能。
+
+其执行原理为，使用 OGNL 从 sql 参数对象中计算表达式的值，根据表达式的值动态拼接 sql，以此来完成动态 sql 的功能。
+
+| 元素                    | 作用                              | 备注                    |
+| ----------------------- | --------------------------------- | ----------------------- |
+| if                      | 判断语句                          | 单条件分支判断          |
+| choose(when、otherwise) | 相当于 Java 中的 switch case 语句 | 多条件分支判断          |
+| trim(where、set)        | 辅助元素                          | 用于处理一些SQL拼装问题 |
+| foreach                 | 循环语句                          | 在in语句等列举条件常用  |
+| bind                    | 辅助元素                          | 拼接参数                |
+
+```xml
+<select id="findActiveBlogLike" resultType="Blog">
+  SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+  <if test="author != null and author.name != null">
+    AND author_name like #{author.name}
+  </if>
+</select>
+```
+
+## MyBatis和Hibernate的区别
+
+相同点：
+
+MyBatis 和 Hibernate 都是目前业界中主流的对象关系映射（ORM）框架，都是通过SessionFactoryBuider由XML配置文件生成SessionFactory，然后由SessionFactory 生成Session，最后由Session来开启执行事务和SQL语句。都支持JDBC和JTA事务处理。
+
+不同点：
+
+- hibernate是全自动，而mybatis是半自动。MyBatis 需要手动匹配 POJO 和 SQL 的映射关系。hibernate只需提供 POJO 和映射关系即可。
+- hibernate不怎么需要写sql，而mybatis需要把sql写在配置文件里面。sql直接优化上，mybatis要比hibernate方便很多。
+- hibernate数据库移植性和扩展性远大于mybatis，维护性比较好。
+- hibernate的开发难度要大于mybatis，但hibernate开发速度比mybatis相对快点。
+- hibernate拥有完整的日志系统，mybatis则欠缺一些。
+- mybatis相比hibernate需要关心很多细节
+- 缓存机制上，hibernate要比mybatis更好一些
+
+总的来说，MyBatis 是一个小巧、方便、高效、简单、直接、半自动化的持久层框架，Hibernate 是一个强大、方便、高效、复杂、间接、全自动化的持久层框架。对于性能要求不太苛刻的系统，比如管理系统、ERP 等推荐使用 Hibernate，而对于性能要求高、响应快、灵活的系统则推荐使用 MyBatis。
+
+## #{}和\${}的区别
+
+- `${}`是 Properties 文件中的变量占位符，它可以用于标签属性值和 sql 内部，属于静态文本替换，比如\${driver}会被静态替换为`com.mysql.jdbc.Driver`。
+- `#{}`是 sql 的参数占位符，Mybatis 会将 sql 中的`#{}`替换为?号，在 sql 执行前会使用 PreparedStatement 的参数设置方法，按序给 sql 的?号占位符设置参数值，比如 ps.setInt(0, parameterValue)，`#{item.name}` 的取值方式为使用反射从参数对象中获取 item 对象的 name 属性值，相当于 `param.getItem().getName()`。
+
+
+
+## Mybatis常用注解
 
 ```java
 @Select：查询
@@ -39,34 +99,15 @@ MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过�
 
 ### Mybatis面试题
 
-#### 1、#{}和\${}的区别是什么？
+#### 最佳实践中，通常一个 Xml 映射文件，都会写一个 Dao 接口与之对应，请问，这个 Dao 接口的工作原理是什么？Dao 接口里的方法，参数不同时，方法能重载吗？
 
-注：这道题是面试官面试我同事的。
+Dao 接口，就是人们常说的 `Mapper`接口，接口的全限名，就是映射文件中的 namespace 的值，接口的方法名，就是映射文件中`MappedStatement`的 id 值，接口方法内的参数，就是传递给 sql 的参数。`Mapper`接口是没有实现类的，当调用接口方法时，接口全限名+方法名拼接字符串作为 key 值，可唯一定位一个`MappedStatement`，举例：`com.mybatis3.mappers.StudentDao.findStudentById`，可以唯一找到 namespace 为`com.mybatis3.mappers.StudentDao`下面`id = findStudentById`的`MappedStatement`。在 Mybatis 中，每一个`<select>`、`<insert>`、`<update>`、`<delete>`标签，都会被解析为一个`MappedStatement`对象。
 
-答：
+Dao 接口里的方法，是**不能重载**的，因为是全限名+方法名的保存和寻找策略。
 
-- `${}`是 Properties 文件中的变量占位符，它可以用于标签属性值和 sql 内部，属于静态文本替换，比如\${driver}会被静态替换为`com.mysql.jdbc.Driver`。
-- `#{}`是 sql 的参数占位符，Mybatis 会将 sql 中的`#{}`替换为?号，在 sql 执行前会使用 PreparedStatement 的参数设置方法，按序给 sql 的?号占位符设置参数值，比如 ps.setInt(0, parameterValue)，`#{item.name}` 的取值方式为使用反射从参数对象中获取 item 对象的 name 属性值，相当于 `param.getItem().getName()`。
+Dao 接口的工作原理是 JDK **动态代理**，Mybatis 运行时会使用 JDK 动态代理为 Dao 接口生成代理 proxy 对象，代理对象 proxy 会拦截接口方法，转而执行`MappedStatement`所代表的 sql，然后将 sql 执行结果返回。
 
-#### 2、Xml 映射文件中，除了常见的 select|insert|updae|delete 标签之外，还有哪些标签？
-
-注：这道题是京东面试官面试我时问的。
-
-答：还有很多其他的标签，`<resultMap>`、`<parameterMap>`、`<sql>`、`<include>`、`<selectKey>`，加上动态 sql 的 9 个标签，`trim|where|set|foreach|if|choose|when|otherwise|bind`等，其中<sql>为 sql 片段标签，通过`<include>`标签引入 sql 片段，`<selectKey>`为不支持自增的主键生成策略标签。
-
-#### 3、最佳实践中，通常一个 Xml 映射文件，都会写一个 Dao 接口与之对应，请问，这个 Dao 接口的工作原理是什么？Dao 接口里的方法，参数不同时，方法能重载吗？
-
-注：这道题也是京东面试官面试我时问的。
-
-答：Dao 接口，就是人们常说的 `Mapper`接口，接口的全限名，就是映射文件中的 namespace 的值，接口的方法名，就是映射文件中`MappedStatement`的 id 值，接口方法内的参数，就是传递给 sql 的参数。`Mapper`接口是没有实现类的，当调用接口方法时，接口全限名+方法名拼接字符串作为 key 值，可唯一定位一个`MappedStatement`，举例：`com.mybatis3.mappers.StudentDao.findStudentById`，可以唯一找到 namespace 为`com.mybatis3.mappers.StudentDao`下面`id = findStudentById`的`MappedStatement`。在 Mybatis 中，每一个`<select>`、`<insert>`、`<update>`、`<delete>`标签，都会被解析为一个`MappedStatement`对象。
-
-Dao 接口里的方法，是不能重载的，因为是全限名+方法名的保存和寻找策略。
-
-Dao 接口的工作原理是 JDK 动态代理，Mybatis 运行时会使用 JDK 动态代理为 Dao 接口生成代理 proxy 对象，代理对象 proxy 会拦截接口方法，转而执行`MappedStatement`所代表的 sql，然后将 sql 执行结果返回。
-
-#### 4、Mybatis 是如何进行分页的？分页插件的原理是什么？
-
-注：我出的。
+#### Mybatis 是如何进行分页的？分页插件的原理是什么？
 
 答：Mybatis 使用 RowBounds 对象进行分页，它是针对 ResultSet 结果集执行的内存分页，而非物理分页，可以在 sql 内直接书写带有物理分页的参数来完成物理分页功能，也可以使用分页插件来完成物理分页。
 
@@ -87,14 +128,6 @@ Dao 接口的工作原理是 JDK 动态代理，Mybatis 运行时会使用 JDK �
 注：我出的。
 
 答：能，JDBC 都能，Mybatis 当然也能。
-
-#### 7、Mybatis 动态 sql 是做什么的？都有哪些动态 sql？能简述一下动态 sql 的执行原理不？
-
-注：我出的。
-
-答：Mybatis 动态 sql 可以让我们在 Xml 映射文件内，以标签的形式编写动态 sql，完成逻辑判断和动态拼接 sql 的功能，Mybatis 提供了 9 种动态 sql 标签 `trim|where|set|foreach|if|choose|when|otherwise|bind`。
-
-其执行原理为，使用 OGNL 从 sql 参数对象中计算表达式的值，根据表达式的值动态拼接 sql，以此来完成动态 sql 的功能。
 
 #### 8、Mybatis 是如何将 sql 执行结果封装为目标对象并返回的？都有哪些映射形式？
 

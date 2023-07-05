@@ -124,7 +124,7 @@ public class AuditAspect {
 
 适配器模式 :Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配Controller。
 
-## Bean：
+## Spring Bean：
 
 ### Bean生命周期：
 
@@ -139,6 +139,14 @@ public class AuditAspect {
 - 属性赋值 Populate
 - 初始化 Initialization
 - 销毁 Destruction
+
+```
+ApplicationContext容器中,Bean的生命周期流程大致如下：
+1.首先容器启动后，会对scope为singleton且非懒加载的bean进行实例化createBeanInstance()
+2.按照Bean定义信息配置信息，注入所有的属性populateBean() 
+3.如果Bean实现了某些接口，则会调用相应的方法，实现初始化initializeBean()
+4.容器关闭后，如果Bean实现了DisposableBean接口，则会回调该接口的destroy()方法
+```
 
 ### Bean作用域：
 
