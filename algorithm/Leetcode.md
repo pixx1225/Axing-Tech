@@ -206,3 +206,104 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 }
 ```
 
+### 6.N 字形变换
+
+将一个给定字符串 `s` 根据给定的行数 `numRows` ，以从上往下、从左到右进行 Z 字形排列。比如输入字符串为 `"PAYPALISHIRING"` 行数为 `3` 时，排列如下：
+
+```
+P   A   H   N   0 4 8 12 
+A P L S I I G	1 3 5 7 9 11 13
+Y   I   R		2 6 10 
+```
+
+之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如：`"PAHNAPLSIIGYIR"`。
+
+```java
+public static String convert2N(String s, int numRows) {
+        if (numRows < 2) {
+            return s;
+        }
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            rows.add(new StringBuilder());
+        }
+        int i = 0, flag = -1;
+        for (char c : s.toCharArray()) {
+            rows.get(i).append(c);
+            //在达到 Z 字形转折点时，执行反向。
+            if (i == 0 || i == numRows - 1) {
+                flag = -flag;
+            }
+            i += flag;
+        }
+        StringBuilder res = new StringBuilder();
+        for (StringBuilder row : rows) {
+            res.append(row);
+        }
+        return res.toString();
+    }
+```
+
+### 7.整数反转
+
+给你一个 32 位的有符号整数 `x` ，返回将 `x` 中的数字部分反转后的结果。
+
+如果反转后整数超过 32 位的有符号整数的范围 `[−2^31, 2^31 − 1]` ，就返回 0。
+
+```java
+public int reverse(int x) {
+    int res = 0;
+    while(x!=0) {
+        //每次取末尾数字
+        int tmp = x%10;
+        //判断是否 大于 最大32位整数
+        if (res>214748364 || (res==214748364 && tmp>7)) {
+            return 0;
+        }
+        //判断是否 小于 最小32位整数
+        if (res<-214748364 || (res==-214748364 && tmp<-8)) {
+            return 0;
+        }
+        res = res*10 + tmp;
+        x /= 10;
+    }
+    return res;
+}
+```
+
+### 9.回文数
+
+给你一个整数 `x` ，如果 `x` 是一个回文整数，返回 `true` ；否则，返回 `false` 。
+
+回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。例如，`121` 是回文，而 `123` 不是。
+
+```java
+public boolean isPalindrome(int x) {
+    if (x < 0) {
+        return false;
+    }
+    StringBuilder sb = new StringBuilder(String.valueOf(x));
+    if (sb.reverse().toString().equals(String.valueOf(x))) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+public boolean isPalindrome(int x) {
+    if (x < 0 || (x % 10 == 0 && x != 0)) return false;
+    int rn = 0;
+    while (x > rn) {
+        rn = rn * 10 + x % 10;
+        x /= 10;
+    }
+    return x == rn || x == rn / 10;
+}
+```
+
+
+
+
+
+
+
